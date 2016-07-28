@@ -1,4 +1,4 @@
-package niftijio;
+package data.niftilibrary.niftijio;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
