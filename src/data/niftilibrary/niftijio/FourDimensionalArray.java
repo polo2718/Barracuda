@@ -1,6 +1,7 @@
 package data.niftilibrary.niftijio;
 
-/* Four-dimensional array implementation that avoids using java's multi-dimensional arrays.
+/**
+        * Four-dimensional array implementation that avoids using java's multi-dimensional arrays.
         * <p/>
         * For very large images, java's multi-dimensional arrays cause too much overhead and eventually
         * result in either heap or garbage collection issues. This implementation uses one single large array
@@ -49,7 +50,11 @@ public class FourDimensionalArray {
         int idx = d * (nx * ny * nz) + z * (nx * ny) + y * nx + x;
         data[idx] = val;
     }
-    
+    /** 
+     * Additional access to retrieve a 4D data structure from the NiftiVolume
+     * @author Diego Garibay-Pulido
+     * @return 4D array with nifti image data
+     */
     public double[][][][] get4DArray(){
          double data4D[][][][] = new double [nx][ny][nz][dim];
         for (int i = 0; i < nx; i++)
@@ -67,6 +72,11 @@ public class FourDimensionalArray {
      return data4D;   
     }
     
+    /**
+     * Overwrite the image information in the nifti volume object
+     * @author Diego Garibay-Pulido
+     * @param array A 4D array containing the image information
+     */
     public void set4DArray(double [][][][] array){
         if((nx == array.length) & ( ny == array[0].length)& (nz == array[0][0].length) &  (dim == array[0][0][0].length))
         {
