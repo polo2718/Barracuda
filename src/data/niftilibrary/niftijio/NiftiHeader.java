@@ -18,6 +18,10 @@ import java.util.zip.GZIPInputStream;
 import java.util.Date;
 import java.util.List;
 
+/** 
+ * This class reads the information from a nifti file.
+ * @author derived from http://niftilib.sourceforge.net/
+ */
 public class NiftiHeader
 {
     /* derived from http://niftilib.sourceforge.net/ */
@@ -160,7 +164,13 @@ public class NiftiHeader
         setDefaults();
     }
 
-
+    /**
+     * Constructor with default values 1mm spacing and float 32 data type
+     * @param nx x dimension
+     * @param ny y dimension
+     * @param nz z dimension
+     * @param dim 4th dimension (time series or diffusion data)
+     */
     public NiftiHeader(int nx, int ny, int nz, int dim)
     {
         setDefaults();
@@ -511,6 +521,11 @@ public class NiftiHeader
         extension_blobs = new ArrayList<byte[]>(5);
     }
 
+    /**
+     * Returns a Hash Map containing all the NiftiHeader information
+     * 
+     * @return Hash Map with name-value string pairs
+     */
     public Map<String,String> info()
     {
         Map<String,String> info = new HashMap<String,String>();
@@ -623,11 +638,12 @@ public class NiftiHeader
         return (s < 1) || (s > 7);
     }
     
-    /** Read a NIFTI header from a file.
+    /** 
+     * Read a NIFTI header from a file.
      * 
      * @param filename the name of the file to read the header from
-     * @return
-     * @throws IOException 
+     * @return Reads the header
+     * @throws IOException if read fails
      */
     public static NiftiHeader read(String filename) throws IOException {
         InputStream is = new FileInputStream(filename);
@@ -640,13 +656,14 @@ public class NiftiHeader
         }
     }
 
-    /** Read a NIFTI header from a binary data input stream. This method assumes that the content retrieved
+    /** 
+     * Read a NIFTI header from a binary data input stream. This method assumes that the content retrieved
      * from the input stream is already uncompressed.
      * 
      * @param is a stream to read the NIFTI header from, uncompressed. This will not close the stream!
      * @param filename the original file name of the header, can be null
-     * @return
-     * @throws IOException 
+     * @return Reads the file
+     * @throws IOException if read fails
      */
     public static NiftiHeader read(InputStream is, String filename) throws IOException {
         BufferedInputStream bufferedStream = (!(is instanceof BufferedInputStream))

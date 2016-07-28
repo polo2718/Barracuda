@@ -1,8 +1,8 @@
 package data.niftilibrary.niftijio;
 
 /**
-        * Four-dimensional array implementation that avoids using java's multi-dimensional arrays.
-        * <p/>
+        * <p>Four-dimensional array implementation that avoids using java's multi-dimensional arrays.
+        * </p>
         * For very large images, java's multi-dimensional arrays cause too much overhead and eventually
         * result in either heap or garbage collection issues. This implementation uses one single large array
         * while providing a 4D access interface.

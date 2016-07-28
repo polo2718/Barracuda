@@ -64,7 +64,7 @@ public class NiftiVolume
      * 
      * @param is an input stream pointing to the beginning of the NIFTI file, uncompressed.
      * @return a NIFTI volume
-     * @throws IOException 
+     * @throws IOException if read fails
      */
     public static NiftiVolume read(InputStream is) throws IOException {
         return read(is, null);
@@ -75,7 +75,7 @@ public class NiftiVolume
      * @param is an input stream pointing to the beginning of the NIFTI file, uncompressed. The operation will close the stream.
      * @param filename the name of the original file, can be null
      * @return a NIFTI volume
-     * @throws IOException 
+     * @throws IOException if read fails
      */
     public static NiftiVolume read(InputStream is, String filename) throws IOException {
         BufferedInputStream bis = new BufferedInputStream(is);

@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Little-Endian version of DataInputStream.
- * <p/>
+ * <p>Little-Endian version of DataInputStream.
+ * </p>
  * Very similar to DataInputStream except it reads little-endian instead of
  * big-endian binary data. We can't extend DataInputStream directly since it has
  * only final methods, though DataInputStream itself is not final. This forces
@@ -53,21 +53,21 @@ public final class LEDataInputStream implements DataInput
     /**
      * to get at the big-Endian methods of a basic DataInputStream
      * 
-     * @noinspection WeakerAccess
+     * 
      */
     protected final DataInputStream dis;
 
     /**
      * to get at the a basic readBytes method.
      * 
-     * @noinspection WeakerAccess
+     * 
      */
     protected final InputStream is;
 
     /**
      * work array for buffering input.
      * 
-     * @noinspection WeakerAccess
+     * 
      */
     protected final byte[] work;
 
@@ -179,7 +179,7 @@ public final class LEDataInputStream implements DataInput
      * Read a double. like DataInputStream.readDouble except little endian.
      * 
      * @return little endian IEEE double from the datastream.
-     * @throws IOException
+     * @throws IOException Exception
      */
     public final double readDouble() throws IOException
     {
@@ -238,8 +238,8 @@ public final class LEDataInputStream implements DataInput
      * 
      * @return a rough approximation of the 8-bit stream as a 16-bit unicode
      *         string
-     * @throws IOException
-     * @noinspection deprecation
+     * @throws IOException If read fails
+     * 
      * @deprecated This method does not properly convert bytes to characters.
      *             Use a Reader instead with a little-endian encoding.
      */
@@ -252,7 +252,7 @@ public final class LEDataInputStream implements DataInput
      * read a long, 64-bits. Like DataInputStream.readLong except little endian.
      * 
      * @return little-endian binary long from the datastream.
-     * @throws IOException
+     * @throws IOException if read fails
      */
     public final long readLong() throws IOException
     {
@@ -314,9 +314,9 @@ public final class LEDataInputStream implements DataInput
     }
 
     /**
-     * Skip over bytes in the stream. See the general contract of the
+     * <p>Skip over bytes in the stream. See the general contract of the
      * <code>skipBytes</code> method of <code>DataInput</code>.
-     * <p/>
+     * </p>
      * Bytes for this operation are read from the contained input stream.
      * 
      * @param n

@@ -32,8 +32,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Little-endian version of DataOutputStream.
- * <p/>
+ * <p>Little-endian version of DataOutputStream.
+ * </p>
  * Very similar to DataOutputStream except it writes little-endian instead of
  * big-endian binary data. We can't extend DataOutputStream directly since it
  * has only final methods. This forces us implement LEDataOutputStream with a
@@ -60,14 +60,14 @@ public final class LEDataOutputStream implements DataOutput
     /**
      * to get at big-Endian write methods of DataOutPutStream.
      * 
-     * @noinspection WeakerAccess
+     * 
      */
     protected final DataOutputStream dis;
 
     /**
      * work array for composing output.
      * 
-     * @noinspection WeakerAccess
+     * 
      */
     protected final byte[] work;
 
