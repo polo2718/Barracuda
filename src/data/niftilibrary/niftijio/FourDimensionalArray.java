@@ -25,10 +25,10 @@ public class FourDimensionalArray {
     }
 
     public FourDimensionalArray(double[][][][] array) {
-        int nx = array.length;
-        int ny = array[0].length;
-        int nz = array[0][0].length;
-        int dim = array[0][0][0].length;
+        this.nx = array.length;
+        this.ny = array[0].length;
+        this.nz = array[0][0].length;
+        this.dim = array[0][0][0].length;
 
         this.data = new double[nx * ny * nz * dim];
 
