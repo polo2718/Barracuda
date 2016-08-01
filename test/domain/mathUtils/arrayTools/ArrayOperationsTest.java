@@ -33,13 +33,36 @@ public class ArrayOperationsTest {
      */
     @Test
     public void testFindMaximum() {
+        //test if the the method is actually finding the maximum
         System.out.println("findMaximum");
-        double[] x = null;
-        double expResult = 0.0;
+        double[] x = {5,4,3,2,1,4,5,100,2};
+        double expResult = 100;
         double result = ArrayOperations.findMaximum(x);
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(expResult, result, 0);
+        
+        //test what happens if the method is called with an empty input array
+        x=new double[0];
+        expResult=Double.NaN;
+        result= ArrayOperations.findMaximum(x);
+        assertEquals(result,expResult,0);
+        
+        //method should return the maximum value even if there are NaN in the array
+        x=new double[] {Double.NaN, 2, 100, 0};
+        expResult=100;
+        result=ArrayOperations.findMaximum(x);
+        assertEquals(expResult, result, 0);
+        
+        //method should return positive infinity if the array contains positive infinity
+        x=new double[] {3,Double.POSITIVE_INFINITY,2,Double.NaN,5};
+        expResult=Double.POSITIVE_INFINITY;
+        result=ArrayOperations.findMaximum(x);
+        assertEquals(expResult, result, 0);
+        
+        //method should return number if negative infinity is on the array
+        x=new double[] {3,Double.NEGATIVE_INFINITY,2,Double.NaN,5};
+        expResult=5;
+        result=ArrayOperations.findMaximum(x);
+        assertEquals(expResult, result, 0);
     }
     
 }

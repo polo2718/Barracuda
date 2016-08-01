@@ -15,6 +15,7 @@ package domain.mathUtils.arrayTools;
 public abstract class ArrayOperations {
     /**
      * Find the maximum number in a 1D array
+     * Supports arrays having  NaN values
      * @param x 1D array of doubles
      * @return maximum value in the array
      * @author Leopoldo Cendejas-Zaragoza
@@ -23,7 +24,9 @@ public abstract class ArrayOperations {
         if (x.length!=0){
             double maximum=x[0];
             for(double number: x){
-                if (number>maximum)
+                //test if the maximum number is NaN if it is NaN use the minimum value for a double as defined by IEEE for comparison 
+                double temp=Double.isNaN(maximum)? -Double.MAX_VALUE:maximum;  
+                if (number>temp)
                     maximum=number;
             }
             return maximum;
