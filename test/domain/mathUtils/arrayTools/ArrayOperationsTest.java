@@ -5,6 +5,7 @@
  */
 package domain.mathUtils.arrayTools;
 
+import java.util.Arrays;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class ArrayOperationsTest {
     @Test
     public void testFindMaximum() {
         //test if the the method is actually finding the maximum
-        System.out.println("findMaximum");
+        System.out.println("***findMaximum");
         double[] x = {5,4,3,2,1,4,5,100,2};
         double expResult = 100;
         double result = ArrayOperations.findMaximum(x);
@@ -63,6 +64,7 @@ public class ArrayOperationsTest {
         expResult=5;
         result=ArrayOperations.findMaximum(x);
         assertEquals(expResult, result, 0);
+        System.out.println("Test Passed!");
     }
 
     /**
@@ -71,7 +73,7 @@ public class ArrayOperationsTest {
     @Test
     public void testFindMaximum_2DArr() {
         //Test if the method is actually giving a maximum
-        System.out.println("findMaximum 2D");
+        System.out.println("***findMaximum 2D");
         double[][] x = {{10, 40, 3}, {4, 5, -54}, {7, 8, 9}};
         double expResult = 40;
         double result = ArrayOperations.findMaximum(x);
@@ -112,6 +114,7 @@ public class ArrayOperationsTest {
         expResult=100;
         result=ArrayOperations.findMaximum(x);
         assertEquals(expResult, result, 0);
+        System.out.println("Test Passed!");
     }
     
     /**
@@ -120,7 +123,7 @@ public class ArrayOperationsTest {
     @Test
     public void testFindMinimum() {
         //test if the the method is actually finding the minimum
-        System.out.println("findMinimum");
+        System.out.println("***findMinimum");
         double[] x = {-5,4,3,2,1,4,5,100,2};
         double expResult = -5;
         double result = ArrayOperations.findMinimum(x);
@@ -149,14 +152,16 @@ public class ArrayOperationsTest {
         expResult=Double.NEGATIVE_INFINITY;
         result=ArrayOperations.findMinimum(x);
         assertEquals(expResult, result, 0);
+        System.out.println("Test Passed!");
     }    
+    
     /**
      * Test of findMinimum method, of class ArrayOperations.
      */
     @Test
     public void testFindMinimum_2DArr() {
         //Test if the method is actually giving a minimum
-        System.out.println("findMinimum 2D");
+        System.out.println("***findMinimum 2D");
         double[][] x = {{10, 40, 3}, {4, 5, -54}, {7, 8, 9}};
         double expResult = -54;
         double result = ArrayOperations.findMinimum(x);
@@ -197,6 +202,112 @@ public class ArrayOperationsTest {
         expResult=2;
         result=ArrayOperations.findMinimum(x);
         assertEquals(expResult, result, 0);
+        System.out.println("Test Passed!");
     }
-
+    
+    /**
+     * Test of findMinimum method, of class ArrayOperations for 3D arrays.
+     */
+    @Test
+    public void testFindMinimum_3DArr() {
+        //Test if the method is actually giving a minimum
+        System.out.println("***findMinimum 3D");
+        double[][][] x =new double[3][3][2];
+        int number=1;
+        for(int i=0;i<2;i++){
+            for(int j=0; j<3; j++){
+                for(int k=0; k<3; k++){
+                    x[k][j][i]=number;
+                    number++;
+                }
+            }
+        }
+        x[1][1][0]=-32;
+        System.out.println(Arrays.deepToString(x));
+        double expResult = -32;
+        double result = ArrayOperations.findMinimum(x);
+        assertEquals(expResult, result, 0.0);
+        
+        //method should return the minimum value even if there are NaNs in the array
+        x[1][1][1]=Double.NaN;
+        expResult=-32;
+        System.out.println(Arrays.deepToString(x));
+        result=ArrayOperations.findMinimum(x);
+        assertEquals(expResult, result, 0);
+        
+        //method should return the expected value if the array contains positive infinity
+        x[1][2][1]=Double.POSITIVE_INFINITY;
+        expResult=-32;
+        System.out.println(Arrays.deepToString(x));
+        result=ArrayOperations.findMinimum(x);
+        assertEquals(expResult, result, 0);   
+        
+        //method should return negative infinity if a negative Infinity is present in the array
+        x[0][2][1]=Double.NEGATIVE_INFINITY;
+        expResult=Double.NEGATIVE_INFINITY;
+        System.out.println(Arrays.deepToString(x));
+        result=ArrayOperations.findMinimum(x);
+        assertEquals(expResult, result, 0);
+        
+        //method should return NaN if the input array is empty
+        x=new double[0][0][0];
+        expResult=Double.NaN;
+        System.out.println(Arrays.deepToString(x));
+        result=ArrayOperations.findMaximum(x);
+        assertEquals(expResult, result,0);
+        System.out.println("Test Passed!");   
+    }
+    
+    /**
+     * Test of findMaximum method, of class ArrayOperations for 3D arrays.
+     */
+    @Test
+    public void testFindMaximum_3DArr() {
+        //Test if the method is actually giving a maximum
+        System.out.println("***findMaximum 3D");
+        double[][][] x =new double[3][3][2];
+        int number=-1;
+        for(int i=0;i<2;i++){
+            for(int j=0; j<3; j++){
+                for(int k=0; k<3; k++){
+                    x[k][j][i]=number;
+                    number++;
+                }
+            }
+        }
+        x[1][1][0]=100;
+        System.out.println(Arrays.deepToString(x));
+        double expResult = 100;
+        double result = ArrayOperations.findMaximum(x);
+        assertEquals(expResult, result, 0.0);
+        
+        //method should return the maximum value even if there are NaNs in the array
+        x[1][1][1]=Double.NaN;
+        expResult=100;
+        System.out.println(Arrays.deepToString(x));
+        result=ArrayOperations.findMaximum(x);
+        assertEquals(expResult, result, 0);
+        
+        //method should return the expected value if the array contains negative infinity
+        x[1][2][1]=Double.NEGATIVE_INFINITY;
+        expResult=100;
+        System.out.println(Arrays.deepToString(x));
+        result=ArrayOperations.findMaximum(x);
+        assertEquals(expResult, result, 0);   
+        
+        //method should return positive infinity if a Positive Infinity is present in the array
+        x[0][2][1]=Double.POSITIVE_INFINITY;
+        expResult=Double.POSITIVE_INFINITY;
+        System.out.println(Arrays.deepToString(x));
+        result=ArrayOperations.findMaximum(x);
+        assertEquals(expResult, result, 0);
+        
+        //method should return NaN if the input array is empty
+        x=new double[0][0][0];
+        expResult=Double.NaN;
+        System.out.println(Arrays.deepToString(x));
+        result=ArrayOperations.findMaximum(x);
+        assertEquals(expResult, result,0);
+        System.out.println("Test Passed!");
+    }
 }
