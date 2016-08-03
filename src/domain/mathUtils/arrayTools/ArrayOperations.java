@@ -7,7 +7,7 @@ package domain.mathUtils.arrayTools;
 
 /**
  * <p>
- * This class contains methods relevant to mathematiical array processing.
+ * This class contains methods relevant to mathematical array processing.
  * The class is abstract. Calling a method from a client object does not require an instance variable of the class.
  * </p>
  * @author Leopoldo Cendejas-Zaragoza, 2016, Illinois Institute of Technology

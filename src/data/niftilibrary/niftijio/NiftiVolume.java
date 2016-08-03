@@ -1,5 +1,7 @@
 package data.niftilibrary.niftijio;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInput;
@@ -13,6 +15,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+import java.awt.image.*;
+
 
 public class NiftiVolume
 {
@@ -272,4 +276,173 @@ public class NiftiVolume
 
         return;
     }
+    
+    public BufferedImage drawNiftiSlice(int sliceNum, String plane, int dimension){
+	
+        int rgb,temp,z_idx,x_idx,y_idx;
+        BufferedImage b = null;
+        double scale[];
+
+        int nx  = header.dim[1];
+        int ny  = header.dim[2];
+        int nz  = header.dim[3];
+        int dim = header.dim[4];
+        String orientation = header.orientation();
+
+        double max=9063;
+        double mul=255/max;
+
+        //Get resizing scale for nifti volume
+        scale=getScale();
+
+        if (dim>=dimension){
+            if (orientation.equals("LPI") | orientation.equals("RAS")){
+                switch (plane) {
+                    case "saggital":
+                        b=new BufferedImage(ny,nz,BufferedImage.TYPE_INT_RGB);
+                        for(int i=0;i<ny;i++){
+                            z_idx=nz-1;
+                            for(int j=0;j<nz;j++){
+                                temp = (int) (mul*data.get(sliceNum,i,j,dimension));
+                                rgb = temp<<16|temp<<8|temp;
+                                b.setRGB(i,z_idx,rgb);
+                                z_idx=z_idx-1;
+                            }
+                        }
+                        b = getScaledImage(b,scale[1],scale[2]);
+                        break;
+                    case "coronal":
+                        b=new BufferedImage(nx,nz,BufferedImage.TYPE_INT_RGB);
+                        for(int i=0;i<nx;i++){
+                            z_idx=nz-1;
+                            for(int j=0;j<nz;j++){
+                                temp = (int) ( mul*data.get(i,sliceNum,j,dimension));
+                                rgb = temp<<16|temp<<8|temp;
+                                b.setRGB(i,z_idx,rgb);
+                                z_idx=z_idx-1;
+                            }
+                        }  
+                        b = getScaledImage(b,scale[0],scale[2]);
+                        break;
+                    default:
+                        //Axial is the default plane to graph on
+                        b=new BufferedImage(nx,ny,BufferedImage.TYPE_INT_RGB);
+                        for(int i=0;i<nx;i++){
+                            y_idx=ny-1;
+                            for(int j=0;j<ny;j++){
+                                temp = (int) (mul*data.get(i,j,sliceNum,dimension));
+                                rgb = temp<<16|temp<<8|temp;
+                                b.setRGB(i,y_idx,rgb);
+                                y_idx=y_idx-1;
+                            }
+                        }
+                        b = getScaledImage(b,scale[0],scale[1]);
+                        break;
+                }
+            }
+            else if(orientation.equals("RPI")| orientation.equals("LAS")){
+                switch (plane) {
+                    case "saggital":
+                        b=new BufferedImage(ny,nz,BufferedImage.TYPE_INT_RGB);
+                        for(int i=0;i<ny;i++){
+                            z_idx=nz-1;
+                            for(int j=0;j<nz;j++){
+                                temp = (int) (mul* data.get(sliceNum,i,j,dimension));
+                                rgb = temp<<16|temp<<8|temp;
+                                b.setRGB(i,z_idx,rgb);
+                                z_idx=z_idx-1;
+                            }
+                        }
+                        b = getScaledImage(b,scale[1],scale[2]);
+                        break;
+                    case "coronal":
+                        b=new BufferedImage(nx,nz,BufferedImage.TYPE_INT_RGB);
+                        x_idx=nx-1;
+                        for(int i=0;i<nx;i++){
+                            z_idx=nz-1;
+                            for(int j=0;j<nz;j++){
+                                temp = (int) (mul* data.get(i,sliceNum,j,dimension));
+                                rgb = temp<<16|temp<<8|temp;
+                                b.setRGB(x_idx,z_idx,rgb);
+                                z_idx=z_idx-1;
+                            }
+                        x_idx=x_idx-1;
+                        }
+                        b = getScaledImage(b,scale[0],scale[2]);
+                        break;
+                    default:
+                        //Axial is the default plane to graph on
+                        b=new BufferedImage(nx,ny,BufferedImage.TYPE_INT_RGB);
+                        x_idx=nx-1;
+                        for(int i=0;i<nx;i++){
+                            y_idx=ny-1;
+                            for(int j=0;j<ny;j++){
+                                temp = (int) (mul*data.get(i,j,sliceNum,dimension));
+                                rgb = temp<<16|temp<<8|temp;
+                                b.setRGB(x_idx,y_idx,rgb);
+                                y_idx=y_idx-1;
+                            }
+                        x_idx=x_idx-1;
+                        }
+                        b = getScaledImage(b,scale[0],scale[1]);
+                        break;
+                }
+            }
+            else{
+                System.out.println("Invalid orientation");
+            }
+        }
+        else {
+            System.out.println("Invalid dimension");
+        }
+
+
+        //ImageIO.write(b,"jpg",new File ("C:\\Users\\Synapticom\\Desktop\\Diego\\RUSH\\Matlab\\pspiDTI\\Test_data\\DoubleArray.jpg"));
+        return b;
+    }
+    
+    private BufferedImage getScaledImage(BufferedImage src, double factor_w, double factor_h){
+        int finalw = src.getWidth();
+        int finalh = src.getHeight();
+        
+        finalh = (int)(finalh * factor_h);                
+        finalw = (int)(finalw * factor_w);
+
+        BufferedImage resizedImg = new BufferedImage(finalw, finalh, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(src, 0, 0, finalw, finalh, null);
+        g2.dispose();
+        return resizedImg;
+    }
+    
+    private double[] getScale(){
+        float pd[]=new float[3];
+        pd[0] = header.pixdim[1];
+        pd[1] = header.pixdim[2];
+        pd[2] = header.pixdim[3];
+
+        //Figure out min dimension
+
+        float mindim=pd[0];
+        for(int r=1;r<3;r++){
+            if(mindim>pd[r]){
+                mindim=pd[r];
+            }
+        }
+
+        //New dimensions
+        int n[]=new int[3];
+        n[0] = (int) (header.dim[1]*pd[0]/mindim);
+        n[1] = (int) (header.dim[2]*pd[1]/mindim);
+        n[2] = (int) (header.dim[3]*pd[2]/mindim);
+
+        //Figure out actual multiplier for each axis
+        double scale[]= new double[3];
+        scale[0]=(double) n[0]/header.dim[1];
+        scale[1]=(double) n[1]/header.dim[2];
+        scale[2]=(double) n[2]/header.dim[3];
+
+        return scale;
+       }
 }
