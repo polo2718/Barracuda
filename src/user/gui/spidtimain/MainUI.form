@@ -43,7 +43,7 @@
                   <Component id="axialPanel" alignment="2" pref="290" max="32767" attributes="0"/>
                   <Component id="coronalPanel" alignment="2" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="61" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="saggitalPanel" pref="327" max="32767" attributes="0"/>
                   <Component id="infoPanel" max="32767" attributes="0"/>
@@ -61,7 +61,7 @@
                   <Component id="saggitalPanel" pref="336" max="32767" attributes="0"/>
                   <Component id="coronalPanel" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="60" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="infoPanel" max="32767" attributes="0"/>
                   <Component id="axialPanel" pref="369" max="32767" attributes="0"/>
@@ -85,6 +85,9 @@
     </Component>
     <Container class="javax.swing.JPanel" name="coronalPanel">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
+        </Property>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[15, 15]"/>
         </Property>
@@ -134,7 +137,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="L"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;font size=4 color=#1aff1a&gt;&lt;strong&gt;L&lt;/strong&gt;&lt;font&gt;"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
@@ -156,7 +159,8 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="R"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;font size=4 color=#1aff1a&gt;&lt;strong&gt;R&lt;/strong&gt;&lt;font&gt;"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="coronalLabel2">
@@ -164,7 +168,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="S"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;font size=4 color=#1aff1a&gt;&lt;strong&gt;S&lt;/strong&gt;&lt;font&gt;"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
@@ -173,12 +177,15 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="I"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;font size=4 color=#1aff1a&gt;&lt;strong&gt;I&lt;/strong&gt;&lt;font&gt;"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSlider" name="coronalSlider">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="0" type="rgb"/>
+            </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10, 5]"/>
             </Property>
@@ -192,6 +199,9 @@
     </Container>
     <Container class="javax.swing.JPanel" name="axialPanel">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
+        </Property>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[15, 15]"/>
         </Property>
@@ -251,7 +261,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="L"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;font size=4 color=#1aff1a&gt;&lt;strong&gt;L&lt;/strong&gt;&lt;font&gt;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="axialLabel">
@@ -271,7 +281,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="A"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;font size=4 color=#1aff1a&gt;&lt;strong&gt;A&lt;/strong&gt;&lt;font&gt;"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
@@ -280,11 +290,14 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="R"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;font size=4 color=#1aff1a&gt;&lt;strong&gt;R&lt;/strong&gt;&lt;font&gt;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSlider" name="axialSlider">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="0" type="rgb"/>
+            </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10, 5]"/>
             </Property>
@@ -298,13 +311,17 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="P"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;font size=4 color=#1aff1a&gt;&lt;strong&gt;P&lt;/strong&gt;&lt;font&gt;"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="saggitalPanel">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
+        </Property>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[15, 15]"/>
         </Property>
@@ -369,7 +386,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="A"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;font size=4 color=#1aff1a&gt;&lt;strong&gt;A&lt;/strong&gt;&lt;font&gt;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="saggitalLabel2">
@@ -377,7 +394,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="P"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;font size=4 color=#1aff1a&gt;&lt;strong&gt;P&lt;/strong&gt;&lt;font&gt;"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
@@ -386,7 +403,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="S"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;font size=4 color=#1aff1a&gt;&lt;strong&gt;S&lt;/strong&gt;&lt;font&gt;"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
@@ -395,12 +412,15 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Arial" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="I"/>
+            <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;font size=4 color=#1aff1a&gt;&lt;strong&gt;I&lt;/strong&gt;&lt;font&gt;"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSlider" name="saggitalSlider">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="0" type="rgb"/>
+            </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10, 5]"/>
             </Property>
