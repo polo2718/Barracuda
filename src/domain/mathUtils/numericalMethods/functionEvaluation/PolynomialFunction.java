@@ -48,7 +48,10 @@ public class PolynomialFunction implements OneVariableFunction {
             result=result*x+coefficients[i];
         return result;
     }
-    
+    /**
+     * Returns the degree of the current polynomial
+     * @return degree of the current polynomial 
+     */
     public int degree(){
         return degree;
     }

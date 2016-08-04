@@ -302,6 +302,11 @@ public class MainUI extends javax.swing.JFrame {
         jLabel3.setPreferredSize(new java.awt.Dimension(2, 2));
 
         jSpinner1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 0, 1));
+        jSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinner1StateChanged(evt);
+            }
+        });
 
         jLabel4.setText("Dim:");
 
@@ -470,6 +475,20 @@ public class MainUI extends javax.swing.JFrame {
         UITools.imageToLabel(b,axialLabel);
         }
     }//GEN-LAST:event_formComponentResized
+
+    private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
+        if(niiVol!=null){
+            int dim=(int) jSpinner1.getValue();
+            niiVol.header.max=(double) ArrayOperations.findMaximum(niiVol.data.get3DArray(dim));
+            BufferedImage b = niiVol.drawNiftiSlice((int)coronalSlider.getValue(),"coronal",dim);
+            UITools.imageToLabel(b,coronalLabel);
+            b = niiVol.drawNiftiSlice((int)saggitalSlider.getValue(),"saggital",dim);
+            UITools.imageToLabel(b,saggitalLabel);
+            b =niiVol.drawNiftiSlice((int)axialSlider.getValue(),"axial",dim);
+            UITools.imageToLabel(b,axialLabel);
+        }
+            
+    }//GEN-LAST:event_jSpinner1StateChanged
 
     /**
      * @param args the command line arguments
