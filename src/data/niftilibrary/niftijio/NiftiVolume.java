@@ -23,6 +23,7 @@ public class NiftiVolume
 {
     public NiftiHeader header;
     public FourDimensionalArray data;
+    public double scale[];
 
     public NiftiVolume(int nx, int ny, int nz, int dim)
     {
@@ -54,7 +55,7 @@ public class NiftiVolume
 
     public static NiftiVolume read(String filename) throws IOException {
         NiftiHeader hdr = NiftiHeader.read(filename);
-
+        
         InputStream is = new FileInputStream(filename);
         if (hdr.filename.endsWith(".gz"))
             is = new GZIPInputStream(is);
@@ -63,6 +64,7 @@ public class NiftiVolume
         } finally {
             is.close();
         }
+        
     }
 
     /** Read the NIFTI volume from a NIFTI input stream.
@@ -285,14 +287,14 @@ public class NiftiVolume
      * @param sliceNum The slice number
      * @param plane The plane (coronal, saggital or axial)
      * @param dimension The dimension
-     * @return <p>b -A grayscale BufferedImage with the slice adjusted to its 
+     * @return <p>b -A gray-scale BufferedImage with the slice adjusted to its 
      * dimensions </p>
      */ 
     public BufferedImage drawNiftiSlice(int sliceNum, String plane, int dimension){
 	// Initialize variables
         int rgb,temp,z_idx,x_idx,y_idx;
         BufferedImage b = null;
-        double scale[];
+        
         // get image dimensions
         int nx  = header.dim[1];
         int ny  = header.dim[2];
@@ -301,8 +303,12 @@ public class NiftiVolume
         //get image orientation
         String orientation = header.orientation();
         //Get maximum for displaying the image
-        double max=ArrayOperations.findMaximum(data.get3DArray(0));
-        double mul=255/max;
+        double max=header.max;
+        if(max!=0){
+        } else {
+            header.max=ArrayOperations.findMaximum(data.get3DArray(0));
+        }
+        double mul=255.0/max;
 
         //Get resizing scale for nifti volume 
         scale=getNiftiScale();
@@ -466,11 +472,11 @@ public class NiftiVolume
         n[2] = (int) (header.dim[3]*pd[2]/mindim);
 
         //Figure out actual multiplier for each axis
-        double scale[]= new double[3];
-        scale[0]=(double) n[0]/header.dim[1];
-        scale[1]=(double) n[1]/header.dim[2];
-        scale[2]=(double) n[2]/header.dim[3];
+        double s[]= new double[3];
+        s[0]=(double) n[0]/header.dim[1];
+        s[1]=(double) n[1]/header.dim[2];
+        s[2]=(double) n[2]/header.dim[3];
 
-        return scale;
+        return s;
        }
 }

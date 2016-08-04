@@ -158,6 +158,7 @@ public class NiftiHeader
     public StringBuffer intent_name;
     public StringBuffer magic;
     public byte extension[];
+    public double max;
 
     public NiftiHeader()
     {

@@ -11,12 +11,18 @@ import java.awt.RenderingHints;
 import javax.swing.ImageIcon;
 
 /**
- *
- * @author Diego Garibay-Pulido
+ *<p> This class contains useful functions for use in the java swing UI </p>
+ * @author Diego Garibay-Pulido 2016
  */
 public abstract class UITools {
-    
+    /**
+     * <p>Receives a buffered image and resizes it to adjust it to the JLabel in 
+     * which the image will be placed and shows it on the JLabel</p>
+     * @param img The buffered image
+     * @param label The label in which the image will be shown
+     */
     public static void imageToLabel(BufferedImage img,javax.swing.JLabel label){
+        if(img!=null){
         ImageIcon imageIcon;
         //Get image dimensions
         int n[]=new int[2];
@@ -32,33 +38,26 @@ public abstract class UITools {
         //Get label dimensions
         int H=label.getHeight();
         int W=label.getWidth();
-        //Determine which is bigger
+        //Determine which is smaller
         double s=(double)H;
-        if(W>H){
+        if(W<H){
             s=(double)W;
         }
-        //int temp=(int) s;
-        //if(maxN>temp){
+        
         s=(double)(s/maxN);
         n[0]=(int)(n[0]*s);
         n[1]=(int)(n[1]*s);
-         
-        int finalw = img.getWidth();
-        int finalh = img.getHeight();
 
-        finalh = (int)(finalh * s);                
-        finalw = (int)(finalw * s);
-
-        BufferedImage resizedImg = new BufferedImage(finalw, finalh, BufferedImage.TYPE_INT_RGB);
+        BufferedImage resizedImg = new BufferedImage(n[0], n[1], BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = resizedImg.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(img, 0, 0, finalw, finalh, null);
+        g2.drawImage(img, 0, 0, n[0], n[1], null);
         g2.dispose();
         
         img=resizedImg;
         imageIcon = new ImageIcon(img);
         label.setIcon(imageIcon);
-        
+        }
     }
         
 }

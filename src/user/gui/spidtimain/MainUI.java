@@ -5,10 +5,12 @@
  */
 package user.gui.spidtimain;
 import data.niftilibrary.niftijio.*;
+import domain.mathUtils.arrayTools.ArrayOperations;
 import java.io.IOException;
 import java.io.File;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -53,8 +55,8 @@ public class MainUI extends javax.swing.JFrame {
         axialLabel = new javax.swing.JLabel();
         axialLabel2 = new javax.swing.JLabel();
         axialLabel3 = new javax.swing.JLabel();
-        axialLabel4 = new javax.swing.JLabel();
         axialSlider = new javax.swing.JSlider();
+        axialLabel4 = new javax.swing.JLabel();
         saggitalPanel = new javax.swing.JPanel();
         saggitalLabel = new javax.swing.JLabel();
         saggitalLabel3 = new javax.swing.JLabel();
@@ -62,12 +64,25 @@ public class MainUI extends javax.swing.JFrame {
         saggitalLabel4 = new javax.swing.JLabel();
         saggitalLabel5 = new javax.swing.JLabel();
         saggitalSlider = new javax.swing.JSlider();
-        panel1 = new java.awt.Panel();
+        infoPanel = new java.awt.Panel();
         jLabel1 = new javax.swing.JLabel();
+        xdimLabel = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        ydimLabel = new javax.swing.JLabel();
+        zdimLabel = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jSpinner1 = new javax.swing.JSpinner();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Barracuda View");
         setIconImage(getMainIcon());
+        setMinimumSize(new java.awt.Dimension(500, 500));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
+        });
 
         AddFileBtn.setText("Open Nifti");
         AddFileBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -76,6 +91,9 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
+        coronalPanel.setMinimumSize(new java.awt.Dimension(15, 15));
+        coronalPanel.setName(""); // NOI18N
+
         coronalLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         coronalLabel1.setText("L");
         coronalLabel1.setToolTipText("");
@@ -83,6 +101,8 @@ public class MainUI extends javax.swing.JFrame {
         coronalLabel.setBackground(new java.awt.Color(0, 0, 0));
         coronalLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         coronalLabel.setToolTipText("");
+        coronalLabel.setMinimumSize(new java.awt.Dimension(10, 10));
+        coronalLabel.setName(""); // NOI18N
 
         coronalLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         coronalLabel3.setText("R");
@@ -95,6 +115,8 @@ public class MainUI extends javax.swing.JFrame {
         coronalLabel4.setText("I");
         coronalLabel4.setToolTipText("");
 
+        coronalSlider.setMinimumSize(new java.awt.Dimension(10, 5));
+        coronalSlider.setName(""); // NOI18N
         coronalSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 coronalSliderStateChanged(evt);
@@ -106,17 +128,16 @@ public class MainUI extends javax.swing.JFrame {
         coronalPanelLayout.setHorizontalGroup(
             coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(coronalPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addComponent(coronalLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
+                .addGap(5, 5, 5)
                 .addGroup(coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(coronalSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(coronalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
                     .addComponent(coronalLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(coronalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(coronalSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(coronalLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addComponent(coronalLabel3)
-                .addGap(13, 13, 13))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(coronalLabel3))
         );
         coronalPanelLayout.setVerticalGroup(
             coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,13 +148,14 @@ public class MainUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(coronalLabel1)
-                    .addComponent(coronalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(coronalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                     .addComponent(coronalLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(coronalLabel4)
-                .addGap(15, 15, 15))
+                .addGap(0, 0, 0))
         );
 
+        axialPanel.setMinimumSize(new java.awt.Dimension(15, 15));
         axialPanel.setPreferredSize(new java.awt.Dimension(579, 560));
         axialPanel.setRequestFocusEnabled(false);
 
@@ -143,6 +165,7 @@ public class MainUI extends javax.swing.JFrame {
         axialLabel.setBackground(new java.awt.Color(0, 0, 0));
         axialLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         axialLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        axialLabel.setMinimumSize(new java.awt.Dimension(10, 10));
 
         axialLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         axialLabel2.setText("A");
@@ -151,28 +174,32 @@ public class MainUI extends javax.swing.JFrame {
         axialLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         axialLabel3.setText("R");
 
-        axialLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        axialLabel4.setText("P");
-
+        axialSlider.setMinimumSize(new java.awt.Dimension(10, 5));
         axialSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 axialSliderStateChanged(evt);
             }
         });
 
+        axialLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        axialLabel4.setText("P");
+
         javax.swing.GroupLayout axialPanelLayout = new javax.swing.GroupLayout(axialPanel);
         axialPanel.setLayout(axialPanelLayout);
         axialPanelLayout.setHorizontalGroup(
             axialPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(axialPanelLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(axialLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(axialPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(axialSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(axialLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(axialLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(axialLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(axialPanelLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(axialPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(axialLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(axialLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(axialSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(axialPanelLayout.createSequentialGroup()
+                        .addComponent(axialLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(1, 1, 1)
+                        .addComponent(axialLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(axialLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
@@ -183,21 +210,24 @@ public class MainUI extends javax.swing.JFrame {
                 .addComponent(axialLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(axialPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(axialLabel3)
                     .addComponent(axialLabel1)
-                    .addComponent(axialLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(axialLabel3))
+                    .addComponent(axialLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(axialLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(axialSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(11, 11, 11))
         );
 
+        saggitalPanel.setMinimumSize(new java.awt.Dimension(15, 15));
         saggitalPanel.setPreferredSize(new java.awt.Dimension(569, 552));
 
         saggitalLabel.setBackground(new java.awt.Color(0, 0, 0));
         saggitalLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         saggitalLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        saggitalLabel.setMinimumSize(new java.awt.Dimension(10, 10));
+        saggitalLabel.setName(""); // NOI18N
 
         saggitalLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         saggitalLabel3.setText("A");
@@ -214,6 +244,8 @@ public class MainUI extends javax.swing.JFrame {
         saggitalLabel5.setText("I");
         saggitalLabel5.setToolTipText("");
 
+        saggitalSlider.setMinimumSize(new java.awt.Dimension(10, 5));
+        saggitalSlider.setName(""); // NOI18N
         saggitalSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 saggitalSliderStateChanged(evt);
@@ -224,18 +256,17 @@ public class MainUI extends javax.swing.JFrame {
         saggitalPanel.setLayout(saggitalPanelLayout);
         saggitalPanelLayout.setHorizontalGroup(
             saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(saggitalPanelLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, saggitalPanelLayout.createSequentialGroup()
+                .addGap(3, 3, 3)
                 .addComponent(saggitalLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(saggitalSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(saggitalLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(saggitalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(saggitalLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(saggitalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(saggitalLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
-                .addComponent(saggitalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12))
+                    .addComponent(saggitalSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(6, 6, 6)
+                .addComponent(saggitalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         saggitalPanelLayout.setVerticalGroup(
             saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,29 +277,77 @@ public class MainUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(saggitalLabel2)
-                    .addComponent(saggitalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(saggitalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                     .addComponent(saggitalLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(saggitalLabel5)
-                .addGap(15, 15, 15))
+                .addGap(0, 0, 0))
         );
 
-        panel1.setBackground(new java.awt.Color(240, 240, 240));
+        infoPanel.setBackground(new java.awt.Color(240, 240, 240));
 
+        jLabel1.setText("X:");
         jLabel1.setPreferredSize(new java.awt.Dimension(2, 2));
 
-        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
-        panel1.setLayout(panel1Layout);
-        panel1Layout.setHorizontalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+        xdimLabel.setText("[]");
+
+        jLabel2.setText("Y:");
+        jLabel2.setPreferredSize(new java.awt.Dimension(2, 2));
+
+        ydimLabel.setText("[]");
+
+        zdimLabel.setText("[]");
+
+        jLabel3.setText("Z:");
+        jLabel3.setPreferredSize(new java.awt.Dimension(2, 2));
+
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(0, 0, 0, 1));
+
+        jLabel4.setText("Dim:");
+
+        javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
+        infoPanel.setLayout(infoPanelLayout);
+        infoPanelLayout.setHorizontalGroup(
+            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(infoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(infoPanelLayout.createSequentialGroup()
+                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(ydimLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                            .addComponent(zdimLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(xdimLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(infoPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(4, 4, 4)
+                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        panel1Layout.setVerticalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        infoPanelLayout.setVerticalGroup(
+            infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(infoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(xdimLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ydimLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(zdimLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 24, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(241, 241, 241))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -277,34 +356,31 @@ public class MainUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(AddFileBtn)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 653, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(coronalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(axialPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(saggitalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(34, 34, 34))
+                    .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                    .addComponent(coronalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(saggitalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                    .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(AddFileBtn)
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(saggitalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 608, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(coronalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(47, 47, 47))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(axialPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 594, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(61, Short.MAX_VALUE))))
+                    .addComponent(saggitalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+                    .addComponent(coronalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 369, Short.MAX_VALUE))
+                .addGap(32, 32, 32))
         );
 
         AddFileBtn.getAccessibleContext().setAccessibleName("");
@@ -322,9 +398,12 @@ public class MainUI extends javax.swing.JFrame {
             System.out.println(filename);
             try{
                 niiVol= NiftiVolume.read(filename);
+                niiVol.header.max=(double) ArrayOperations.findMaximum(niiVol.data.get3DArray(0));
+                SpinnerNumberModel model = new SpinnerNumberModel(0, 0,niiVol.header.dim[4]-1,1);
+                jSpinner1.setModel(model);
                 Map map=niiVol.header.info();
                 System.out.println(map);
-                BufferedImage b = null;
+                BufferedImage b;
                 b =niiVol.drawNiftiSlice((int)(niiVol.header.dim[1]/2), "saggital", 0);
                 UITools.imageToLabel(b,saggitalLabel);
                 b =niiVol.drawNiftiSlice((int)(niiVol.header.dim[2]/2), "coronal", 0);
@@ -350,25 +429,47 @@ public class MainUI extends javax.swing.JFrame {
 
     private void coronalSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_coronalSliderStateChanged
         if(niiVol!=null){
-            BufferedImage b = niiVol.drawNiftiSlice((int)coronalSlider.getValue(),"coronal",0);
+            int dim=(int) jSpinner1.getValue();
+            int val=(int)coronalSlider.getValue();
+            BufferedImage b = niiVol.drawNiftiSlice(val,"coronal",dim);
             UITools.imageToLabel(b,coronalLabel);
+            ydimLabel.setText("["+Integer.toString(val)+"]");
+            
         }
         
     }//GEN-LAST:event_coronalSliderStateChanged
 
     private void saggitalSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_saggitalSliderStateChanged
         if(niiVol!=null){
-             BufferedImage b = niiVol.drawNiftiSlice((int)saggitalSlider.getValue(),"saggital",0);
-             UITools.imageToLabel(b,saggitalLabel);
+            int dim=(int) jSpinner1.getValue();
+            int val=(int)saggitalSlider.getValue();
+            BufferedImage b = niiVol.drawNiftiSlice(val,"saggital",dim);
+            UITools.imageToLabel(b,saggitalLabel);
+            xdimLabel.setText("["+Integer.toString(val)+"]");
         }
     }//GEN-LAST:event_saggitalSliderStateChanged
 
     private void axialSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_axialSliderStateChanged
          if(niiVol!=null){
-            BufferedImage b =niiVol.drawNiftiSlice((int)axialSlider.getValue(),"axial",0);
+            int dim=(int) jSpinner1.getValue();
+            int val=(int)axialSlider.getValue(); 
+            BufferedImage b =niiVol.drawNiftiSlice(val,"axial",dim);
             UITools.imageToLabel(b,axialLabel);
+            zdimLabel.setText("["+Integer.toString(val)+"]");
         }
     }//GEN-LAST:event_axialSliderStateChanged
+
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        if(niiVol!=null){
+        int dim=(int) jSpinner1.getValue();
+        BufferedImage b = niiVol.drawNiftiSlice((int)coronalSlider.getValue(),"coronal",dim);
+        UITools.imageToLabel(b,coronalLabel);
+        b = niiVol.drawNiftiSlice((int)saggitalSlider.getValue(),"saggital",dim);
+        UITools.imageToLabel(b,saggitalLabel);
+        b =niiVol.drawNiftiSlice((int)axialSlider.getValue(),"axial",dim);
+        UITools.imageToLabel(b,axialLabel);
+        }
+    }//GEN-LAST:event_formComponentResized
 
     /**
      * @param args the command line arguments
@@ -422,8 +523,12 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel coronalLabel4;
     private javax.swing.JPanel coronalPanel;
     private javax.swing.JSlider coronalSlider;
+    private java.awt.Panel infoPanel;
     private javax.swing.JLabel jLabel1;
-    private java.awt.Panel panel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JLabel saggitalLabel;
     private javax.swing.JLabel saggitalLabel2;
     private javax.swing.JLabel saggitalLabel3;
@@ -431,17 +536,21 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel saggitalLabel5;
     private javax.swing.JPanel saggitalPanel;
     private javax.swing.JSlider saggitalSlider;
+    private javax.swing.JLabel xdimLabel;
+    private javax.swing.JLabel ydimLabel;
+    private javax.swing.JLabel zdimLabel;
     // End of variables declaration//GEN-END:variables
 private Image getMainIcon(){
-    Image img= null;
-    try {
-        img=ImageIO.read(new File("images/synapticom2.png"));
+    Image img;
+    //try {
+        URL imageurl = getClass().getResource("/images/synapticom_icon.png");//assuming your package name is images 
+        img = Toolkit.getDefaultToolkit().getImage(imageurl);
+        //img=ImageIO.read(new File("src/images/synapticom2.png"));
         setIconImage(img);
-    }
-    catch (IOException exc) {
-        exc.printStackTrace();
-    }
+    //}
+    //catch (IOException exc) {
+      //  exc.printStackTrace();
+    //}
     return img;
 }
 }
-
