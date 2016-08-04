@@ -9,6 +9,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.RenderingHints;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JSlider;
 
 /**
  *<p> This class contains useful functions for use in the java swing UI </p>
@@ -21,7 +23,7 @@ public abstract class UITools {
      * @param img The buffered image
      * @param label The label in which the image will be shown
      */
-    public static void imageToLabel(BufferedImage img,javax.swing.JLabel label){
+    public static void imageToLabel(BufferedImage img,JLabel label){
         if(img!=null){
         ImageIcon imageIcon;
         //Get image dimensions
@@ -59,6 +61,13 @@ public abstract class UITools {
         label.setIcon(imageIcon);
         }
     }
-        
+    
+    public static int[] sliderPosition(JSlider coronalSlider,JSlider saggitalSlider,JSlider axialSlider){
+        int positions[]= new int[3];
+        positions[0]=(int)coronalSlider.getValue();
+        positions[1]=(int)saggitalSlider.getValue();
+        positions[2]=(int)axialSlider.getValue();
+        return positions;
+    }
 }
 

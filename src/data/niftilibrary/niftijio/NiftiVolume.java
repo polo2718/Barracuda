@@ -306,12 +306,16 @@ public class NiftiVolume
         double max=header.max;
         if(max!=0){
         } else {
-            header.max=ArrayOperations.findMaximum(data.get3DArray(0));
+            header.max=ArrayOperations.findMaximum(data.get3DArray(dimension));
         }
         double mul=255.0/max;
-
-        //Get resizing scale for nifti volume 
-        scale=getNiftiScale();
+        if(scale==null){
+            //Get resizing scale for nifti volume 
+            scale=getNiftiScale();
+            System.out.println(scale[0]+" "+scale[1]+" "+scale[2]);
+        }else{
+        }
+        
         //Checks dimension bounds
         if (dim>=dimension){
             //Checks orientation, gets data from array and inputs into image
