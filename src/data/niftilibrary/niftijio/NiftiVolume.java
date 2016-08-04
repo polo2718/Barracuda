@@ -16,6 +16,7 @@ import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.awt.image.*;
+import domain.mathUtils.arrayTools.ArrayOperations;
 
 
 public class NiftiVolume
@@ -277,25 +278,37 @@ public class NiftiVolume
         return;
     }
     
+    /**
+     * <p>This function returns an image containing a slice for a given nifti
+     * volume data. </p>
+     * @author Diego Garibay-Pulido 2016
+     * @param sliceNum The slice number
+     * @param plane The plane (coronal, saggital or axial)
+     * @param dimension The dimension
+     * @return <p>b -A grayscale BufferedImage with the slice adjusted to its 
+     * dimensions </p>
+     */ 
     public BufferedImage drawNiftiSlice(int sliceNum, String plane, int dimension){
-	
+	// Initialize variables
         int rgb,temp,z_idx,x_idx,y_idx;
         BufferedImage b = null;
         double scale[];
-
+        // get image dimensions
         int nx  = header.dim[1];
         int ny  = header.dim[2];
         int nz  = header.dim[3];
         int dim = header.dim[4];
+        //get image orientation
         String orientation = header.orientation();
-
-        double max=9063;
+        //Get maximum for displaying the image
+        double max=ArrayOperations.findMaximum(data.get3DArray(0));
         double mul=255/max;
 
-        //Get resizing scale for nifti volume
-        scale=getScale();
-
+        //Get resizing scale for nifti volume 
+        scale=getNiftiScale();
+        //Checks dimension bounds
         if (dim>=dimension){
+            //Checks orientation, gets data from array and inputs into image
             if (orientation.equals("LPI") | orientation.equals("RAS")){
                 switch (plane) {
                     case "saggital":
@@ -309,7 +322,7 @@ public class NiftiVolume
                                 z_idx=z_idx-1;
                             }
                         }
-                        b = getScaledImage(b,scale[1],scale[2]);
+                        b = getNiftiScaledImage(b,scale[1],scale[2]);
                         break;
                     case "coronal":
                         b=new BufferedImage(nx,nz,BufferedImage.TYPE_INT_RGB);
@@ -322,7 +335,7 @@ public class NiftiVolume
                                 z_idx=z_idx-1;
                             }
                         }  
-                        b = getScaledImage(b,scale[0],scale[2]);
+                        b = getNiftiScaledImage(b,scale[0],scale[2]);
                         break;
                     default:
                         //Axial is the default plane to graph on
@@ -336,7 +349,7 @@ public class NiftiVolume
                                 y_idx=y_idx-1;
                             }
                         }
-                        b = getScaledImage(b,scale[0],scale[1]);
+                        b = getNiftiScaledImage(b,scale[0],scale[1]);
                         break;
                 }
             }
@@ -353,7 +366,7 @@ public class NiftiVolume
                                 z_idx=z_idx-1;
                             }
                         }
-                        b = getScaledImage(b,scale[1],scale[2]);
+                        b = getNiftiScaledImage(b,scale[1],scale[2]);
                         break;
                     case "coronal":
                         b=new BufferedImage(nx,nz,BufferedImage.TYPE_INT_RGB);
@@ -368,7 +381,7 @@ public class NiftiVolume
                             }
                         x_idx=x_idx-1;
                         }
-                        b = getScaledImage(b,scale[0],scale[2]);
+                        b = getNiftiScaledImage(b,scale[0],scale[2]);
                         break;
                     default:
                         //Axial is the default plane to graph on
@@ -384,7 +397,7 @@ public class NiftiVolume
                             }
                         x_idx=x_idx-1;
                         }
-                        b = getScaledImage(b,scale[0],scale[1]);
+                        b = getNiftiScaledImage(b,scale[0],scale[1]);
                         break;
                 }
             }
@@ -401,7 +414,15 @@ public class NiftiVolume
         return b;
     }
     
-    private BufferedImage getScaledImage(BufferedImage src, double factor_w, double factor_h){
+    /**
+     * <p>Executes the interpolation for a buffered image, the output lenght of each
+     * dimension is multiplied by the factors</p>
+     * @param src BufferedImage with the data
+     * @param factor_w Width factor
+     * @param factor_h Height factor
+     * @return Buffered image with the scaled image
+     */
+    private BufferedImage getNiftiScaledImage(BufferedImage src, double factor_w, double factor_h){
         int finalw = src.getWidth();
         int finalh = src.getHeight();
         
@@ -416,14 +437,20 @@ public class NiftiVolume
         return resizedImg;
     }
     
-    private double[] getScale(){
+    /**
+     * <p>Reads the nifti header and returns a multiplier for scaling the image to 
+     * its actual dimensions</p>
+     * @return 3D vector with the scale multipliers for each dimension (x,y,z)
+     * @author Diego Garibay-Pulido 2016
+     */
+    private double[] getNiftiScale(){
+        //Read pixel dimensions
         float pd[]=new float[3];
         pd[0] = header.pixdim[1];
         pd[1] = header.pixdim[2];
         pd[2] = header.pixdim[3];
 
         //Figure out min dimension
-
         float mindim=pd[0];
         for(int r=1;r<3;r++){
             if(mindim>pd[r]){
@@ -431,7 +458,8 @@ public class NiftiVolume
             }
         }
 
-        //New dimensions
+        //New dimensions 
+        //[x y z]=[i j k]*[pixdimx/mindim pixdimy/mindim pixdimz/mindim]
         int n[]=new int[3];
         n[0] = (int) (header.dim[1]*pd[0]/mindim);
         n[1] = (int) (header.dim[2]*pd[1]/mindim);

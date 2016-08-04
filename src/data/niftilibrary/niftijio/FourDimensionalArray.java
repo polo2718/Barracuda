@@ -92,20 +92,19 @@ public class FourDimensionalArray {
         }
     }
     
-    public double[][][] get3DArray(){
-         double data4D[][][] = new double [nx][ny][nz];
-         int l=0;
+    public double[][][] get3DArray(int dimension){
+         double data3D[][][] = new double [nx][ny][nz];
         for (int i = 0; i < nx; i++)
         {
             for (int j = 0; j < ny; j++)
             {
                 for (int k = 0; k < nz; k++)
                 {
-                    data4D[i][j][k]=get(i,j,k,l) ;
+                    data3D[i][j][k]=get(i,j,k,dimension) ;
                 }
             }
         }
-     return data4D;   
+     return data3D;   
     }
     
     public void set3DArray(double [][][] array){
