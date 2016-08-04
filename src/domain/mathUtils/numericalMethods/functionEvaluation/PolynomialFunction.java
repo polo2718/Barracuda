@@ -82,7 +82,9 @@ public class PolynomialFunction implements OneVariableFunction {
         }
         return new PolynomialFunction(deriv_coeff);
     }
-    
+  /*
+    **********************Override equals***************************************
+    */  
     @Override
     public boolean equals(Object other){
         if (other == null) 
@@ -101,5 +103,13 @@ public class PolynomialFunction implements OneVariableFunction {
             if(this.coefficients[i]==otherCoeff[i]);
         }
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 41 * hash + Arrays.hashCode(this.coefficients);
+        hash = 41 * hash + this.degree;
+        return hash;
     }
 }
