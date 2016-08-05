@@ -30,6 +30,9 @@ public class MainUI extends javax.swing.JFrame {
      */
     NiftiVolume niiVol;
     double[][] R = new double[3][3];
+    double coronalScale;
+    double saggitalScale;
+    double axialScale;
     public MainUI() {
         initComponents();
     }
@@ -77,6 +80,7 @@ public class MainUI extends javax.swing.JFrame {
         zPosLabel = new javax.swing.JLabel();
         yPosLabel = new javax.swing.JLabel();
         xPosLabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -149,11 +153,11 @@ public class MainUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(coronalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.CENTER, coronalPanelLayout.createSequentialGroup()
-                .addContainerGap(139, Short.MAX_VALUE)
+                .addContainerGap(126, Short.MAX_VALUE)
                 .addGroup(coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(coronalLabel2, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(coronalLabel4, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addContainerGap(124, Short.MAX_VALUE))
         );
         coronalPanelLayout.setVerticalGroup(
             coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,11 +226,11 @@ public class MainUI extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(axialLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.CENTER, axialPanelLayout.createSequentialGroup()
-                .addContainerGap(135, Short.MAX_VALUE)
+                .addContainerGap(122, Short.MAX_VALUE)
                 .addGroup(axialPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(axialLabel4, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(axialLabel2, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(141, Short.MAX_VALUE))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
         axialPanelLayout.setVerticalGroup(
             axialPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -296,11 +300,11 @@ public class MainUI extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addComponent(saggitalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.CENTER, saggitalPanelLayout.createSequentialGroup()
-                .addContainerGap(143, Short.MAX_VALUE)
+                .addContainerGap(156, Short.MAX_VALUE)
                 .addGroup(saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(saggitalLabel4, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(saggitalLabel5, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(142, Short.MAX_VALUE))
+                .addContainerGap(155, Short.MAX_VALUE))
         );
         saggitalPanelLayout.setVerticalGroup(
             saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,6 +374,13 @@ public class MainUI extends javax.swing.JFrame {
         xPosLabel.setText(" ");
         xPosLabel.setToolTipText("");
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
         infoPanel.setLayout(infoPanelLayout);
         infoPanelLayout.setHorizontalGroup(
@@ -397,8 +408,12 @@ public class MainUI extends javax.swing.JFrame {
                                     .addComponent(zPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(xPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(yPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                    .addComponent(mousePosLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(177, Short.MAX_VALUE))
+                    .addGroup(infoPanelLayout.createSequentialGroup()
+                        .addComponent(mousePosLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(164, Short.MAX_VALUE))
         );
         infoPanelLayout.setVerticalGroup(
             infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -424,7 +439,9 @@ public class MainUI extends javax.swing.JFrame {
                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(mousePosLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mousePosLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addContainerGap(173, Short.MAX_VALUE))
         );
 
@@ -455,7 +472,7 @@ public class MainUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+                    .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
                     .addComponent(coronalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -463,7 +480,7 @@ public class MainUI extends javax.swing.JFrame {
                         .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(32, 32, 32))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(saggitalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                        .addComponent(saggitalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
                         .addGap(60, 60, 60))))
         );
         layout.setVerticalGroup(
@@ -491,7 +508,7 @@ public class MainUI extends javax.swing.JFrame {
             int dim=(int) jSpinner1.getValue();
             int val=(int)coronalSlider.getValue();
             BufferedImage b = niiVol.drawNiftiSlice(val,"coronal",dim);
-            UITools.imageToLabel(b,coronalLabel);
+            coronalScale=UITools.imageToLabel(b,coronalLabel);
             ySpinner.setValue(val);
             setXYZLabels();
             
@@ -504,7 +521,7 @@ public class MainUI extends javax.swing.JFrame {
             int dim=(int) jSpinner1.getValue();
             int val=(int)saggitalSlider.getValue();
             BufferedImage b = niiVol.drawNiftiSlice(val,"saggital",dim);
-            UITools.imageToLabel(b,saggitalLabel);
+            saggitalScale=UITools.imageToLabel(b,saggitalLabel);
             xSpinner.setValue(val);
             setXYZLabels();
         }
@@ -515,7 +532,7 @@ public class MainUI extends javax.swing.JFrame {
             int dim=(int) jSpinner1.getValue();
             int val=(int)axialSlider.getValue(); 
             BufferedImage b =niiVol.drawNiftiSlice(val,"axial",dim);
-            UITools.imageToLabel(b,axialLabel);
+            axialScale=UITools.imageToLabel(b,axialLabel);
             zSpinner.setValue(val);
             setXYZLabels();
         }
@@ -525,11 +542,11 @@ public class MainUI extends javax.swing.JFrame {
         if(niiVol!=null){
         int dim=(int) jSpinner1.getValue();
         BufferedImage b = niiVol.drawNiftiSlice((int)coronalSlider.getValue(),"coronal",dim);
-        UITools.imageToLabel(b,coronalLabel);
+        coronalScale=UITools.imageToLabel(b,coronalLabel);
         b = niiVol.drawNiftiSlice((int)saggitalSlider.getValue(),"saggital",dim);
-        UITools.imageToLabel(b,saggitalLabel);
+        saggitalScale=UITools.imageToLabel(b,saggitalLabel);
         b =niiVol.drawNiftiSlice((int)axialSlider.getValue(),"axial",dim);
-        UITools.imageToLabel(b,axialLabel);
+        axialScale=UITools.imageToLabel(b,axialLabel);
         
         }
     }//GEN-LAST:event_formComponentResized
@@ -538,11 +555,11 @@ public class MainUI extends javax.swing.JFrame {
         if(niiVol!=null){
             int dim=(int) jSpinner1.getValue();
             BufferedImage b = niiVol.drawNiftiSlice((int)coronalSlider.getValue(),"coronal",dim);
-            UITools.imageToLabel(b,coronalLabel);
+            coronalScale=UITools.imageToLabel(b,coronalLabel);
             b = niiVol.drawNiftiSlice((int)saggitalSlider.getValue(),"saggital",dim);
-            UITools.imageToLabel(b,saggitalLabel);
+            saggitalScale=UITools.imageToLabel(b,saggitalLabel);
             b =niiVol.drawNiftiSlice((int)axialSlider.getValue(),"axial",dim);
-            UITools.imageToLabel(b,axialLabel);
+            axialScale=UITools.imageToLabel(b,axialLabel);
             setXYZLabels();
         }
             
@@ -571,14 +588,14 @@ public class MainUI extends javax.swing.JFrame {
                       
 
                     saggitalSlider.setMaximum(niiVol.header.dim[1]-1);
-                    
                     xSpinner.setValue((int)(niiVol.header.dim[1]/2));
+                    
                     coronalSlider.setMaximum(niiVol.header.dim[2]-1);
-
                     ySpinner.setValue((int)(niiVol.header.dim[2]/2));
+                    
                     axialSlider.setMaximum(niiVol.header.dim[3]-1);
-
                     zSpinner.setValue((int)(niiVol.header.dim[3]/2));
+                    
                     setXYZLabels();
                 }
             }
@@ -596,7 +613,7 @@ public class MainUI extends javax.swing.JFrame {
             int val=(int)xSpinner.getValue();
             saggitalSlider.setValue(val);
             BufferedImage b = niiVol.drawNiftiSlice(val,"saggital",dim);
-            UITools.imageToLabel(b,saggitalLabel);
+            saggitalScale=UITools.imageToLabel(b,saggitalLabel);
             setXYZLabels();
         }
     }//GEN-LAST:event_xSpinnerStateChanged
@@ -607,7 +624,7 @@ public class MainUI extends javax.swing.JFrame {
             int val=(int)ySpinner.getValue();
             coronalSlider.setValue(val);
             BufferedImage b = niiVol.drawNiftiSlice(val,"coronal",dim);
-            UITools.imageToLabel(b,coronalLabel);
+            coronalScale=UITools.imageToLabel(b,coronalLabel);
             setXYZLabels();
         }
     }//GEN-LAST:event_ySpinnerStateChanged
@@ -618,7 +635,7 @@ public class MainUI extends javax.swing.JFrame {
             int val=(int)zSpinner.getValue(); 
             axialSlider.setValue(val);
             BufferedImage b =niiVol.drawNiftiSlice(val,"axial",dim);
-            UITools.imageToLabel(b,axialLabel);
+            axialScale=UITools.imageToLabel(b,axialLabel);
             setXYZLabels();
         }
     }//GEN-LAST:event_zSpinnerStateChanged
@@ -635,6 +652,19 @@ public class MainUI extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_coronalLabelMouseDragged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Image img = ((ImageIcon) coronalLabel.getIcon()).getImage();
+        Graphics g =img.getGraphics();
+
+        int sVal=saggitalSlider.getValue();
+        int aVal=axialSlider.getValue();
+        int actualnz=(int) (sVal*niiVol.scale[0]*saggitalScale);
+        int actualny=(int) (aVal*niiVol.scale[0]*axialScale);
+        g.drawLine(0, 0, actualny, actualnz);
+        ImageIcon icon= new ImageIcon(img);
+        coronalLabel.setIcon(icon);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -688,6 +718,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JPanel coronalPanel;
     private javax.swing.JSlider coronalSlider;
     private java.awt.Panel infoPanel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
