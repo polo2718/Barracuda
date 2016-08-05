@@ -12,9 +12,9 @@ package domain.mathUtils.numericalMethods.interfaces;
 public interface MultiVariableFunction {
     /**
      * The method should return the value of the function evaluated at different values
-     * @param x - 1D array storing the values of the independent variables 
+     * @param variables - 1D array storing the values of the independent variables 
      * @return value - Value of the dependent variable 
      */
-    public double value(double[] x);
+    public double value(double[] variables) throws Exception;
     
 }

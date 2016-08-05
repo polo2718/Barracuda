@@ -9,18 +9,34 @@ import domain.mathUtils.numericalMethods.interfaces.MultiVariableFunction;
 
 /**
  * Provides methods regarding the beta Function
- * @author "Leopoldo Cendejas-Zaragoza, 2016, Illinois Institute of Technology"
  * @see GammaFunction
- * 
+ * @see MultiVariableFunction
+ * @author "Leopoldo Cendejas-Zaragoza, 2016, Illinois Institute of Technology"
  */
 public class BetaFunction implements MultiVariableFunction {
-
-    @Override
+    
+    private GammaFunction gammaFunction;
     /**
-     * 
+     * Constructor
      */
-    public double value(double[] x) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public BetaFunction(){
+        gammaFunction= new GammaFunction();
+    }
+    /**
+     * Computes the value for the Beta function
+     * @param variables 1D array containing two independent variables x and y
+     * Example:
+     * variables[1]=double x;
+     * variables[2]= double y;
+     * @return
+     * @throws Exception 
+     */
+    @Override
+    public double value(double[] variables) throws Exception {
+        double x=variables[1];
+        double y=variables[2];
+        return Math.exp(gammaFunction.logValue(x)+gammaFunction.logValue(y)-
+                gammaFunction.logValue(x+y));
     }
     
 }
