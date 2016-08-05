@@ -39,19 +39,18 @@ public final class GammaFunction implements OneVariableFunction{
         if(isNegativeInteger(x)){
             return Double.NaN;
         }
-        //if x is between 0 and 1 (inclusive) then use recursion formula gamma(x+1)=x*gamma(x)
+        //if x is between 0 (exclusive) and 1 (inclusive) then use recursion formula gamma(x+1)=x*gamma(x)
         //or gamma(x)=gamma(x+1)/x
         if(x<=1 && x>0){
             return value((x+1/x));
         }
-       
         //if x is negative use reflection formula
         if(x<0){
-        
+           return Math.PI/(value(1-x)*Math.sin(Math.PI*x));
         }
         //If x is positive use Lanczo's series approximation
         if (x>0){
-        
+            return 0;
         }
         else return Double.NaN;
         
