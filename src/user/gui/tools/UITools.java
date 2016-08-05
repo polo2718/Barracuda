@@ -23,7 +23,8 @@ public abstract class UITools {
      * @param img The buffered image
      * @param label The label in which the image will be shown
      */
-    public static void imageToLabel(BufferedImage img,JLabel label){
+    public static double imageToLabel(BufferedImage img,JLabel label){
+        double s;
         if(img!=null){
         ImageIcon imageIcon;
         //Get image dimensions
@@ -41,7 +42,7 @@ public abstract class UITools {
         int H=label.getHeight();
         int W=label.getWidth();
         //Determine which is smaller
-        double s=(double)H;
+        s=(double)H;
         if(W<H){
             s=(double)W;
         }
@@ -59,7 +60,12 @@ public abstract class UITools {
         img=resizedImg;
         imageIcon = new ImageIcon(img);
         label.setIcon(imageIcon);
+        
         }
+        else{
+            s=Double.NaN;
+        }
+        return s;
     }
     
     public static int[] sliderPosition(JSlider coronalSlider,JSlider saggitalSlider,JSlider axialSlider){
