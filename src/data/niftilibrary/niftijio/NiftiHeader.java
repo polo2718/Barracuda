@@ -158,7 +158,7 @@ public class NiftiHeader
     public StringBuffer intent_name;
     public StringBuffer magic;
     public byte extension[];
-    public double max;
+
 
     public NiftiHeader()
     {
@@ -422,6 +422,33 @@ public class NiftiHeader
             return ("NIFTI_UNITS_PPM");
         default:
             return ("INVALID_NIFTI_UNITS_CODE");
+        }
+    }
+    
+    public String getUnits()
+    {
+        switch (this.xyz_unit_code)
+        {
+        case NiftiHeader.NIFTI_UNITS_UNKNOWN:
+            return (" ");
+        case NiftiHeader.NIFTI_UNITS_METER:
+            return ("m");
+        case NiftiHeader.NIFTI_UNITS_MM:
+            return ("mm");
+        case NiftiHeader.NIFTI_UNITS_MICRON:
+            return ("um");
+        case NiftiHeader.NIFTI_UNITS_SEC:
+            return ("s");
+        case NiftiHeader.NIFTI_UNITS_MSEC:
+            return ("ms");
+        case NiftiHeader.NIFTI_UNITS_USEC:
+            return ("us");
+        case NiftiHeader.NIFTI_UNITS_HZ:
+            return ("Hz");
+        case NiftiHeader.NIFTI_UNITS_PPM:
+            return ("ppm");
+        default:
+            return (" ");
         }
     }
 
@@ -1227,6 +1254,27 @@ public class NiftiHeader
             return out;
         }
     }
+    /**
+     * This function returns the 3x3 rotation matrix
+     * @return Rotation matrix
+     */
+    public double[][] mat33(){
+        if(this.sform_code>0){
+            return sform_to_mat33();
+        }
+        else if(this.qform_code>0){
+            return qform_to_mat33();
+        }
+        else
+        {
+            double[][] out = new double[3][3];
+            out[0][0] = this.pixdim[1];
+            out[1][1] = this.pixdim[2];
+            out[2][2] = this.pixdim[3];
+
+            return out;
+        }
+    }
 
     public double[][] sform_to_mat44()
     {
@@ -1240,6 +1288,20 @@ public class NiftiHeader
             out[3][i] = 0;
         }
         out[3][3] = 1.0;
+
+        return out;
+    }
+    
+    public double[][] sform_to_mat33()
+    {
+        double[][] out = new double[3][3];
+
+        for (int i = 0; i < 3; i++)
+        {
+            out[0][i] = this.srow_x[i];
+            out[1][i] = this.srow_y[i];
+            out[2][i] = this.srow_z[i];
+        }
 
         return out;
     }
@@ -1310,7 +1372,66 @@ public class NiftiHeader
 
         return R;
     }
+    
+    public double[][] qform_to_mat33()
+    {
+        double qb = this.quatern[0];
+        double qc = this.quatern[1];
+        double qd = this.quatern[2];
+        double qx = this.qoffset[0];
+        double qy = this.qoffset[1];
+        double qz = this.qoffset[2];
+        double dx = this.pixdim[1];
+        double dy = this.pixdim[2];
+        double dz = this.pixdim[3];
 
+        double qfac = this.qfac;
+
+        double[][] R = new double[3][3];
+        
+
+        /* compute a parameter from b,c,d */
+
+        double d = qd;
+        double c = qc;
+        double b = qb;
+        double a = 1.0 - (b * b + c * c + d * d);
+        if (a < 1.e-7)
+        { /* special case */
+            a = 1.0 / Math.sqrt(b * b + c * c + d * d);
+            b *= a;
+            c *= a;
+            d *= a; /* normalize (b,c,d) vector */
+            a = 0.0; /* a = 0 ==> 180 degree rotation */
+        }
+        else
+        {
+            a = Math.sqrt(a); /* angle = 2*arccos(a) */
+        }
+
+        /* load rotation matrix, including scaling factors for voxel sizes */
+
+        double xd = (dx > 0.0) ? dx : 1.0; /* make sure are positive */
+        double yd = (dy > 0.0) ? dy : 1.0;
+        double zd = (dz > 0.0) ? dz : 1.0;
+
+        if (qfac < 0.0)
+            zd = -zd; /* left handedness? */
+
+        R[0][0] = (a * a + b * b - c * c - d * d) * xd;
+        R[0][1] = 2.0 * (b * c - a * d) * yd;
+        R[0][2] = 2.0 * (b * d + a * c) * zd;
+        R[1][0] = 2.0 * (b * c + a * d) * xd;
+        R[1][1] = (a * a + c * c - b * b - d * d) * yd;
+        R[1][2] = 2.0 * (c * d - a * b) * zd;
+        R[2][0] = 2.0 * (b * d - a * c) * xd;
+        R[2][1] = 2.0 * (c * d + a * b) * yd;
+        R[2][2] = (a * a + d * d - c * c - b * b) * zd;
+
+
+        return R;
+    }
+    
     public void update_sform()
     {
         double[][] mat44 = qform_to_mat44();

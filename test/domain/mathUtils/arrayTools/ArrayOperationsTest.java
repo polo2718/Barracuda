@@ -7,9 +7,11 @@ package domain.mathUtils.arrayTools;
 
 import java.util.Arrays;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.BeforeClass;
 
 /**
  *
@@ -19,6 +21,14 @@ import static org.junit.Assert.*;
 public class ArrayOperationsTest {
     
     public ArrayOperationsTest() {
+    }
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
     }
     
     @Before
@@ -309,5 +319,22 @@ public class ArrayOperationsTest {
         result=ArrayOperations.findMaximum(x);
         assertEquals(expResult, result,0);
         System.out.println("Test Passed!");
+    }
+
+    
+
+    /**
+     * Test of hadamardProduct method, of class ArrayOperations.
+     */
+    @Test
+    public void testHadamardProduct() {
+        System.out.println("hadamardProduct");
+        double[][] a = {{1,2},{3,4}};
+        double[][] b = {{5,6},{7,8}};
+        double[][] expResult = {{5,12},{21,32}};
+        double[][] result = ArrayOperations.hadamardProduct(a, b);
+        assertArrayEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        //fail("The test case is a prototype.");
     }
 }

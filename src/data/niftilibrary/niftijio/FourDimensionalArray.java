@@ -107,6 +107,7 @@ public class FourDimensionalArray {
      return data3D;   
     }
     
+    
     public void set3DArray(double [][][] array){
         if((nx == array.length) & ( ny == array[0].length)& (nz == array[0][0].length))
         {   
@@ -120,6 +121,53 @@ public class FourDimensionalArray {
         else{
             System.err.println("Error: Array must be the same size as the original image");
         }
+    }
+    
+    public double get2DArrayMax(int dimension,String plane, int sliceNum){
+        double max;
+        int idx;
+        switch(plane){
+            case"coronal":
+                max=0.0;
+                for (int i = 0; i < nx; i++)
+                {
+                    for (int j = 0; j < nz; j++)
+                    {
+                        idx=dimension*(nx*ny*nz)+j*(nx*ny)+sliceNum*nx+i;
+                        if(max<data[idx]){
+                            max=data[idx];
+                        }
+                    }
+                }
+                break;
+            case"saggital":
+                max=0.0;
+                for (int i = 0; i < ny; i++)
+                {
+                    for (int j = 0; j < nz; j++)
+                    {
+                        idx=dimension*(nx*ny*nz)+j*(nx*ny)+i*nx+sliceNum;
+                        if(max<data[idx]){
+                            max=data[idx];
+                        }
+                    }
+                }
+                break;
+            default: //Default is axial
+                max=0.0;
+                for (int i = 0; i < nx; i++)
+                {
+                    for (int j = 0; j < ny; j++)
+                    {
+                        idx=dimension*(nx*ny*nz)+sliceNum*(nx*ny)+j*nx+i;
+                        if(max<data[idx]){
+                            max=data[idx];
+                        }
+                    }
+                }
+                break;
+        }
+        return max;              
     }
   
     

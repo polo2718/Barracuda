@@ -80,8 +80,8 @@
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="saggitalPanel" min="-2" pref="300" max="-2" attributes="0"/>
-                      <EmptySpace pref="60" max="32767" attributes="0"/>
+                      <Component id="saggitalPanel" pref="300" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -102,8 +102,8 @@
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="axialPanel" min="-2" pref="341" max="-2" attributes="0"/>
-                      <EmptySpace pref="57" max="32767" attributes="0"/>
+                      <Component id="axialPanel" pref="341" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -136,12 +136,12 @@
                   <Component id="coronalLabel3" min="-2" max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="2" attributes="0">
-                  <EmptySpace min="-2" pref="139" max="-2" attributes="0"/>
+                  <EmptySpace pref="139" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="coronalLabel2" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
                       <Component id="coronalLabel4" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="137" max="-2" attributes="0"/>
+                  <EmptySpace pref="137" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -258,19 +258,22 @@
                   <Component id="axialLabel1" min="-2" pref="15" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="axialLabel" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
+                      <Group type="102" alignment="2" attributes="0">
+                          <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
+                          <Component id="axialLabel" max="32767" attributes="0"/>
+                      </Group>
                       <Component id="axialSlider" alignment="2" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Component id="axialLabel3" min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="2" attributes="0">
-                  <EmptySpace min="-2" pref="135" max="-2" attributes="0"/>
+                  <EmptySpace pref="135" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="axialLabel4" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
                       <Component id="axialLabel2" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="141" max="-2" attributes="0"/>
+                  <EmptySpace pref="141" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -281,14 +284,14 @@
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Component id="axialLabel3" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="axialLabel" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
+                      <Component id="axialLabel" alignment="2" max="32767" attributes="0"/>
                       <Component id="axialLabel1" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Component id="axialLabel4" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Component id="axialSlider" min="-2" pref="26" max="-2" attributes="0"/>
-                  <EmptySpace min="11" pref="11" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -378,21 +381,21 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                   <Component id="saggitalLabel2" min="-2" pref="15" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Component id="saggitalSlider" alignment="2" max="32767" attributes="0"/>
-                      <Component id="saggitalLabel" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
+                      <Component id="saggitalLabel" alignment="2" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   <Component id="saggitalLabel3" min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="2" attributes="0">
-                  <EmptySpace min="-2" pref="143" max="-2" attributes="0"/>
+                  <EmptySpace pref="143" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="saggitalLabel4" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
                       <Component id="saggitalLabel5" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="142" max="-2" attributes="0"/>
+                  <EmptySpace pref="142" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -400,15 +403,15 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <Component id="saggitalSlider" min="-2" pref="26" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Component id="saggitalLabel4" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Component id="saggitalLabel3" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="saggitalLabel" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
+                      <Component id="saggitalLabel" alignment="2" pref="256" max="32767" attributes="0"/>
                       <Component id="saggitalLabel2" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Component id="saggitalLabel5" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
               </Group>
@@ -495,7 +498,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -508,46 +511,59 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" groupAlignment="2" attributes="0">
-                                  <Component id="zSpinner" alignment="2" min="-2" max="-2" attributes="0"/>
-                                  <Component id="ySpinner" alignment="2" min="-2" max="-2" attributes="0"/>
-                                  <Component id="xSpinner" alignment="2" min="-2" max="-2" attributes="0"/>
-                              </Group>
                               <Component id="jSpinner1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="2" attributes="0">
+                                      <Component id="zSpinner" alignment="2" min="-2" max="-2" attributes="0"/>
+                                      <Component id="ySpinner" alignment="2" min="-2" max="-2" attributes="0"/>
+                                      <Component id="xSpinner" alignment="2" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="zPosLabel" max="32767" attributes="0"/>
+                                      <Component id="xPosLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="yPosLabel" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
                       </Group>
                       <Component id="mousePosLabel" alignment="0" min="-2" pref="77" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="177" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel1" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
-                      <Component id="xSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel1" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
+                          <Component id="xSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="xPosLabel" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel2" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                       <Component id="ySpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="yPosLabel" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel3" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                       <Component id="zSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="zPosLabel" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jSpinner1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                  <EmptySpace pref="32" max="32767" attributes="0"/>
                   <Component id="mousePosLabel" min="-2" pref="35" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="173" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -592,7 +608,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Dim:"/>
+            <Property name="text" type="java.lang.String" value="Volume:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSpinner" name="xSpinner">
@@ -639,6 +655,19 @@
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="mousePosLabel">
+        </Component>
+        <Component class="javax.swing.JLabel" name="zPosLabel">
+        </Component>
+        <Component class="javax.swing.JLabel" name="yPosLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value=" "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="xPosLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value=" "/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

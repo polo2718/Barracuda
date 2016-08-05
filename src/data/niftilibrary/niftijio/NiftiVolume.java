@@ -17,6 +17,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.awt.image.*;
 import domain.mathUtils.arrayTools.ArrayOperations;
+import domain.mathUtils.linearAlgebra.LinearAlgebra;
 
 
 public class NiftiVolume
@@ -302,124 +303,174 @@ public class NiftiVolume
         int dim = header.dim[4];
         //get image orientation
         String orientation = header.orientation();
-        //Get maximum for displaying the image
-        double max=header.max;
-        if(max!=0){
-        } else {
-            header.max=ArrayOperations.findMaximum(data.get3DArray(dimension));
-        }
-        double mul=255.0/max;
-        if(scale==null){
-            //Get resizing scale for nifti volume 
-            scale=getNiftiScale();
-            System.out.println(scale[0]+" "+scale[1]+" "+scale[2]);
-        }else{
-        }
+        char[] orient = orientation.toCharArray();
+
         
+        double max;
+        double mul;
+        
+        if(scale==null){
+            scale=getNiftiScale();
+        }
+        if(orientation.equals("LPI")|orientation.equals("RPI")|
+        orientation.equals("LPS")|orientation.equals("RPS")|
+        orientation.equals("LAI")|orientation.equals("RAI")|
+        orientation.equals("LAS")|orientation.equals("RAS")){
         //Checks dimension bounds
         if (dim>=dimension){
-            //Checks orientation, gets data from array and inputs into image
-            if (orientation.equals("LPI") | orientation.equals("RAS")){
                 switch (plane) {
                     case "saggital":
+                        max=data.get2DArrayMax(dimension, plane, sliceNum);
+                        mul=255.0/max;
                         b=new BufferedImage(ny,nz,BufferedImage.TYPE_INT_RGB);
+                        if(orient[1]=='A'){
+                            y_idx=ny-1;
+                        }else if(orient[1]=='P'){y_idx=0;}
+                        else{
+                            System.out.println("Invalid orientation: Use dcm2nii to change orientation");
+                            b=null;
+                            break;
+                        }
                         for(int i=0;i<ny;i++){
-                            z_idx=nz-1;
+                            if(orient[2]=='I'){
+                                z_idx=nz-1; 
+                            }else if(orient[2]=='S'){z_idx=0;}
+                            else{
+                                System.out.println("Invalid orientation: Use dcm2nii to change orientation");
+                                b=null;
+                                break;
+                            }
                             for(int j=0;j<nz;j++){
                                 temp = (int) (mul*data.get(sliceNum,i,j,dimension));
                                 rgb = temp<<16|temp<<8|temp;
-                                b.setRGB(i,z_idx,rgb);
-                                z_idx=z_idx-1;
+                                if(orient[2]=='I'){
+                                    if(orient[1]=='P'){
+                                        b.setRGB(i,z_idx,rgb);
+                                        z_idx=z_idx-1;
+                                    }else{
+                                        b.setRGB(y_idx,z_idx,rgb);
+                                        z_idx=z_idx-1;   
+                                    }
+                                }else{
+                                    if(orient[1]=='P'){
+                                        b.setRGB(i,j,rgb);
+                                    }else{
+                                        b.setRGB(y_idx,j,rgb);   
+                                    }
+                                }
                             }
+                            if(orient[1]!='P'){
+                            y_idx=y_idx-1;
+                            }else{y_idx=0;}
                         }
                         b = getNiftiScaledImage(b,scale[1],scale[2]);
                         break;
+                        
                     case "coronal":
+                        max=data.get2DArrayMax(dimension, plane, sliceNum);
+                        mul=255.0/max;
                         b=new BufferedImage(nx,nz,BufferedImage.TYPE_INT_RGB);
+                        if(orient[0]=='R'){
+                            x_idx=nx-1;
+                        }else if(orient[0]=='L'){x_idx=0;}
+                         else{
+                            System.out.println("Invalid orientation: Use dcm2nii to change orientation");
+                            b=null;
+                            break;
+                        }
                         for(int i=0;i<nx;i++){
-                            z_idx=nz-1;
+                            if(orient[2]=='I'){
+                                z_idx=nz-1; 
+                            }else if(orient[2]=='S'){z_idx=0;}
+                            else{
+                                System.out.println("Invalid orientation: Use dcm2nii to change orientation");
+                                b=null;
+                                break;
+                            }
                             for(int j=0;j<nz;j++){
                                 temp = (int) ( mul*data.get(i,sliceNum,j,dimension));
                                 rgb = temp<<16|temp<<8|temp;
-                                b.setRGB(i,z_idx,rgb);
-                                z_idx=z_idx-1;
+                                if(orient[2]=='I'){
+                                    if(orient[0]=='L'){
+                                        b.setRGB(i,z_idx,rgb);
+                                        z_idx=z_idx-1;
+                                    }else{
+                                        b.setRGB(x_idx,z_idx,rgb);
+                                        z_idx=z_idx-1;
+                                    }
+                                }else{
+                                    if(orient[0]=='L'){
+                                        b.setRGB(i,j,rgb);
+                                    }else{
+                                        b.setRGB(x_idx,j,rgb);  
+                                    }
+                                }
                             }
-                        }  
+                            if(orient[0]!='L'){
+                            x_idx=x_idx-1; 
+                            }else{x_idx=0;}
+                        }
                         b = getNiftiScaledImage(b,scale[0],scale[2]);
                         break;
+                        
                     default:
+                        max=data.get2DArrayMax(dimension, plane, sliceNum);
+                        mul=255.0/max;
                         //Axial is the default plane to graph on
                         b=new BufferedImage(nx,ny,BufferedImage.TYPE_INT_RGB);
+                        if(orient[0]=='R'){
+                            x_idx=nx-1;
+                        }else if(orient[0]=='L'){x_idx=0;}
+                        else{
+                            System.out.println("Invalid orientation: Use dcm2nii to change orientation");
+                            b=null;
+                            break;
+                        }
                         for(int i=0;i<nx;i++){
-                            y_idx=ny-1;
+                            if(orient[1]=='P'){
+                                y_idx=ny-1;
+                            }else if(orient[1]=='A'){y_idx=0;}
+                            else{
+                                System.out.println("Invalid orientation: Use dcm2nii to change orientation");
+                                b=null;
+                                break;
+                            }
                             for(int j=0;j<ny;j++){
                                 temp = (int) (mul*data.get(i,j,sliceNum,dimension));
                                 rgb = temp<<16|temp<<8|temp;
-                                b.setRGB(i,y_idx,rgb);
-                                y_idx=y_idx-1;
+                                if(orient[1]=='P'){
+                                    if(orient[0]=='L'){
+                                        b.setRGB(i,y_idx,rgb);
+                                        y_idx=y_idx-1;
+                                    }else{
+                                        b.setRGB(x_idx,y_idx,rgb);
+                                        y_idx=y_idx-1; 
+                                    }
+                                }else{
+                                    if(orient[0]=='L'){
+                                        b.setRGB(i,j,rgb);
+                                    }else{
+                                        b.setRGB(x_idx,j,rgb); 
+                                    }
+                                }
                             }
+                            if(orient[0]!='L'){
+                            x_idx=x_idx-1;
+                            }else{x_idx=0;}
                         }
                         b = getNiftiScaledImage(b,scale[0],scale[1]);
                         break;
                 }
             }
-            else if(orientation.equals("RPI")| orientation.equals("LAS")){
-                switch (plane) {
-                    case "saggital":
-                        b=new BufferedImage(ny,nz,BufferedImage.TYPE_INT_RGB);
-                        for(int i=0;i<ny;i++){
-                            z_idx=nz-1;
-                            for(int j=0;j<nz;j++){
-                                temp = (int) (mul* data.get(sliceNum,i,j,dimension));
-                                rgb = temp<<16|temp<<8|temp;
-                                b.setRGB(i,z_idx,rgb);
-                                z_idx=z_idx-1;
-                            }
-                        }
-                        b = getNiftiScaledImage(b,scale[1],scale[2]);
-                        break;
-                    case "coronal":
-                        b=new BufferedImage(nx,nz,BufferedImage.TYPE_INT_RGB);
-                        x_idx=nx-1;
-                        for(int i=0;i<nx;i++){
-                            z_idx=nz-1;
-                            for(int j=0;j<nz;j++){
-                                temp = (int) (mul* data.get(i,sliceNum,j,dimension));
-                                rgb = temp<<16|temp<<8|temp;
-                                b.setRGB(x_idx,z_idx,rgb);
-                                z_idx=z_idx-1;
-                            }
-                        x_idx=x_idx-1;
-                        }
-                        b = getNiftiScaledImage(b,scale[0],scale[2]);
-                        break;
-                    default:
-                        //Axial is the default plane to graph on
-                        b=new BufferedImage(nx,ny,BufferedImage.TYPE_INT_RGB);
-                        x_idx=nx-1;
-                        for(int i=0;i<nx;i++){
-                            y_idx=ny-1;
-                            for(int j=0;j<ny;j++){
-                                temp = (int) (mul*data.get(i,j,sliceNum,dimension));
-                                rgb = temp<<16|temp<<8|temp;
-                                b.setRGB(x_idx,y_idx,rgb);
-                                y_idx=y_idx-1;
-                            }
-                        x_idx=x_idx-1;
-                        }
-                        b = getNiftiScaledImage(b,scale[0],scale[1]);
-                        break;
-                }
-            }
-            else{
-                System.out.println("Invalid orientation");
-            }
-        }
         else {
             System.out.println("Invalid dimension");
+            b=null;
         }
-
-
+        }
+        else{
+            System.out.println("Invalid orientation: Use dcm2nii to change orientation");
+            b=null;
+        }
         //ImageIO.write(b,"jpg",new File ("C:\\Users\\Synapticom\\Desktop\\Diego\\RUSH\\Matlab\\pspiDTI\\Test_data\\DoubleArray.jpg"));
         return b;
     }
@@ -483,4 +534,19 @@ public class NiftiVolume
 
         return s;
        }
+    
+    public double[] computeXYZ(double[][] R,int xVal,int yVal,int zVal){
+        double ijk[]= new double[3];
+        ijk[0]=(double)xVal;
+        ijk[1]=(double)yVal;
+        ijk[2]=(double)zVal*header.qfac;
+        
+        ijk=LinearAlgebra.matrixTimesVector(R, ijk);
+        double xyz[]=new double[3];
+        for(int i=0;i<3;i++){
+            xyz[i]=ijk[i]+header.qoffset[i];
+        }
+        
+        return xyz;
+    }
 }

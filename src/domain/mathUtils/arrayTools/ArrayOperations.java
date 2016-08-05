@@ -191,6 +191,41 @@ public abstract class ArrayOperations {
             System.out.println("Input array is empty");
             return Double.NaN;
         }
-    } 
+    }
+    /**
+     * <p> Function returns the entrywise or Hadamard Product of two arrays</p>
+     * @param a An array of m x n 
+     * @param b Another array of m x n
+     * @return The Hadamard Product of arrays a and b
+     * @author Diego Garibay-Pulido
+     */
+    public static double[][] hadamardProduct(double[][] a,double[][] b){
+        double[][] c= new double[a.length][a[0].length];
+        if(a.length==b.length & a[0].length==b[0].length){
+            for(int i=0;i<a.length;i++){
+                for(int j=0;j<a[0].length;j++){
+                 c[i][j]=a[i][j]*b[i][j];
+                }
+            }
+            return c;
+        }
+        else{
+            System.out.println("Input array is empty");
+            return null;
+        }
+    }
+    public static double[] hadamardProduct(double[] a,double[] b){
+        double[] c= new double[a.length];
+        if(a.length==b.length ){
+            for(int i=0;i<a.length;i++){
+                 c[i]=a[i]*b[i];
+            }
+            return c;
+        }
+        else{
+            System.out.println("Input array is empty");
+            return null;
+        }
+    }
     
 }
