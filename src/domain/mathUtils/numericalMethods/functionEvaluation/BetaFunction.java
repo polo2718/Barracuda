@@ -16,7 +16,8 @@ import domain.mathUtils.numericalMethods.interfaces.MultiVariableFunction;
  */
 public class BetaFunction implements MultiVariableFunction {
     
-    private GammaFunction gammaFunction;
+    private GammaFunction gammaFunction; //Gamma function instance
+    
     /**
      * Constructor
      */
@@ -30,8 +31,14 @@ public class BetaFunction implements MultiVariableFunction {
      * Example:
      * variables[1]=double x;
      * variables[2]= double y;
-     * @return
-     * @throws Exception 
+     * @return value of the Beta function evaluated at x,y
+     * @throws BetaFunctionException 
+     */
+    /**
+     * Returns the value of the natural logarithm of the beta function evaluated at x,y
+     * @param variables
+     * @return ln(beta(x,y))
+     * @throws BetaFunctionException 
      */
     @Override
     public double value(double[] variables) throws BetaFunctionException{
@@ -49,7 +56,7 @@ public class BetaFunction implements MultiVariableFunction {
      * variables[1]=double x;
      * variables[2]=double y;
      * @return 
-     * @throws Exception 
+     * @throws BetaFunctionException 
      */
     public double logValue(double [] variables) throws BetaFunctionException{
         if(variables.length==2){
