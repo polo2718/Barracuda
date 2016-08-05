@@ -8,9 +8,9 @@ import domain.mathUtils.numericalMethods.interfaces.OneVariableFunction;
 
 
 /**
- * Provides useful methods regarding the gamma function or (Euler's) Integral
- * @author "Leopoldo Cendejas-Zaragoza, 2016, Illinois Institute of Technology"
+ * Provides methods regarding the gamma function or (Euler's) Integral
  * @see OneVariableFunction
+ * @author "Leopoldo Cendejas-Zaragoza, 2016, Illinois Institute of Technology"
  */
 public final class GammaFunction implements OneVariableFunction{
     
@@ -34,12 +34,16 @@ public final class GammaFunction implements OneVariableFunction{
     }
     
     /**
-     * Computes the value of the gamma function within 10e-6 precision
+     * Computes the value of the gamma function with 10e-6 precision
      * @param x
      * @return 
      */
     @Override
     public double value(double x){
+        //test if the value is a positive integer if it is then return the value of the factorial function
+        if(isPositiveInteger(x)){
+            return (double)factorial((long)x-1);
+        }
         //test if the value is a negative integer
         if(isNegativeInteger(x)){
             return Double.NaN;
@@ -61,14 +65,34 @@ public final class GammaFunction implements OneVariableFunction{
     }
     
     /**
-     * Returns the value for the natural logarithm for the game function
+     * This method computes the factorial of a given number using a recursion formula
+     * @param x
+     * @return 
+     */
+    public long factorial (long x){
+        return x<2 ? 1 :x*factorial(x-1);
+    }
+    
+    /**
+     * Returns the value for the natural logarithm of the gamma function evaluated at x
      * @param x
      * @return ln(gamma(x))
      */
     public double logValue(double x){
        return Math.log(value(x));
     }
-   
+    
+    /**
+     * This function tests if the value x is an Integer
+     * @param x - value to test
+     * @return true if the tested value is a Negative Integer
+     */
+    private boolean isInteger(double x){
+        if(Double.isNaN(x)||!Double.isFinite(x))
+            return false;
+        //a number is an integer if x%1 is equal to zero
+        return x%1==0; 
+    }
     
     /**
      * This function tests if the value x is a Negative Integer
@@ -76,10 +100,16 @@ public final class GammaFunction implements OneVariableFunction{
      * @return true if the tested value is a Negative Integer
      */
     private boolean isNegativeInteger(double x){
-        if(Double.isNaN(x)||!Double.isFinite(x))
-            return false;
-        //a number is an integer if x%1 is equal to zero
-        return x%1==0 && x<0; 
+        return isInteger(x) && x<0; 
+    }
+    
+    /**
+     * This function tests if the value x is a Positive Integer
+     * @param x - value to test
+     * @return true if the tested value is a Positive Integer
+     */
+    private boolean isPositiveInteger(double x){
+        return isInteger(x) && x>0; 
     }
     
     /**
@@ -106,5 +136,7 @@ public final class GammaFunction implements OneVariableFunction{
         double temp=x+5.5;
         return Math.log(temp)*(x+0.5)-temp;
     }
+    
+
     
 }

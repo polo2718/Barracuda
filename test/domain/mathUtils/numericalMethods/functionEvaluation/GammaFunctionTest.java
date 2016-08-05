@@ -79,7 +79,7 @@ public class GammaFunctionTest {
         assertEquals(expResult, result, 1e-10);
         System.out.println("Test passed!!\n");
         
-        //test another positive value for the gama function gamma(5.4)
+        //test positive integer value for the gama function gamma(5.4)
         expResult=44.5988481451;
         result=gamma.value(5.4);
         System.out.println("gamma(5.4)");
@@ -95,16 +95,16 @@ public class GammaFunctionTest {
         System.out.println("Expected result="+expResult);     
         System.out.println("Result="+result);
         assertEquals(expResult, result, 1e-6);
-        System.out.println("Test passed!!");
+        System.out.println("Test passed!!\n");
         
         //test positive value>12 for the gama function gamma(12)
         expResult=39916800;
         result=gamma.value(12.1);
-        System.out.println("gamma 10");
+        System.out.println("gamma 12.1");
         System.out.println("Expected result="+expResult);     
         System.out.println("Result="+result);
         assertEquals(expResult, result, 1e-6);
-        System.out.println("Test passed!!");
+        System.out.println("Test passed!!\n");
         
         
         //test another positive value for the gama function gamma(3/2)
@@ -114,7 +114,7 @@ public class GammaFunctionTest {
         System.out.println("Expected result="+expResult);     
         System.out.println("Result="+result);
         assertEquals(expResult, result, 1e-10);
-        System.out.println("Test passed!!");
+        System.out.println("Test passed!!\n");
         
     }
     
