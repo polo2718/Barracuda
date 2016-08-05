@@ -35,7 +35,7 @@ public final class GammaFunction implements OneVariableFunction{
     
     /**
      * Computes the value of the gamma function with 10e-6 precision
-     * @param x
+     * @param x independent variable
      * @return Value of the Gamma function evaluated at x
      */
     @Override
@@ -50,7 +50,7 @@ public final class GammaFunction implements OneVariableFunction{
         }
         //if x is between 0 (exclusive) and 1 (inclusive) then use recursion formula gamma(x+1)=x*gamma(x)
         //or gamma(x)=gamma(x+1)/x
-        else if(x<=1 && x>0){
+        else if(x>0 && x<=1){
             return value(x+1)/x;
         }
         //if x is negative use reflection formula
