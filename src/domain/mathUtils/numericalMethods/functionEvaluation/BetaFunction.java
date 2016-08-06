@@ -34,9 +34,13 @@ public class BetaFunction implements MultiVariableFunction {
      * @return value of the Beta function evaluated at x,y
      * @throws BetaFunctionException 
      */
+    
     /**
-     * Returns the value of the natural logarithm of the beta function evaluated at x,y
-     * @param variables
+     * Returns the value of the beta function evaluated at x,y
+     * @param variables 1D array containing two independent variables x and y
+     * <p>Example:</p>
+     * <p>variables[1]=double x;</p>
+     * <p>variables[2]=double y;</p>
      * @return ln(beta(x,y))
      * @throws BetaFunctionException 
      */
@@ -51,11 +55,13 @@ public class BetaFunction implements MultiVariableFunction {
             throw new BetaFunctionException();
     }
     /**
+     * Computes the value of the natural logarithm if the beta function evaluated at x, y
      * @param variables 1D array containing two independent variables x and y
      * Example:
-     * variables[1]=double x;
-     * variables[2]=double y;
-     * @return 
+     * <p>Example:</p>
+     * <p>variables[1]=double x;</p>
+     * <p>variables[2]=double y;</p>
+     * @return ln(beta(x,y))
      * @throws BetaFunctionException 
      */
     public double logValue(double [] variables) throws BetaFunctionException{

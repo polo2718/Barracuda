@@ -68,7 +68,7 @@ public final class GammaFunction implements OneVariableFunction{
      * Returns the factorial of a given number
      * The method uses a recursion formula to compute the factorial
      * @param x double 
-     * @return long containing the value of the factorial of x 
+     * @return x! factorial of x
      */
     public double factorial (double x){
         return x<2 ? 1 :x*factorial(x-1);
