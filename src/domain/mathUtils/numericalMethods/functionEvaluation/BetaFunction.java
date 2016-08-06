@@ -26,22 +26,12 @@ public class BetaFunction implements MultiVariableFunction {
     }
     
     /**
-     * Computes the value for the Beta function
-     * @param variables 1D array containing two independent variables x and y
-     * Example:
-     * variables[1]=double x;
-     * variables[2]= double y;
-     * @return value of the Beta function evaluated at x,y
-     * @throws BetaFunctionException 
-     */
-    
-    /**
      * Returns the value of the beta function evaluated at x,y
      * @param variables 1D array containing two independent variables x and y
      * <p>Example:</p>
      * <p>variables[1]=double x;</p>
      * <p>variables[2]=double y;</p>
-     * @return ln(beta(x,y))
+     * @return beta(x,y)
      * @throws BetaFunctionException 
      */
     @Override
