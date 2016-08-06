@@ -16,7 +16,7 @@ import domain.mathUtils.numericalMethods.interfaces.MultiVariableFunction;
  */
 public class BetaFunction implements MultiVariableFunction {
     
-    private GammaFunction gammaFunction; //Gamma function instance
+    private final GammaFunction gammaFunction; //Gamma function instance
     
     /**
      * Constructor
