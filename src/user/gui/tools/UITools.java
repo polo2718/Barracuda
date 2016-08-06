@@ -68,12 +68,5 @@ public abstract class UITools {
         return s;
     }
     
-    public static int[] sliderPosition(JSlider coronalSlider,JSlider saggitalSlider,JSlider axialSlider){
-        int positions[]= new int[3];
-        positions[0]=(int)coronalSlider.getValue();
-        positions[1]=(int)saggitalSlider.getValue();
-        positions[2]=(int)axialSlider.getValue();
-        return positions;
-    }
-}
+ }
 
