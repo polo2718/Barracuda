@@ -14,9 +14,6 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+O"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Synapticom\Downloads\Open16.gif"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Open Nifti"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -498,7 +495,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -509,7 +506,7 @@
                               </Group>
                               <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jSpinner1" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
@@ -518,10 +515,10 @@
                                       <Component id="ySpinner" alignment="2" min="-2" max="-2" attributes="0"/>
                                       <Component id="xSpinner" alignment="2" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="zPosLabel" max="32767" attributes="0"/>
-                                      <Component id="xPosLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="xPosLabel" alignment="0" pref="46" max="32767" attributes="0"/>
                                       <Component id="yPosLabel" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
@@ -529,12 +526,10 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="mousePosLabel" min="-2" pref="77" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="164" max="32767" attributes="0"/>
+                  <EmptySpace pref="172" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -561,16 +556,13 @@
                       <Component id="zSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="zPosLabel" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="11" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jSpinner1" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="32" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="mousePosLabel" min="-2" pref="35" max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="mousePosLabel" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace pref="173" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -676,14 +668,6 @@
             <Property name="text" type="java.lang.String" value=" "/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="jButton1"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>
