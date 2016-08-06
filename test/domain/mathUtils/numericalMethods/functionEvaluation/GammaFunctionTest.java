@@ -18,6 +18,8 @@ import static org.junit.Assert.*;
  */
 public class GammaFunctionTest {
     private GammaFunction gamma;
+    private static double tol=1E-10;
+    
     public GammaFunctionTest() {
     }
     
@@ -79,7 +81,16 @@ public class GammaFunctionTest {
         assertEquals(expResult, result, 1e-10);
         System.out.println("Test passed!!\n");
         
-        //test positive integer value for the gama function gamma(5.4)
+        //test a large non integer negative value gamma(-46.7)
+        expResult=-4.7766440088560100E-59;
+        result=gamma.value(-46.7);
+        System.out.println("gamma(-46.7)");
+        System.out.println("Expected result="+expResult);     
+        System.out.println("Result="+result);
+        assertEquals(expResult, result, tol);
+        System.out.println("Test passed!!\n");
+        
+        //test positive value for the gama function gamma(5.4)
         expResult=44.5988481451;
         result=gamma.value(5.4);
         System.out.println("gamma(5.4)");
@@ -88,7 +99,7 @@ public class GammaFunctionTest {
         assertEquals(expResult, result, 1e-10);
         System.out.println("Test passed!!\n");
         
-        //test another positive value for the gama function gamma(10)
+        //test another positive integer value for the gama function gamma(10)
         expResult=362880;
         result=gamma.value(10);
         System.out.println("gamma 10");
@@ -97,25 +108,47 @@ public class GammaFunctionTest {
         assertEquals(expResult, result, 1e-6);
         System.out.println("Test passed!!\n");
         
-        //test positive value>12 for the gama function gamma(12)
-        expResult=39916800;
+        //test large positive integer
+        expResult=8.841761993739701e30;
+        System.out.println("gamma 30");
+        System.out.println("Expected result="+expResult);     
+        result=gamma.value(30);
+        System.out.println("Result="+result);
+        assertEquals(expResult, result, 10e-10);
+        System.out.println("Test passed!!\n");
+        
+        //test positive value>12 for the gama function gamma(12.1)
+        expResult=5.09832278441104E7;
         result=gamma.value(12.1);
         System.out.println("gamma 12.1");
         System.out.println("Expected result="+expResult);     
         System.out.println("Result="+result);
-        assertEquals(expResult, result, 1e-6);
+        assertEquals(expResult, result, 1E-4);
         System.out.println("Test passed!!\n");
         
         
         //test another positive value for the gama function gamma(3/2)
-        expResult=Math.sqrt(Math.PI/2);
-        result=gamma.value(0.5);
+        expResult=Math.sqrt(Math.PI)/2;
+        result=gamma.value(3.0/2.0);
         System.out.println("gamma(3/2)");
         System.out.println("Expected result="+expResult);     
         System.out.println("Result="+result);
-        assertEquals(expResult, result, 1e-10);
-        System.out.println("Test passed!!\n");
-        
+        assertEquals(expResult, result, 1e-6);
+        System.out.println("Test passed!!\n");   
+    }
+    /**
+     * Test for the logValue method
+     */
+    @Test
+    public void logValueTest(){
+        //Compute the log value of the Gamma function for a large value
+        double expResult=2361.2830331159307;
+        double result=gamma.logValue(460.5);
+        System.out.println("\nln gamma(460.5)");
+        System.out.println("Expected result="+expResult);     
+        System.out.println("Result="+result);
+        System.out.println("Test passed!!\n"); 
+        assertEquals(expResult, result, tol);
     }
     
 }

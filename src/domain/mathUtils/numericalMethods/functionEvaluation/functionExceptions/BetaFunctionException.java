@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.mathUtils.numericalMethods.functionEvaluation.exceptions;
+package domain.mathUtils.numericalMethods.functionEvaluation.functionExceptions;
 
 /**
  * Thrown when trying to evaluate beta function for the wrong number of independent variables 

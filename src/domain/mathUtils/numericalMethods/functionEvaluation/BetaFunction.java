@@ -5,7 +5,7 @@
  */
 package domain.mathUtils.numericalMethods.functionEvaluation;
 
-import domain.mathUtils.numericalMethods.functionEvaluation.exceptions.BetaFunctionException;
+import domain.mathUtils.numericalMethods.functionEvaluation.functionExceptions.BetaFunctionException;
 import domain.mathUtils.numericalMethods.interfaces.MultiVariableFunction;
 
 /**
