@@ -103,7 +103,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        coronalPanel.setBackground(new java.awt.Color(0, 0, 0));
+        coronalPanel.setBackground(new java.awt.Color(255, 255, 204));
         coronalPanel.setMinimumSize(new java.awt.Dimension(15, 15));
         coronalPanel.setName(""); // NOI18N
 
@@ -184,7 +184,7 @@ public class MainUI extends javax.swing.JFrame {
                 .addGap(4, 4, 4))
         );
 
-        axialPanel.setBackground(new java.awt.Color(0, 0, 0));
+        axialPanel.setBackground(new java.awt.Color(255, 255, 204));
         axialPanel.setMinimumSize(new java.awt.Dimension(15, 15));
         axialPanel.setPreferredSize(new java.awt.Dimension(579, 560));
         axialPanel.setRequestFocusEnabled(false);
@@ -268,7 +268,7 @@ public class MainUI extends javax.swing.JFrame {
                 .addGap(0, 0, 0))
         );
 
-        saggitalPanel.setBackground(new java.awt.Color(0, 0, 0));
+        saggitalPanel.setBackground(new java.awt.Color(255, 255, 204));
         saggitalPanel.setMinimumSize(new java.awt.Dimension(15, 15));
         saggitalPanel.setPreferredSize(new java.awt.Dimension(569, 552));
 
@@ -598,8 +598,12 @@ public class MainUI extends javax.swing.JFrame {
                 niiVol= NiftiVolume.read(filename);
                 //Get and set the nifti scale
                 niiVol.getNiftiScale();
-                // Get volume maximum
-                niiVol.setMax3D(0);
+                // Get volume maximum if not already embedded in the header
+                if(niiVol.header.cal_max==0){
+                    niiVol.setMax3D(0);
+                }
+                else{niiVol.setMax(niiVol.header.cal_max);}
+                System.out.println(niiVol.getMax());
                 
                 // Added code so default view would be neurological
                 if(niiVol.orient[0]=='L'){
@@ -667,11 +671,11 @@ public class MainUI extends javax.swing.JFrame {
                 Point point=coronalLabel.getMousePosition();
                 if(prevMouse!=null){
                     if(prevMouse.getY()<point.getY()){
-                        niiVol.setMax(niiVol.getMax()*0.985);
+                        niiVol.setMax(niiVol.getMax()*0.98);
                         drawLabelsXHair(0);
                     }
                     else if(prevMouse.getY()>point.getY()& prevMouse !=null){
-                        niiVol.setMax(niiVol.getMax()*1.015);
+                        niiVol.setMax(niiVol.getMax()*1.02);
                         drawLabelsXHair(0);
                     }
                     }
@@ -710,11 +714,11 @@ public class MainUI extends javax.swing.JFrame {
                 Point point=saggitalLabel.getMousePosition();
                 if(prevMouse!=null){
                     if(prevMouse.getY()<point.getY()){
-                        niiVol.setMax(niiVol.getMax()*0.985);
+                        niiVol.setMax(niiVol.getMax()*0.98);
                         drawLabelsXHair(0);
                     }
                     else if(prevMouse.getY()>point.getY()& prevMouse !=null){
-                        niiVol.setMax(niiVol.getMax()*1.015);
+                        niiVol.setMax(niiVol.getMax()*1.02);
                         drawLabelsXHair(0);
                     }
                     }
@@ -744,11 +748,11 @@ public class MainUI extends javax.swing.JFrame {
                 Point point=axialLabel.getMousePosition();
                 if(prevMouse!=null){
                     if(prevMouse.getY()<point.getY()){
-                        niiVol.setMax(niiVol.getMax()*0.985);
+                        niiVol.setMax(niiVol.getMax()*0.98);
                         drawLabelsXHair(0);
                     }
                     else if(prevMouse.getY()>point.getY()& prevMouse !=null){
-                        niiVol.setMax(niiVol.getMax()*1.015);
+                        niiVol.setMax(niiVol.getMax()*1.02);
                         drawLabelsXHair(0);
                     }
                     }

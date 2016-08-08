@@ -296,7 +296,8 @@ public class NiftiVolume
      */ 
     public BufferedImage drawNiftiSlice(int sliceNum, String plane, int dimension){
 	// Initialize variables
-        int rgb,temp,z_idx,x_idx,y_idx;
+        double temp;
+        int rgb,temp_int,alpha,z_idx,x_idx,y_idx;
         BufferedImage b;
         
         // get image dimensions
@@ -316,7 +317,7 @@ public class NiftiVolume
                 switch (plane) {
                     case "saggital":
                         mul=255.0/max;
-                        b=new BufferedImage(ny,nz,BufferedImage.TYPE_INT_RGB);
+                        b=new BufferedImage(ny,nz,BufferedImage.TYPE_INT_ARGB);
                         if(orient[1]=='A'){
                             y_idx=ny-1;
                         }else if(orient[1]=='P'){y_idx=0;}
@@ -335,9 +336,19 @@ public class NiftiVolume
                                 break;
                             }
                             for(int j=0;j<nz;j++){
-                                temp = (int) (mul*data.get(sliceNum,i,j,dimension));
-                                if(temp>255){temp=255;}
-                                rgb = temp<<16|temp<<8|temp;
+                                temp = (mul*data.get(sliceNum,i,j,dimension));
+                                if(temp>=32000){
+                                    rgb=(int)temp|0xFF000000;
+                                }
+                                else if(temp>255){
+                                    temp_int=255;
+                                    alpha=255;
+                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
+                                }else{
+                                    alpha=255;
+                                    temp_int=(int)temp;
+                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
+                                }
                                 if(orient[2]=='I'){
                                     if(orient[1]=='P'){
                                         b.setRGB(i,z_idx,rgb);
@@ -363,7 +374,7 @@ public class NiftiVolume
                         
                     case "coronal":
                         mul=255.0/max;
-                        b=new BufferedImage(nx,nz,BufferedImage.TYPE_INT_RGB);
+                        b=new BufferedImage(nx,nz,BufferedImage.TYPE_INT_ARGB);
                         if(orient[0]=='R'){
                             x_idx=nx-1;
                         }else if(orient[0]=='L'){x_idx=0;}
@@ -382,9 +393,19 @@ public class NiftiVolume
                                 break;
                             }
                             for(int j=0;j<nz;j++){
-                                temp = (int) ( mul*data.get(i,sliceNum,j,dimension));
-                                if(temp>255){temp=255;}
-                                rgb = temp<<16|temp<<8|temp;
+                                temp = ( mul*data.get(i,sliceNum,j,dimension));
+                                if(temp>=32000){
+                                    rgb=(int)temp|0xFF000000;
+                                }
+                                else if(temp>255){
+                                    temp_int=255;
+                                    alpha=255;
+                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
+                                }else{
+                                    alpha=255;
+                                    temp_int=(int)temp;
+                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
+                                }
                                 if(orient[2]=='I'){
                                     if(orient[0]=='L'){
                                         b.setRGB(i,z_idx,rgb);
@@ -411,7 +432,7 @@ public class NiftiVolume
                     default:
                         mul=255.0/max;
                         //Axial is the default plane to graph on
-                        b=new BufferedImage(nx,ny,BufferedImage.TYPE_INT_RGB);
+                        b=new BufferedImage(nx,ny,BufferedImage.TYPE_INT_ARGB);
                         if(orient[0]=='R'){
                             x_idx=nx-1;
                         }else if(orient[0]=='L'){x_idx=0;}
@@ -430,9 +451,19 @@ public class NiftiVolume
                                 break;
                             }
                             for(int j=0;j<ny;j++){
-                                temp = (int) (mul*data.get(i,j,sliceNum,dimension));
-                                if(temp>255){temp=255;}
-                                rgb = temp<<16|temp<<8|temp;
+                                temp =(mul*data.get(i,j,sliceNum,dimension));
+                                if(temp>=32000){
+                                    rgb=(int)temp|0x00FFFFFF;
+                                }
+                                else if(temp>255){
+                                    temp_int=255;
+                                    alpha=255;
+                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
+                                }else{
+                                    alpha=255;
+                                    temp_int=(int)temp;
+                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
+                                }
                                 if(orient[1]=='P'){
                                     if(orient[0]=='L'){
                                         b.setRGB(i,y_idx,rgb);
