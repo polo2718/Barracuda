@@ -15,8 +15,8 @@ import domain.mathUtils.numericalMethods.interfaces.OneVariableFunction;
 public final class GammaFunction implements OneVariableFunction{
     
 //constant declaration
-    private final static double sqrt2Pi=Math.sqrt(2*Math.PI);
-    private final static double[] coefficients=
+    private static final double SQRT_2PI=Math.sqrt(2*Math.PI);
+    private static final double[] COEFFICIENTS=
     {
         1.000000000190015,
         76.18009172947146,
@@ -42,7 +42,7 @@ public final class GammaFunction implements OneVariableFunction{
     public double value(double x){
         //test if the value is a positive integer if it is then return the value of the factorial function
         if(isPositiveInteger(x)){
-            return (double)factorial((long)x-1);
+            return factorial(x-1);
         }
         //test if the value is a negative integer
         else if(isNegativeInteger(x)){
@@ -59,7 +59,7 @@ public final class GammaFunction implements OneVariableFunction{
         }
         //If x is positive use first Lanczo's series approximation
         else if (x>1){
-            return Math.exp(leadingTerm(x))*series(x)*sqrt2Pi/x;
+            return Math.exp(leadingTerm(x))*series(x)*SQRT_2PI/x;
         }
         else return Double.NaN;  
     }
@@ -67,20 +67,43 @@ public final class GammaFunction implements OneVariableFunction{
     /**
      * Returns the factorial of a given number
      * The method uses a recursion formula to compute the factorial
-     * @param x long 
-     * @return long containing the value of the factorial of x 
+     * @param x double 
+     * @return x! factorial of x
      */
-    public long factorial (long x){
+    public double factorial (double x){
         return x<2 ? 1 :x*factorial(x-1);
     }
     
     /**
-     * Returns the value for the natural logarithm of the gamma function evaluated at x
+     * Returns the value for the natural logarithm of the gamma function evaluated at x.
+     * <p>
+     * This function should be called when computing the gamma function for big numbers to avoid
+     * overflow.
+     * </p>
+     * <p>The logic to compute the value of the function is implemented again to avoid computing
+     * an extra logarithm</p>
      * @param x
      * @return ln(gamma(x))
      */
     public double logValue(double x){
-       return Math.log(value(x));
+        //test if the value is a negative integer
+        if(isNegativeInteger(x)){
+            return Double.NaN;
+        }
+        //if x is between 0 (exclusive) and 1 (inclusive) then use recursion formula gamma(x+1)=x*gamma(x)
+        //or gamma(x)=gamma(x+1)/x
+        else if(x>0 && x<=1){
+            return logValue(x+1)-Math.log(x);
+        }
+        //if x is negative use reflection formula
+        else if(x<0){
+           return Math.log(Math.PI)-logValue(1-x)-Math.log(Math.sin(Math.PI*x));
+        }
+        //If x is positive use first Lanczo's series approximation
+        else if (x>1){
+            return leadingTerm(x)+Math.log(series(x)*SQRT_2PI/x);
+        }
+        else return Double.NaN;
     }
     
     /**
@@ -119,10 +142,10 @@ public final class GammaFunction implements OneVariableFunction{
      * @return result of the series term on the Lanczo's formula
      */
     private double series(double x){
-        double result=coefficients[0];
+        double result=COEFFICIENTS[0];
         double temp;
         for(int i=1; i<=6; i++){
-            temp=coefficients[i]/(x+i);
+            temp=COEFFICIENTS[i]/(x+i);
             result+=temp;
         }
         return result;

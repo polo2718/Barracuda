@@ -14,7 +14,8 @@ public interface MultiVariableFunction {
      * The method should return the value of the function evaluated at different values
      * @param variables - 1D array storing the values of the independent variables 
      * @return value - Value of the dependent variable 
+     * @throws java.lang.Exception if an illegal operation is performed
      */
     public double value(double[] variables) throws Exception;
-    
+        
 }

@@ -5,7 +5,6 @@
  */
 package domain.mathUtils.numericalMethods.functionEvaluation;
 
-import domain.mathUtils.numericalMethods.functionEvaluation.exceptions.BetaFunctionException;
 import domain.mathUtils.numericalMethods.interfaces.MultiVariableFunction;
 
 /**
@@ -16,7 +15,7 @@ import domain.mathUtils.numericalMethods.interfaces.MultiVariableFunction;
  */
 public class BetaFunction implements MultiVariableFunction {
     
-    private GammaFunction gammaFunction; //Gamma function instance
+    private final GammaFunction gammaFunction; //Gamma function instance
     
     /**
      * Constructor
@@ -26,46 +25,44 @@ public class BetaFunction implements MultiVariableFunction {
     }
     
     /**
-     * Computes the value for the Beta function
+     * Returns the value of the beta function evaluated at x,y
      * @param variables 1D array containing two independent variables x and y
-     * Example:
-     * variables[1]=double x;
-     * variables[2]= double y;
-     * @return value of the Beta function evaluated at x,y
-     * @throws BetaFunctionException 
-     */
-    /**
-     * Returns the value of the natural logarithm of the beta function evaluated at x,y
-     * @param variables
-     * @return ln(beta(x,y))
-     * @throws BetaFunctionException 
+     * <p>Example:</p>
+     * <p>variables[1]=double x;</p>
+     * <p>variables[2]=double y;</p>
+     * @return beta(x,y)
+     * @throws IllegalArgumentException
      */
     @Override
-    public double value(double[] variables) throws BetaFunctionException{
+    public double value(double[] variables) throws IllegalArgumentException{
         if (variables.length==2){
             double x=variables[0];
             double y=variables[1];
             return Math.exp(gammaFunction.logValue(x)+gammaFunction.logValue(y)-
                     gammaFunction.logValue(x+y));
         }else 
-            throw new BetaFunctionException();
+            throw new IllegalArgumentException("Check input array. Wrong number of independent variables were provided. Beta "
+                    + "function is defined for only two independent variables");
     }
     /**
+     * Computes the value of the natural logarithm if the beta function evaluated at x, y
      * @param variables 1D array containing two independent variables x and y
      * Example:
-     * variables[1]=double x;
-     * variables[2]=double y;
-     * @return 
-     * @throws BetaFunctionException 
+     * <p>Example:</p>
+     * <p>variables[1]=double x;</p>
+     * <p>variables[2]=double y;</p>
+     * @return ln(beta(x,y))
+     * @throws IllegalArgumentException
      */
-    public double logValue(double [] variables) throws BetaFunctionException{
+    public double logValue(double [] variables) throws IllegalArgumentException{
         if(variables.length==2){
             double x=variables[0];
             double y=variables[1];
             return gammaFunction.logValue(x)+gammaFunction.logValue(y)-
                 gammaFunction.logValue(x+y);
         }else
-            throw new BetaFunctionException();
+            throw new IllegalArgumentException("Check input array. Wrong number of independent variables were provided. Beta "
+                    + "function is defined for only two independent variables");
     }
     
 }

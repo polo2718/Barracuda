@@ -9,7 +9,7 @@ import domain.mathUtils.numericalMethods.interfaces.OneVariableFunction;
 import java.util.Arrays;
 
 /**
- *
+ * Provides method to define and use a polynomial function
  * @author "Leopoldo Cendejas-Zaragoza, 2016, Illinois Institute of Technology"
  */
 public class PolynomialFunction implements OneVariableFunction {
