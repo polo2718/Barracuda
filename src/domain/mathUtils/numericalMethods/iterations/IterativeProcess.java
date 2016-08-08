@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package domain.mathUtils.numericalMethods.iterations;
+import domain.mathUtils.numericalMethods.GenericMathDefinitions;
 
 /**
  *This abstract class provides the general framework to perform any iterative process.
@@ -123,6 +124,11 @@ public abstract class IterativeProcess {
      */
     public void setDesiredPrecision(double desiredPrecision) {
         this.desiredPrecision = desiredPrecision;
+    }
+    
+    public double relativePrecision(double delta, double x){
+        return x>GenericMathDefinitions.defaultNumericalPrecision()
+                ?delta/x:delta;
     }
     
 }
