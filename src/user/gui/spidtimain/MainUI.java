@@ -85,7 +85,7 @@ public class MainUI extends javax.swing.JFrame {
         xPosLabel = new javax.swing.JLabel();
         neuroView = new javax.swing.JRadioButton();
         radioView = new javax.swing.JRadioButton();
-        valueLabel = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -486,7 +486,7 @@ public class MainUI extends javax.swing.JFrame {
                 .addContainerGap(131, Short.MAX_VALUE))
         );
 
-        valueLabel.setText(" ");
+        jLabel5.setText(" ");
 
         jMenu1.setText("File");
 
@@ -523,7 +523,7 @@ public class MainUI extends javax.swing.JFrame {
                 .addGap(39, 39, 39))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(valueLabel)
+                .addComponent(jLabel5)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -538,7 +538,7 @@ public class MainUI extends javax.swing.JFrame {
                     .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
                     .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(valueLabel)
+                .addComponent(jLabel5)
                 .addGap(5, 5, 5))
         );
 
@@ -859,6 +859,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -873,7 +874,6 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel saggitalLabel5;
     private javax.swing.JPanel saggitalPanel;
     private javax.swing.JSlider saggitalSlider;
-    private javax.swing.JLabel valueLabel;
     private javax.swing.JLabel xPosLabel;
     private javax.swing.JSpinner xSpinner;
     private javax.swing.JLabel yPosLabel;
@@ -910,7 +910,7 @@ public class MainUI extends javax.swing.JFrame {
         zPosLabel.setText(numString+units);
         double num=niiVol.data.get(XVal, YVal, ZVal, (int)jSpinner1.getValue());
         numString=String.format("%.2f ", num);
-        valueLabel.setText(numString);
+        jLabel5.setText(numString);
     }
 
     private void drawLabelsXHair(int src){
