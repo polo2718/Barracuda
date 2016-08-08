@@ -5,7 +5,6 @@
  */
 package domain.mathUtils.numericalMethods.functionEvaluation;
 
-import domain.mathUtils.numericalMethods.functionEvaluation.functionExceptions.BetaFunctionException;
 import domain.mathUtils.numericalMethods.interfaces.MultiVariableFunction;
 
 /**
@@ -32,17 +31,18 @@ public class BetaFunction implements MultiVariableFunction {
      * <p>variables[1]=double x;</p>
      * <p>variables[2]=double y;</p>
      * @return beta(x,y)
-     * @throws BetaFunctionException 
+     * @throws IllegalArgumentException
      */
     @Override
-    public double value(double[] variables) throws BetaFunctionException{
+    public double value(double[] variables) throws IllegalArgumentException{
         if (variables.length==2){
             double x=variables[0];
             double y=variables[1];
             return Math.exp(gammaFunction.logValue(x)+gammaFunction.logValue(y)-
                     gammaFunction.logValue(x+y));
         }else 
-            throw new BetaFunctionException();
+            throw new IllegalArgumentException("Check input array. Wrong number of independent variables were provided. Beta "
+                    + "function is defined for only two independent variables");
     }
     /**
      * Computes the value of the natural logarithm if the beta function evaluated at x, y
@@ -52,16 +52,17 @@ public class BetaFunction implements MultiVariableFunction {
      * <p>variables[1]=double x;</p>
      * <p>variables[2]=double y;</p>
      * @return ln(beta(x,y))
-     * @throws BetaFunctionException 
+     * @throws IllegalArgumentException
      */
-    public double logValue(double [] variables) throws BetaFunctionException{
+    public double logValue(double [] variables) throws IllegalArgumentException{
         if(variables.length==2){
             double x=variables[0];
             double y=variables[1];
             return gammaFunction.logValue(x)+gammaFunction.logValue(y)-
                 gammaFunction.logValue(x+y);
         }else
-            throw new BetaFunctionException();
+            throw new IllegalArgumentException("Check input array. Wrong number of independent variables were provided. Beta "
+                    + "function is defined for only two independent variables");
     }
     
 }

@@ -30,7 +30,7 @@ public abstract class IterativeProcess {
     /**
      * Desired precision that should be attained after the algorithm execution.
      */
-    private double desiredPrecision;
+    private double desiredPrecision=0;
     
     /**
      * Performs the iterative method
@@ -60,7 +60,7 @@ public abstract class IterativeProcess {
     
     /**
      * A subclass should compute the result of the current iteration according to each specific algorithm  
-     * @return precision of the result after performing the iteration
+     * @return  relative precision of the result after performing the iteration
      */
     public abstract double evaluateIteration();
     
@@ -103,16 +103,24 @@ public abstract class IterativeProcess {
 
     /**
      * Gets the precision of the solution at the current iteration
-     * @return 
+     * @return current precision of the solution
      */
     public double getPrecision() {
         return precision;
     }
 
-    public double getDesiredPrecision() {
+    /**
+     * Gets the value of the desired precision that should be attained by the iterative process.
+     * @return  value of the desired precision
+     */
+    public double getDesiredPrecision() throws IllegalArgumentException {
         return desiredPrecision;
     }
-
+    
+    /**
+     * Sets the desired precision that should be attained by the iterative process.
+     * @param desiredPrecision 
+     */
     public void setDesiredPrecision(double desiredPrecision) {
         this.desiredPrecision = desiredPrecision;
     }

@@ -5,7 +5,6 @@
  */
 package domain.mathUtils.numericalMethods.functionEvaluation;
 
-import domain.mathUtils.numericalMethods.functionEvaluation.functionExceptions.BetaFunctionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
