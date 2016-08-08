@@ -25,6 +25,9 @@ public class NiftiVolume
     public NiftiHeader header;
     public FourDimensionalArray data;
     public double scale[];
+    public char[] orient;
+    private String orientation;
+    private double max;
 
     public NiftiVolume(int nx, int ny, int nz, int dim)
     {
@@ -61,7 +64,7 @@ public class NiftiVolume
         if (hdr.filename.endsWith(".gz"))
             is = new GZIPInputStream(is);
         try {
-            return read(new BufferedInputStream(is), hdr);
+            return read(new BufferedInputStream(is), hdr); 
         } finally {
             is.close();
         }
@@ -293,25 +296,18 @@ public class NiftiVolume
      */ 
     public BufferedImage drawNiftiSlice(int sliceNum, String plane, int dimension){
 	// Initialize variables
-        int rgb,temp,z_idx,x_idx,y_idx;
-        BufferedImage b = null;
+        double temp;
+        int rgb,temp_int,alpha,z_idx,x_idx,y_idx;
+        BufferedImage b;
         
         // get image dimensions
         int nx  = header.dim[1];
         int ny  = header.dim[2];
         int nz  = header.dim[3];
         int dim = header.dim[4];
-        //get image orientation
-        String orientation = header.orientation();
-        char[] orient = orientation.toCharArray();
 
-        
-        double max;
         double mul;
         
-        if(scale==null){
-            scale=getNiftiScale();
-        }
         if(orientation.equals("LPI")|orientation.equals("RPI")|
         orientation.equals("LPS")|orientation.equals("RPS")|
         orientation.equals("LAI")|orientation.equals("RAI")|
@@ -320,9 +316,8 @@ public class NiftiVolume
         if (dim>=dimension){
                 switch (plane) {
                     case "saggital":
-                        max=data.get2DArrayMax(dimension, plane, sliceNum);
-                        mul=255.0/max;
-                        b=new BufferedImage(ny,nz,BufferedImage.TYPE_INT_RGB);
+                        mul=254.0/max;
+                        b=new BufferedImage(ny,nz,BufferedImage.TYPE_INT_ARGB);
                         if(orient[1]=='A'){
                             y_idx=ny-1;
                         }else if(orient[1]=='P'){y_idx=0;}
@@ -341,8 +336,20 @@ public class NiftiVolume
                                 break;
                             }
                             for(int j=0;j<nz;j++){
-                                temp = (int) (mul*data.get(sliceNum,i,j,dimension));
-                                rgb = temp<<16|temp<<8|temp;
+                                temp = data.get(sliceNum,i,j,dimension);
+                                if(temp==Double.NaN){
+                                    alpha=0;
+                                    rgb=alpha<<24;
+                                }
+                                else if((temp*mul)>255){
+                                    temp_int=255;
+                                    alpha=255;
+                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
+                                }else{
+                                    temp_int=(int)(temp*mul)+1;
+                                    alpha=255;
+                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
+                                }
                                 if(orient[2]=='I'){
                                     if(orient[1]=='P'){
                                         b.setRGB(i,z_idx,rgb);
@@ -367,9 +374,8 @@ public class NiftiVolume
                         break;
                         
                     case "coronal":
-                        max=data.get2DArrayMax(dimension, plane, sliceNum);
-                        mul=255.0/max;
-                        b=new BufferedImage(nx,nz,BufferedImage.TYPE_INT_RGB);
+                        mul=254.0/max;
+                        b=new BufferedImage(nx,nz,BufferedImage.TYPE_INT_ARGB);
                         if(orient[0]=='R'){
                             x_idx=nx-1;
                         }else if(orient[0]=='L'){x_idx=0;}
@@ -388,8 +394,20 @@ public class NiftiVolume
                                 break;
                             }
                             for(int j=0;j<nz;j++){
-                                temp = (int) ( mul*data.get(i,sliceNum,j,dimension));
-                                rgb = temp<<16|temp<<8|temp;
+                                temp = data.get(i,sliceNum,j,dimension);
+                                if(temp==Double.NaN){
+                                    alpha=0;
+                                    rgb=alpha<<24;
+                                }
+                                else if((temp*mul)>255){
+                                    temp_int=255;
+                                    alpha=255;
+                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
+                                }else{
+                                    temp_int=(int)(temp*mul)+1;
+                                    alpha=255;
+                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
+                                }
                                 if(orient[2]=='I'){
                                     if(orient[0]=='L'){
                                         b.setRGB(i,z_idx,rgb);
@@ -414,10 +432,9 @@ public class NiftiVolume
                         break;
                         
                     default:
-                        max=data.get2DArrayMax(dimension, plane, sliceNum);
-                        mul=255.0/max;
+                        mul=254.0/max;
                         //Axial is the default plane to graph on
-                        b=new BufferedImage(nx,ny,BufferedImage.TYPE_INT_RGB);
+                        b=new BufferedImage(nx,ny,BufferedImage.TYPE_INT_ARGB);
                         if(orient[0]=='R'){
                             x_idx=nx-1;
                         }else if(orient[0]=='L'){x_idx=0;}
@@ -436,8 +453,20 @@ public class NiftiVolume
                                 break;
                             }
                             for(int j=0;j<ny;j++){
-                                temp = (int) (mul*data.get(i,j,sliceNum,dimension));
-                                rgb = temp<<16|temp<<8|temp;
+                                temp =data.get(i,j,sliceNum,dimension);
+                                if(temp==Double.NaN){
+                                    alpha=0;
+                                    rgb=alpha<<24;
+                                }
+                                else if((temp*mul)>255){
+                                    temp_int=255;
+                                    alpha=255;
+                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
+                                }else{
+                                    temp_int=(int)(temp*mul)+1;
+                                    alpha=255;
+                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
+                                }
                                 if(orient[1]=='P'){
                                     if(orient[0]=='L'){
                                         b.setRGB(i,y_idx,rgb);
@@ -501,10 +530,9 @@ public class NiftiVolume
     /**
      * <p>Reads the nifti header and returns a multiplier for scaling the image to 
      * its actual dimensions</p>
-     * @return 3D vector with the scale multipliers for each dimension (x,y,z)
      * @author Diego Garibay-Pulido 2016
      */
-    private double[] getNiftiScale(){
+    public void  getNiftiScale(){
         //Read pixel dimensions
         float pd[]=new float[3];
         pd[0] = header.pixdim[1];
@@ -531,8 +559,11 @@ public class NiftiVolume
         s[0]=(double) n[0]/header.dim[1];
         s[1]=(double) n[1]/header.dim[2];
         s[2]=(double) n[2]/header.dim[3];
-
-        return s;
+        this.scale= s;
+         //get image orientation
+        orientation = header.orientation();
+        orient = orientation.toCharArray();
+ 
        }
     
     public double[] computeXYZ(double[][] R,int xVal,int yVal,int zVal){
@@ -548,5 +579,15 @@ public class NiftiVolume
         }
         
         return xyz;
+    }
+    
+    public void setMax3D(int dimension){
+        max=ArrayOperations.findMaximum(data.get3DArray(dimension));
+    }
+    public void setMax(double m){
+        max=m;
+    }
+    public double getMax(){
+        return max;
     }
 }

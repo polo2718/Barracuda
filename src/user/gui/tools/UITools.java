@@ -51,7 +51,7 @@ public abstract class UITools {
         n[0]=(int)(n[0]*s);
         n[1]=(int)(n[1]*s);
 
-        BufferedImage resizedImg = new BufferedImage(n[0], n[1], BufferedImage.TYPE_INT_RGB);
+        BufferedImage resizedImg = new BufferedImage(n[0], n[1], BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2.drawImage(img, 0, 0, n[0], n[1], null);
@@ -60,7 +60,6 @@ public abstract class UITools {
         img=resizedImg;
         imageIcon = new ImageIcon(img);
         label.setIcon(imageIcon);
-        
         }
         else{
             s=Double.NaN;
@@ -68,5 +67,4 @@ public abstract class UITools {
         return s;
     }
     
- }
-
+}

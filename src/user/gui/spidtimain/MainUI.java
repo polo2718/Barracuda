@@ -33,6 +33,9 @@ public class MainUI extends javax.swing.JFrame {
     double coronalScale;
     double saggitalScale;
     double axialScale;
+    Point prevMouse;
+    
+    
     public MainUI() {
         initComponents();
     }
@@ -46,6 +49,7 @@ public class MainUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         coronalPanel = new javax.swing.JPanel();
         coronalLabel1 = new javax.swing.JLabel();
         coronalLabel = new javax.swing.JLabel();
@@ -76,19 +80,24 @@ public class MainUI extends javax.swing.JFrame {
         xSpinner = new javax.swing.JSpinner();
         ySpinner = new javax.swing.JSpinner();
         zSpinner = new javax.swing.JSpinner();
-        mousePosLabel = new javax.swing.JLabel();
         zPosLabel = new javax.swing.JLabel();
         yPosLabel = new javax.swing.JLabel();
         xPosLabel = new javax.swing.JLabel();
+        neuroView = new javax.swing.JRadioButton();
+        radioView = new javax.swing.JRadioButton();
+        valueLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
+        buttonGroup1.add(radioView);
+        buttonGroup1.add(neuroView);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Barracuda View");
         setIconImage(getMainIcon());
-        setMinimumSize(new java.awt.Dimension(500, 500));
+        setMinimumSize(new java.awt.Dimension(600, 600));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
@@ -101,7 +110,7 @@ public class MainUI extends javax.swing.JFrame {
 
         coronalLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         coronalLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        coronalLabel1.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
+        coronalLabel1.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
         coronalLabel1.setToolTipText("");
 
         coronalLabel.setBackground(new java.awt.Color(0, 0, 0));
@@ -114,10 +123,15 @@ public class MainUI extends javax.swing.JFrame {
                 coronalLabelMouseDragged(evt);
             }
         });
+        coronalLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                coronalLabelMouseClicked(evt);
+            }
+        });
 
         coronalLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         coronalLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        coronalLabel3.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
+        coronalLabel3.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
         coronalLabel3.setToolTipText("");
 
         coronalLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -147,16 +161,13 @@ public class MainUI extends javax.swing.JFrame {
                 .addComponent(coronalLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
                 .addGroup(coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(coronalSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(coronalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(coronalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.CENTER, coronalPanelLayout.createSequentialGroup()
-                .addContainerGap(126, Short.MAX_VALUE)
-                .addGroup(coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(coronalLabel2, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(coronalLabel4, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(124, Short.MAX_VALUE))
+                    .addComponent(coronalSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                    .addComponent(coronalLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(coronalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(coronalLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(5, 5, 5)
+                .addComponent(coronalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5))
         );
         coronalPanelLayout.setVerticalGroup(
             coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,14 +175,14 @@ public class MainUI extends javax.swing.JFrame {
                 .addComponent(coronalSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(coronalLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(5, 5, 5)
                 .addGroup(coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(coronalLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(coronalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                     .addComponent(coronalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(5, 5, 5)
                 .addComponent(coronalLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addGap(4, 4, 4))
         );
 
         axialPanel.setBackground(new java.awt.Color(0, 0, 0));
@@ -181,12 +192,22 @@ public class MainUI extends javax.swing.JFrame {
 
         axialLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         axialLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        axialLabel1.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
+        axialLabel1.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
 
         axialLabel.setBackground(new java.awt.Color(0, 0, 0));
         axialLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         axialLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         axialLabel.setMinimumSize(new java.awt.Dimension(10, 10));
+        axialLabel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                axialLabelMouseDragged(evt);
+            }
+        });
+        axialLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                axialLabelMouseClicked(evt);
+            }
+        });
 
         axialLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         axialLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -195,7 +216,7 @@ public class MainUI extends javax.swing.JFrame {
 
         axialLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         axialLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        axialLabel3.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
+        axialLabel3.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
 
         axialSlider.setBackground(new java.awt.Color(0, 0, 0));
         axialSlider.setMinimumSize(new java.awt.Dimension(10, 5));
@@ -219,17 +240,18 @@ public class MainUI extends javax.swing.JFrame {
                 .addGap(1, 1, 1)
                 .addGroup(axialPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addGroup(axialPanelLayout.createSequentialGroup()
-                        .addGap(1, 1, 1)
+                        .addGap(2, 2, 2)
                         .addComponent(axialLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(axialSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(5, 5, 5)
-                .addComponent(axialLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(axialLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2))
             .addGroup(javax.swing.GroupLayout.Alignment.CENTER, axialPanelLayout.createSequentialGroup()
-                .addContainerGap(122, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(axialPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(axialLabel4, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(axialLabel2, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(128, Short.MAX_VALUE))
+                .addContainerGap())
         );
         axialPanelLayout.setVerticalGroup(
             axialPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,6 +278,16 @@ public class MainUI extends javax.swing.JFrame {
         saggitalLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         saggitalLabel.setMinimumSize(new java.awt.Dimension(10, 10));
         saggitalLabel.setName(""); // NOI18N
+        saggitalLabel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                saggitalLabelMouseDragged(evt);
+            }
+        });
+        saggitalLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                saggitalLabelMouseClicked(evt);
+            }
+        });
 
         saggitalLabel3.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         saggitalLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -289,21 +321,22 @@ public class MainUI extends javax.swing.JFrame {
         saggitalPanel.setLayout(saggitalPanelLayout);
         saggitalPanelLayout.setHorizontalGroup(
             saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, saggitalPanelLayout.createSequentialGroup()
+            .addGroup(saggitalPanelLayout.createSequentialGroup()
                 .addGap(3, 3, 3)
-                .addComponent(saggitalLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
-                .addGroup(saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(saggitalSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(saggitalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(6, 6, 6)
-                .addComponent(saggitalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.CENTER, saggitalPanelLayout.createSequentialGroup()
-                .addContainerGap(156, Short.MAX_VALUE)
                 .addGroup(saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(saggitalLabel4, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(saggitalLabel5, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(155, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, saggitalPanelLayout.createSequentialGroup()
+                        .addComponent(saggitalLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
+                        .addGroup(saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(saggitalSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                            .addComponent(saggitalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(6, 6, 6)
+                        .addComponent(saggitalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.CENTER, saggitalPanelLayout.createSequentialGroup()
+                        .addGroup(saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(saggitalLabel4, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(saggitalLabel5, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())))
         );
         saggitalPanelLayout.setVerticalGroup(
             saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -373,65 +406,87 @@ public class MainUI extends javax.swing.JFrame {
         xPosLabel.setText(" ");
         xPosLabel.setToolTipText("");
 
+        neuroView.setText("Neurological View");
+        neuroView.setSelected(true);
+        neuroView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                neuroViewActionPerformed(evt);
+            }
+        });
+
+        radioView.setText("Radiological View");
+        radioView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioViewActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
         infoPanel.setLayout(infoPanelLayout);
         infoPanelLayout.setHorizontalGroup(
             infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(infoPanelLayout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(infoPanelLayout.createSequentialGroup()
-                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jLabel4))
-                        .addGap(18, 18, Short.MAX_VALUE)
-                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(infoPanelLayout.createSequentialGroup()
-                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                                    .addComponent(zSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(xSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(zPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(xPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
-                                    .addComponent(yPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addComponent(neuroView)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(infoPanelLayout.createSequentialGroup()
-                        .addComponent(mousePosLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap(172, Short.MAX_VALUE))
+                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(infoPanelLayout.createSequentialGroup()
+                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(infoPanelLayout.createSequentialGroup()
+                                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                            .addComponent(zSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(ySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(xSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(zPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(xPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(yPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(radioView, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         infoPanelLayout.setVerticalGroup(
             infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(infoPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(xSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(xPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(xPosLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(yPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(zSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(zPosLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(mousePosLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(neuroView)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(radioView)
+                .addContainerGap(131, Short.MAX_VALUE))
         );
+
+        valueLabel.setText(" ");
 
         jMenu1.setText("File");
 
@@ -459,16 +514,17 @@ public class MainUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)
+                    .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
                     .addComponent(coronalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(61, 61, 61)
+                .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(32, 32, 32))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(saggitalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
-                        .addGap(60, 60, 60))))
+                    .addComponent(saggitalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                    .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(39, 39, 39))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(valueLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -479,12 +535,11 @@ public class MainUI extends javax.swing.JFrame {
                     .addComponent(coronalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(32, 32, 32))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
-                        .addGap(57, 57, 57))))
+                    .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
+                    .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(valueLabel)
+                .addGap(5, 5, 5))
         );
 
         pack();
@@ -523,6 +578,8 @@ public class MainUI extends javax.swing.JFrame {
 
     private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner1StateChanged
         if(niiVol!=null){
+            // Get volume maximum
+            niiVol.setMax3D((int)jSpinner1.getValue());
             drawLabelsXHair(0);
             setXYZLabels();
         }
@@ -536,9 +593,34 @@ public class MainUI extends javax.swing.JFrame {
             File file = fc.getSelectedFile();
             String filename = file.getAbsolutePath();
             
-            System.out.println(filename);
             try{
+                //Set neurological view as default
+                niiVol=null;
+                neuroView.setSelected(true);
+                coronalLabel1.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
+                coronalLabel3.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
+                axialLabel1.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
+                axialLabel3.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
+                //Read Nifti file
                 niiVol= NiftiVolume.read(filename);
+                //Get and set the nifti scale
+                niiVol.getNiftiScale();
+                // Get volume maximum if not already embedded in the header
+                if(niiVol.header.cal_max==0){
+                    niiVol.setMax3D(0);
+                }
+                else{niiVol.setMax(niiVol.header.cal_max);}
+                System.out.println(niiVol.getMax());
+                
+                // Added code so default view would be neurological
+                if(niiVol.orient[0]=='L'){
+                    niiVol.orient[0]='R';
+                }else if(niiVol.orient[0]=='R'){
+                    niiVol.orient[0]='L';
+                }else{
+                    System.out.println("Error");
+                }
+                //Set spinner and slider models
                 if(niiVol!=null){
                     SpinnerNumberModel model = new SpinnerNumberModel(0, 0,niiVol.header.dim[4]-1,1);
                     jSpinner1.setModel(model);
@@ -548,18 +630,16 @@ public class MainUI extends javax.swing.JFrame {
                     ySpinner.setModel(model);
                     model = new SpinnerNumberModel(0,0,niiVol.header.dim[3]-1,1);
                     zSpinner.setModel(model);
-                    R=niiVol.header.mat33();
-                      
-
+                    
                     saggitalSlider.setMaximum(niiVol.header.dim[1]-1);
-                    xSpinner.setValue((int)(niiVol.header.dim[1]/2));
-                    
+                    saggitalSlider.setValue((int)(niiVol.header.dim[1]/2));
                     coronalSlider.setMaximum(niiVol.header.dim[2]-1);
-                    ySpinner.setValue((int)(niiVol.header.dim[2]/2));
-                    
+                    coronalSlider.setValue((int)(niiVol.header.dim[2]/2));
                     axialSlider.setMaximum(niiVol.header.dim[3]-1);
-                    zSpinner.setValue((int)(niiVol.header.dim[3]/2));
+                    axialSlider.setValue((int)(niiVol.header.dim[3]/2));
                     
+                    //Get rotation matrix
+                    R=niiVol.header.mat33();
                     setXYZLabels();
                 }
             }
@@ -573,40 +653,154 @@ public class MainUI extends javax.swing.JFrame {
 
     private void xSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_xSpinnerStateChanged
         if(niiVol!=null){
-            drawLabelsXHair(1);
             saggitalSlider.setValue((int)xSpinner.getValue());
-            setXYZLabels();
         }
     }//GEN-LAST:event_xSpinnerStateChanged
 
     private void ySpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ySpinnerStateChanged
         if(niiVol!=null){
-            drawLabelsXHair(1);
             coronalSlider.setValue((int)ySpinner.getValue());
-            setXYZLabels();
         }
     }//GEN-LAST:event_ySpinnerStateChanged
 
     private void zSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_zSpinnerStateChanged
         if(niiVol!=null){
-            drawLabelsXHair(1);
             axialSlider.setValue((int)zSpinner.getValue());
-            setXYZLabels();
         }
     }//GEN-LAST:event_zSpinnerStateChanged
 
     private void coronalLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_coronalLabelMouseDragged
-        Point point = coronalLabel.getMousePosition(false);
-        if(point!=null){
-            double x=point.getX();
-            double y=point.getY();
-            String s;
-            s=Double.toString(x);
-            s=s+" "+Double.toString(y);
-            mousePosLabel.setText(s);
-            
+        if(niiVol!=null){
+            if(SwingUtilities.isLeftMouseButton(evt)){
+                coronalMouseXHair();
+            }else if(SwingUtilities.isRightMouseButton(evt)){
+                try{
+                Point point=coronalLabel.getMousePosition();
+                if(prevMouse!=null){
+                    if(prevMouse.getY()<point.getY()){
+                        niiVol.setMax(niiVol.getMax()*0.98);
+                        drawLabelsXHair(0);
+                    }
+                    else if(prevMouse.getY()>point.getY()& prevMouse !=null){
+                        niiVol.setMax(niiVol.getMax()*1.02);
+                        drawLabelsXHair(0);
+                    }
+                    }
+                prevMouse=point;
+                }catch(Exception e){}
+            }
         }
     }//GEN-LAST:event_coronalLabelMouseDragged
+
+    private void coronalLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_coronalLabelMouseClicked
+        if(niiVol!=null){
+            if(SwingUtilities.isLeftMouseButton(evt)){
+                coronalMouseXHair();
+            }else if(SwingUtilities.isRightMouseButton(evt)){
+                prevMouse=coronalLabel.getMousePosition(false);
+            }
+        }
+    }//GEN-LAST:event_coronalLabelMouseClicked
+
+    private void saggitalLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saggitalLabelMouseClicked
+        if(niiVol!=null){
+            if(SwingUtilities.isLeftMouseButton(evt)){
+            saggitalMouseXHair();
+            }else if(SwingUtilities.isRightMouseButton(evt)){
+                prevMouse=saggitalLabel.getMousePosition(false);
+            }
+        }
+    }//GEN-LAST:event_saggitalLabelMouseClicked
+
+    private void saggitalLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saggitalLabelMouseDragged
+        if(niiVol!=null){
+            if(SwingUtilities.isLeftMouseButton(evt)){
+            saggitalMouseXHair();
+            }else if(SwingUtilities.isRightMouseButton(evt)){
+                try{
+                Point point=saggitalLabel.getMousePosition();
+                if(prevMouse!=null){
+                    if(prevMouse.getY()<point.getY()){
+                        niiVol.setMax(niiVol.getMax()*0.98);
+                        drawLabelsXHair(0);
+                    }
+                    else if(prevMouse.getY()>point.getY()& prevMouse !=null){
+                        niiVol.setMax(niiVol.getMax()*1.02);
+                        drawLabelsXHair(0);
+                    }
+                    }
+                prevMouse=point;
+                }catch(Exception e){}
+            }
+        }
+    }//GEN-LAST:event_saggitalLabelMouseDragged
+
+    private void axialLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_axialLabelMouseClicked
+        if(niiVol!=null){
+            if(SwingUtilities.isLeftMouseButton(evt)){
+            axialMouseXHair();
+            }else if(SwingUtilities.isRightMouseButton(evt)){
+                prevMouse=axialLabel.getMousePosition(false);
+            }
+        }
+    }//GEN-LAST:event_axialLabelMouseClicked
+
+    private void axialLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_axialLabelMouseDragged
+        if(niiVol!=null){
+            if(SwingUtilities.isLeftMouseButton(evt)){
+            axialMouseXHair();
+            }
+            else if(SwingUtilities.isRightMouseButton(evt)){
+                try{
+                Point point=axialLabel.getMousePosition();
+                if(prevMouse!=null){
+                    if(prevMouse.getY()<point.getY()){
+                        niiVol.setMax(niiVol.getMax()*0.98);
+                        drawLabelsXHair(0);
+                    }
+                    else if(prevMouse.getY()>point.getY()& prevMouse !=null){
+                        niiVol.setMax(niiVol.getMax()*1.02);
+                        drawLabelsXHair(0);
+                    }
+                    }
+                prevMouse=point;
+                }
+                catch(Exception e){}
+            }
+        }
+    }//GEN-LAST:event_axialLabelMouseDragged
+
+    private void radioViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioViewActionPerformed
+        if(niiVol!=null){
+            if(niiVol.orient[0]=='L'){
+                niiVol.orient[0]='R';
+            }
+            else{
+                niiVol.orient[0]='L';
+            }
+            coronalLabel1.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
+            coronalLabel3.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
+            axialLabel1.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
+            axialLabel3.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
+            drawLabelsXHair(0);
+        }
+    }//GEN-LAST:event_radioViewActionPerformed
+
+    private void neuroViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_neuroViewActionPerformed
+        if(niiVol!=null){
+            if(niiVol.orient[0]=='L'){
+                niiVol.orient[0]='R';
+            }
+            else{
+                niiVol.orient[0]='L';
+            }
+            coronalLabel1.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
+            coronalLabel3.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
+            axialLabel1.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
+            axialLabel3.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
+            drawLabelsXHair(0);
+        }
+    }//GEN-LAST:event_neuroViewActionPerformed
 
     /**
      * @param args the command line arguments
@@ -652,6 +846,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel axialLabel4;
     private javax.swing.JPanel axialPanel;
     private javax.swing.JSlider axialSlider;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel coronalLabel;
     private javax.swing.JLabel coronalLabel1;
     private javax.swing.JLabel coronalLabel2;
@@ -669,7 +864,8 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JLabel mousePosLabel;
+    private javax.swing.JRadioButton neuroView;
+    private javax.swing.JRadioButton radioView;
     private javax.swing.JLabel saggitalLabel;
     private javax.swing.JLabel saggitalLabel2;
     private javax.swing.JLabel saggitalLabel3;
@@ -677,6 +873,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel saggitalLabel5;
     private javax.swing.JPanel saggitalPanel;
     private javax.swing.JSlider saggitalSlider;
+    private javax.swing.JLabel valueLabel;
     private javax.swing.JLabel xPosLabel;
     private javax.swing.JSpinner xSpinner;
     private javax.swing.JLabel yPosLabel;
@@ -684,7 +881,8 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel zPosLabel;
     private javax.swing.JSpinner zSpinner;
     // End of variables declaration//GEN-END:variables
-private Image getMainIcon(){
+
+    private Image getMainIcon(){
     Image img;
     //try {
         URL imageurl = getClass().getResource("/images/synapticom2.png");//assuming your package name is images 
@@ -696,27 +894,31 @@ private Image getMainIcon(){
       //  exc.printStackTrace();
     //}
     return img;
-}
+    }
 
-private void setXYZLabels(){
-    int XVal=(int)saggitalSlider.getValue();
-    int YVal=(int)coronalSlider.getValue();
-    int ZVal=(int)axialSlider.getValue();
-    String units=niiVol.header.getUnits();
-    double xyz[]=niiVol.computeXYZ(R,XVal,YVal,ZVal);
-    String numString = String.format ("%.2f ", xyz[0]);
-    xPosLabel.setText(numString+units);
-    numString = String.format ("%.2f ", xyz[1]);
-    yPosLabel.setText(numString+units);
-    numString = String.format ("%.2f ", xyz[2]);
-    zPosLabel.setText(numString+units);
-}
+    private void setXYZLabels(){
+        int XVal=(int)saggitalSlider.getValue();
+        int YVal=(int)coronalSlider.getValue();
+        int ZVal=(int)axialSlider.getValue();
+        String units=niiVol.header.getUnits();
+        double xyz[]=niiVol.computeXYZ(R,XVal,YVal,ZVal);
+        String numString = String.format ("%.2f ", xyz[0]);
+        xPosLabel.setText(numString+units);
+        numString = String.format ("%.2f ", xyz[1]);
+        yPosLabel.setText(numString+units);
+        numString = String.format ("%.2f ", xyz[2]);
+        zPosLabel.setText(numString+units);
+        double num=niiVol.data.get(XVal, YVal, ZVal, (int)jSpinner1.getValue());
+        numString=String.format("%.2f ", num);
+        valueLabel.setText(numString);
+    }
 
-private void drawLabelsXHair(int src){
-     drawCoronalXHair(src);
-     drawSaggitalXHair(src);
-     drawAxialXHair(src);
-}
+    private void drawLabelsXHair(int src){
+        drawCoronalXHair(src);
+        drawSaggitalXHair(src);
+        drawAxialXHair(src);
+    }
+
     private void drawCoronalXHair(int src){
         BufferedImage img;
         if(src==0){ //Source is slider
@@ -725,16 +927,53 @@ private void drawLabelsXHair(int src){
         }else{
             img = niiVol.drawNiftiSlice((int)ySpinner.getValue(), "coronal",(int)jSpinner1.getValue());
         }
-         Graphics g =img.getGraphics();
-         int sVal=saggitalSlider.getValue();
-         int aVal=axialSlider.getValue();
-         int actualnz=(int) (sVal*niiVol.scale[0]);
-         int actualny=(int) (aVal*niiVol.scale[0]);
-         g.setColor(Color.GREEN);
-         g.drawLine(actualnz, 0, actualnz, img.getHeight(coronalLabel));
-         g.drawLine(0,img.getHeight(coronalLabel)-actualny, img.getWidth(coronalLabel), img.getHeight(coronalLabel)-actualny);
-         UITools.imageToLabel(img,coronalLabel);
+        if(img!=null){         
+            coronalScale=UITools.imageToLabel(img,coronalLabel);
+            int xVal=saggitalSlider.getValue();
+            int yVal=axialSlider.getValue();
+            int actualnx=(int) Math.ceil((xVal*niiVol.scale[0])*coronalScale);
+            int actualny=(int) Math.ceil((yVal*niiVol.scale[2])*coronalScale);
+            img=(BufferedImage)((ImageIcon)coronalLabel.getIcon()).getImage();
+            Graphics g =img.getGraphics();
+            g.setColor(Color.GREEN);
+            if(niiVol.orient[0]=='L'){
+                g.drawLine(actualnx, 0, actualnx, img.getHeight());
+            }else{
+                g.drawLine(img.getWidth()-actualnx, 0, img.getWidth()-actualnx, img.getHeight());
+            }
+            if(niiVol.orient[2]=='I'){
+                g.drawLine(0,img.getHeight()-actualny, img.getWidth(), img.getHeight()-actualny);
+            }else{
+                g.drawLine(0,actualny, img.getWidth(),actualny);
+            }
+        }
     }
+    
+    private void coronalMouseXHair(){
+        Point point = coronalLabel.getMousePosition(false);
+        if(point!=null){
+            int x,y;
+            int iconWidth=((BufferedImage)((ImageIcon)coronalLabel.getIcon()).getImage()).getWidth()/2;
+            int iconHeight=((BufferedImage)((ImageIcon)coronalLabel.getIcon()).getImage()).getHeight()/2;
+            int labelWidth=coronalLabel.getWidth()/2;
+            int w=labelWidth*2;
+            int labelHeight=coronalLabel.getHeight()/2;
+            int h=labelHeight*2;
+            if(niiVol.orient[0]=='L'){
+                x=(int)(((point.getX())-(labelWidth-iconWidth))/(coronalScale*niiVol.scale[0]));
+            }else{
+                x=(int)(((w-point.getX())-(labelWidth-iconWidth))/(coronalScale*niiVol.scale[0]));
+            }
+            if(niiVol.orient[2]=='I'){
+                y=(int)(((h-point.getY())-(labelHeight-iconHeight))/(coronalScale*niiVol.scale[2]));
+            }else{
+                y=(int)(((point.getY())-(labelHeight-iconHeight))/(coronalScale*niiVol.scale[2]));
+            }
+            saggitalSlider.setValue(x);
+            axialSlider.setValue(y);
+        }
+    }
+    
     private void drawSaggitalXHair(int src){
          BufferedImage img;
         if(src==0){ //Source is slider
@@ -742,17 +981,54 @@ private void drawLabelsXHair(int src){
         }else{
             img = niiVol.drawNiftiSlice((int)xSpinner.getValue(), "saggital",(int)jSpinner1.getValue());
         }
-         Graphics g =img.getGraphics();
-         //y axial x coronal
-         int xVal=coronalSlider.getValue();
-         int yVal=axialSlider.getValue();
-         int actualnx=(int) (xVal*niiVol.scale[0]);
-         int actualny=(int) (yVal*niiVol.scale[0]);
-         g.setColor(Color.GREEN);
-         g.drawLine(actualnx, 0, actualnx, img.getHeight(saggitalLabel));
-         g.drawLine(0,img.getHeight(saggitalLabel)-actualny, img.getWidth(saggitalLabel), img.getHeight(saggitalLabel)-actualny);
-         UITools.imageToLabel(img,saggitalLabel);
+        if(img!=null){
+            saggitalScale= UITools.imageToLabel(img,saggitalLabel);
+            //y axial x coronal
+            int xVal=coronalSlider.getValue();
+            int yVal=axialSlider.getValue();
+            int actualnx=(int) Math.ceil((xVal*niiVol.scale[1])*saggitalScale);
+            int actualny=(int) Math.ceil((yVal*niiVol.scale[2])*saggitalScale);
+            img=(BufferedImage)((ImageIcon)saggitalLabel.getIcon()).getImage();
+            Graphics g =img.getGraphics();
+            g.setColor(Color.GREEN);
+            if(niiVol.orient[1]=='P'){
+                g.drawLine(actualnx, 0, actualnx, img.getHeight());
+            }else{
+                g.drawLine(img.getWidth()-actualnx, 0, img.getWidth()-actualnx, img.getHeight());
+            }
+            if(niiVol.orient[2]=='I'){
+                g.drawLine(0,img.getHeight()-actualny, img.getWidth(), img.getHeight()-actualny);
+            }else{
+                 g.drawLine(0,actualny, img.getWidth(),actualny);
+            }
+        }
     }
+    
+    private void saggitalMouseXHair(){
+        Point point = saggitalLabel.getMousePosition(false);
+        if(point!=null){
+            int x,y;
+            int iconWidth=((BufferedImage)((ImageIcon)saggitalLabel.getIcon()).getImage()).getWidth()/2;
+            int iconHeight=((BufferedImage)((ImageIcon)saggitalLabel.getIcon()).getImage()).getHeight()/2;
+            int labelWidth=saggitalLabel.getWidth()/2;
+            int w=labelWidth*2;
+            int labelHeight=saggitalLabel.getHeight()/2;
+            int h=labelHeight*2;
+            if(niiVol.orient[1]=='P'){
+                x=(int)(((point.getX())-(labelWidth-iconWidth))/(saggitalScale*niiVol.scale[1]));
+            }else{
+                x=(int)(((w-point.getX())-(labelWidth-iconWidth))/(saggitalScale*niiVol.scale[1]));
+            }
+            if(niiVol.orient[2]=='I'){
+                y=(int)(((h-point.getY())-(labelHeight-iconHeight))/(saggitalScale*niiVol.scale[2]));
+            }else{
+                y=(int)(((point.getY())-(labelHeight-iconHeight))/(saggitalScale*niiVol.scale[2]));
+            }
+            coronalSlider.setValue(x);
+            axialSlider.setValue(y);
+        }
+    }
+    
     private void drawAxialXHair(int src){
     BufferedImage img;
         if(src==0){ //Source is slider
@@ -760,17 +1036,54 @@ private void drawLabelsXHair(int src){
         }else{
             img = niiVol.drawNiftiSlice((int)zSpinner.getValue(), "axial",(int)jSpinner1.getValue());
         }
-     Graphics g =img.getGraphics();
-     //x saggital, y coronal
-     int xVal=saggitalSlider.getValue();
-     int yVal=coronalSlider.getValue();
-     int actualnx=(int) (xVal*niiVol.scale[0]);
-     int actualny=(int) (yVal*niiVol.scale[0]);
-     g.setColor(Color.GREEN);
-     g.drawLine(actualnx, 0, actualnx, img.getHeight(axialLabel));
-     g.drawLine(0,img.getHeight(axialLabel)-actualny, img.getWidth(axialLabel), img.getHeight(axialLabel)-actualny);
-     UITools.imageToLabel(img,axialLabel);
-}
+        if(img!=null){
+            axialScale=UITools.imageToLabel(img,axialLabel);
+            //x saggital, y coronal
+            int xVal=saggitalSlider.getValue();
+            int yVal=coronalSlider.getValue();
+            int actualnx=(int) Math.ceil((xVal*niiVol.scale[0])*axialScale);
+            int actualny=(int) Math.ceil((yVal*niiVol.scale[1])*axialScale);
+            img=(BufferedImage)((ImageIcon)axialLabel.getIcon()).getImage();
+            Graphics g =img.getGraphics();
+            g.setColor(Color.GREEN);
+            if(niiVol.orient[0]=='L'){
+                g.drawLine(actualnx, 0, actualnx, img.getHeight());
+            }else{
+                g.drawLine(img.getWidth()-actualnx, 0, img.getWidth()-actualnx, img.getHeight());
+            }
+            if(niiVol.orient[1]=='A'){
+                g.drawLine( 0,actualny,img.getWidth(),actualny);
+            }else{
+                g.drawLine( 0,img.getHeight()-actualny, img.getWidth(),img.getHeight()-actualny);
+            }
+        }
+    }
+    
+    private void axialMouseXHair(){
+        Point point = axialLabel.getMousePosition(false);
+        if(point!=null){
+            int x,y;
+            int iconWidth=((BufferedImage)((ImageIcon)axialLabel.getIcon()).getImage()).getWidth()/2;
+            int iconHeight=((BufferedImage)((ImageIcon)axialLabel.getIcon()).getImage()).getHeight()/2;
+            int labelWidth=axialLabel.getWidth()/2;
+            int w=labelWidth*2;
+            int labelHeight=axialLabel.getHeight()/2;
+            int h=labelHeight*2;
+            if(niiVol.orient[0]=='L'){
+                x=(int)(((point.getX())-(labelWidth-iconWidth))/(axialScale*niiVol.scale[0]));
+            }else{
+                x=(int)(((w-point.getX())-(labelWidth-iconWidth))/(axialScale*niiVol.scale[0]));
+            }
+            if(niiVol.orient[1]=='P'){
+                y=(int)(((h-point.getY())-(labelHeight-iconHeight))/(axialScale*niiVol.scale[1]));
+            }else{
+                y=(int)(((point.getY())-(labelHeight-iconHeight))/(axialScale*niiVol.scale[1]));
+            }
+            saggitalSlider.setValue(x);
+            coronalSlider.setValue(y);
+        }
+    }
+    
     private void resizeGraphs(){
         drawLabelsXHair(0);
     }
