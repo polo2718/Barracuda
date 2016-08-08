@@ -85,6 +85,7 @@ public class MainUI extends javax.swing.JFrame {
         xPosLabel = new javax.swing.JLabel();
         neuroView = new javax.swing.JRadioButton();
         radioView = new javax.swing.JRadioButton();
+        valueLabel = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -103,7 +104,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
 
-        coronalPanel.setBackground(new java.awt.Color(255, 255, 204));
+        coronalPanel.setBackground(new java.awt.Color(0, 0, 0));
         coronalPanel.setMinimumSize(new java.awt.Dimension(15, 15));
         coronalPanel.setName(""); // NOI18N
 
@@ -184,7 +185,7 @@ public class MainUI extends javax.swing.JFrame {
                 .addGap(4, 4, 4))
         );
 
-        axialPanel.setBackground(new java.awt.Color(255, 255, 204));
+        axialPanel.setBackground(new java.awt.Color(0, 0, 0));
         axialPanel.setMinimumSize(new java.awt.Dimension(15, 15));
         axialPanel.setPreferredSize(new java.awt.Dimension(579, 560));
         axialPanel.setRequestFocusEnabled(false);
@@ -268,7 +269,7 @@ public class MainUI extends javax.swing.JFrame {
                 .addGap(0, 0, 0))
         );
 
-        saggitalPanel.setBackground(new java.awt.Color(255, 255, 204));
+        saggitalPanel.setBackground(new java.awt.Color(0, 0, 0));
         saggitalPanel.setMinimumSize(new java.awt.Dimension(15, 15));
         saggitalPanel.setPreferredSize(new java.awt.Dimension(569, 552));
 
@@ -452,9 +453,7 @@ public class MainUI extends javax.swing.JFrame {
                                             .addComponent(xPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(yPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                     .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(infoPanelLayout.createSequentialGroup()
-                                .addComponent(radioView, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(radioView, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         infoPanelLayout.setVerticalGroup(
@@ -486,6 +485,8 @@ public class MainUI extends javax.swing.JFrame {
                 .addComponent(radioView)
                 .addContainerGap(131, Short.MAX_VALUE))
         );
+
+        valueLabel.setText(" ");
 
         jMenu1.setText("File");
 
@@ -520,6 +521,10 @@ public class MainUI extends javax.swing.JFrame {
                     .addComponent(saggitalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
                     .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(39, 39, 39))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(valueLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -532,7 +537,9 @@ public class MainUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
                     .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(39, 39, 39))
+                .addGap(18, 18, 18)
+                .addComponent(valueLabel)
+                .addGap(5, 5, 5))
         );
 
         pack();
@@ -866,6 +873,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel saggitalLabel5;
     private javax.swing.JPanel saggitalPanel;
     private javax.swing.JSlider saggitalSlider;
+    private javax.swing.JLabel valueLabel;
     private javax.swing.JLabel xPosLabel;
     private javax.swing.JSpinner xSpinner;
     private javax.swing.JLabel yPosLabel;
@@ -900,6 +908,9 @@ public class MainUI extends javax.swing.JFrame {
         yPosLabel.setText(numString+units);
         numString = String.format ("%.2f ", xyz[2]);
         zPosLabel.setText(numString+units);
+        double num=niiVol.data.get(XVal, YVal, ZVal, (int)jSpinner1.getValue());
+        numString=String.format("%.2f ", num);
+        valueLabel.setText(numString);
     }
 
     private void drawLabelsXHair(int src){

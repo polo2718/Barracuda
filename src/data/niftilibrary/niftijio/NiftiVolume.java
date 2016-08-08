@@ -316,7 +316,7 @@ public class NiftiVolume
         if (dim>=dimension){
                 switch (plane) {
                     case "saggital":
-                        mul=255.0/max;
+                        mul=254.0/max;
                         b=new BufferedImage(ny,nz,BufferedImage.TYPE_INT_ARGB);
                         if(orient[1]=='A'){
                             y_idx=ny-1;
@@ -336,17 +336,18 @@ public class NiftiVolume
                                 break;
                             }
                             for(int j=0;j<nz;j++){
-                                temp = (mul*data.get(sliceNum,i,j,dimension));
-                                if(temp>=32000){
-                                    rgb=(int)temp|0xFF000000;
+                                temp = data.get(sliceNum,i,j,dimension);
+                                if(temp==Double.NaN){
+                                    alpha=0;
+                                    rgb=alpha<<24;
                                 }
-                                else if(temp>255){
+                                else if((temp*mul)>255){
                                     temp_int=255;
                                     alpha=255;
                                     rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
                                 }else{
+                                    temp_int=(int)(temp*mul)+1;
                                     alpha=255;
-                                    temp_int=(int)temp;
                                     rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
                                 }
                                 if(orient[2]=='I'){
@@ -373,7 +374,7 @@ public class NiftiVolume
                         break;
                         
                     case "coronal":
-                        mul=255.0/max;
+                        mul=254.0/max;
                         b=new BufferedImage(nx,nz,BufferedImage.TYPE_INT_ARGB);
                         if(orient[0]=='R'){
                             x_idx=nx-1;
@@ -393,17 +394,18 @@ public class NiftiVolume
                                 break;
                             }
                             for(int j=0;j<nz;j++){
-                                temp = ( mul*data.get(i,sliceNum,j,dimension));
-                                if(temp>=32000){
-                                    rgb=(int)temp|0xFF000000;
+                                temp = data.get(i,sliceNum,j,dimension);
+                                if(temp==Double.NaN){
+                                    alpha=0;
+                                    rgb=alpha<<24;
                                 }
-                                else if(temp>255){
+                                else if((temp*mul)>255){
                                     temp_int=255;
                                     alpha=255;
                                     rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
                                 }else{
+                                    temp_int=(int)(temp*mul)+1;
                                     alpha=255;
-                                    temp_int=(int)temp;
                                     rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
                                 }
                                 if(orient[2]=='I'){
@@ -430,7 +432,7 @@ public class NiftiVolume
                         break;
                         
                     default:
-                        mul=255.0/max;
+                        mul=254.0/max;
                         //Axial is the default plane to graph on
                         b=new BufferedImage(nx,ny,BufferedImage.TYPE_INT_ARGB);
                         if(orient[0]=='R'){
@@ -451,17 +453,18 @@ public class NiftiVolume
                                 break;
                             }
                             for(int j=0;j<ny;j++){
-                                temp =(mul*data.get(i,j,sliceNum,dimension));
-                                if(temp>=32000){
-                                    rgb=(int)temp|0x00FFFFFF;
+                                temp =data.get(i,j,sliceNum,dimension);
+                                if(temp==Double.NaN){
+                                    alpha=0;
+                                    rgb=alpha<<24;
                                 }
-                                else if(temp>255){
+                                else if((temp*mul)>255){
                                     temp_int=255;
                                     alpha=255;
                                     rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
                                 }else{
+                                    temp_int=(int)(temp*mul)+1;
                                     alpha=255;
-                                    temp_int=(int)temp;
                                     rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
                                 }
                                 if(orient[1]=='P'){
