@@ -14,8 +14,8 @@ public interface OneVariableFunction {
      * The method should return the value of the function for the specified variable
      * @param x - Value of the independent variable 
      * @return value - Value of the dependent variable 
-     * @throws java.lang.Exception 
+     * @throws IllegalArgumentException Exception caused by an incorrect input argument
      */
-    public double value(double x) throws Exception;
+    public double value(double x) throws IllegalArgumentException;
     
 }

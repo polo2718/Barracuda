@@ -96,7 +96,7 @@ public abstract class IterativeProcess {
 
     /**
      * Sets the number of Maximum Iterations that are allowed to be performed.
-     * @param maximumIterations 
+     * @param maximumIterations number of maximum iterations that the iterative process should allow
      */
     public void setMaximumIterations(int maximumIterations) throws IllegalArgumentException{
         if(maximumIterations<1)
@@ -123,7 +123,7 @@ public abstract class IterativeProcess {
     
     /**
      * Sets the desired precision that should be attained by the iterative process.
-     * @param desiredPrecision 
+     * @param desiredPrecision Desired precision for the iterative algorithm
      */
     public void setDesiredPrecision(double desiredPrecision)
             throws IllegalArgumentException
@@ -136,7 +136,7 @@ public abstract class IterativeProcess {
     
     /**
      * This method computes the precision relative to the current result.
-     * @param epsilon
+     * @param epsilon absolute precision
      * @param x current result
      * @return relative precision value
      */

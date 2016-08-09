@@ -82,7 +82,7 @@ public final class GammaFunction implements OneVariableFunction{
      * </p>
      * <p>The logic to compute the value of the function is implemented again to avoid computing
      * an extra logarithm</p>
-     * @param x
+     * @param x independent variable value
      * @return ln(gamma(x))
      */
     public double logValue(double x){

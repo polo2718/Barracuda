@@ -31,7 +31,7 @@ public class BetaFunction implements MultiVariableFunction {
      * <p>variables[1]=double x;</p>
      * <p>variables[2]=double y;</p>
      * @return beta(x,y)
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException an exception is thrown when the input array containing the 2 independent variables has the wrong dimensionality
      */
     @Override
     public double value(double[] variables) throws IllegalArgumentException{
@@ -52,7 +52,7 @@ public class BetaFunction implements MultiVariableFunction {
      * <p>variables[1]=double x;</p>
      * <p>variables[2]=double y;</p>
      * @return ln(beta(x,y))
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException an exception is thrown when the input array containing the 2 independent variables has the wrong dimensionality
      */
     public double logValue(double [] variables) throws IllegalArgumentException{
         if(variables.length==2){

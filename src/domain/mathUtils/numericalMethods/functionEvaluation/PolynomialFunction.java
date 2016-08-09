@@ -38,7 +38,7 @@ public class PolynomialFunction implements OneVariableFunction {
      * Compute the value of a polynomial function
      * The value is computed using Horner's method
      * @param x -  value of the independent variable
-     * @return 
+     * @return value of the polynomial evaluated at x.
      */
     @Override
     public double value(double x){
