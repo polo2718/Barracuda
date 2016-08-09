@@ -31,7 +31,7 @@ public abstract class IterativeProcess {
     /**
      * Desired precision that should be attained after the algorithm execution.
      */
-    private double desiredPrecision=0;
+    private double desiredPrecision=GenericMathDefinitions.defaultNumericalPrecision();
     
     /**
      * Performs the iterative method
@@ -61,7 +61,7 @@ public abstract class IterativeProcess {
     
     /**
      * A subclass should compute the result of the current iteration according to each specific algorithm  
-     * @return  relative precision of the result after performing the iteration
+     * @return  relative precision of the result after performing the iteration.
      */
     public abstract double evaluateIteration();
     
@@ -98,7 +98,10 @@ public abstract class IterativeProcess {
      * Sets the number of Maximum Iterations that are allowed to be performed.
      * @param maximumIterations 
      */
-    public void setMaximumIterations(int maximumIterations) {
+    public void setMaximumIterations(int maximumIterations) throws IllegalArgumentException{
+        if(maximumIterations<1)
+            throw new IllegalArgumentException("Specified number of maximum iterations is less than one " +
+                    maximumIterations);
         this.maximumIterations = maximumIterations;
     }
 
@@ -122,13 +125,24 @@ public abstract class IterativeProcess {
      * Sets the desired precision that should be attained by the iterative process.
      * @param desiredPrecision 
      */
-    public void setDesiredPrecision(double desiredPrecision) {
+    public void setDesiredPrecision(double desiredPrecision)
+            throws IllegalArgumentException
+    {
+        if(desiredPrecision<=0)
+                throw new IllegalArgumentException("Non positive or zero desired precision "+
+                        desiredPrecision);
         this.desiredPrecision = desiredPrecision;
     }
     
-    public double relativePrecision(double delta, double x){
+    /**
+     * This method computes the precision relative to the current result.
+     * @param epsilon
+     * @param x current result
+     * @return relative precision value
+     */
+    public double relativePrecision(double epsilon, double x){
         return x>GenericMathDefinitions.defaultNumericalPrecision()
-                ?delta/x:delta;
+                ?epsilon/x:epsilon;
     }
     
 }
