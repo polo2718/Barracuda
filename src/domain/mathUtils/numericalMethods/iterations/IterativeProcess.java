@@ -37,7 +37,7 @@ public abstract class IterativeProcess {
      * Performs the iterative method
      */
     public void evaluate(){
-        initializeIteration();
+        initializeIterations();
         while(iterations++<maximumIterations){
             //perform next iteration
             precision=evaluateIteration();
@@ -45,7 +45,7 @@ public abstract class IterativeProcess {
             if(hasConverged())
                 break;
         }
-        finalizeIteration();
+        finalizeIterations();
     }
     
     /**
@@ -57,7 +57,7 @@ public abstract class IterativeProcess {
     /**
      * Defines necessary initial parameters/conditions to start a specific iterative process. 
      */
-    public abstract void initializeIteration();
+    public abstract void initializeIterations();
     
     /**
      * A subclass should compute the result of the current iteration according to each specific algorithm  
@@ -68,7 +68,7 @@ public abstract class IterativeProcess {
     /**
      * Releases the resources that were used by the iterative process. 
      */
-    public abstract void finalizeIteration();
+    public abstract void finalizeIterations();
     
     /**
      * Test if the algorithm has converged or attained the desired precision 
