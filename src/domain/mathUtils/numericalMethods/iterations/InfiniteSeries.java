@@ -70,7 +70,7 @@ public abstract class InfiniteSeries extends IterativeProcess {
     
     /**
      * Sets the infinite series argument
-     * @param argument 
+     * @param argument series argument
      */
     public void setArgument(double argument){
         this.argument=argument;
