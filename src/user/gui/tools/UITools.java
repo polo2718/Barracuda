@@ -158,8 +158,8 @@ public abstract class UITools {
                 else if((val*mul)>765){ //More than max display is black
                     rgb = 0xFF000000;
                 }
-                else if(val<0){ //Less than min is white
-                    rgb=0xFFFFFFFF;
+                else if(val<0){ //Less than min is black
+                    rgb=0xFF000000;
                 }else{
                     val=val*mul; //Multiply by dynamic range
                     temp=(int) Math.floor(val/255);
@@ -220,8 +220,8 @@ public abstract class UITools {
                 else if((val*mul)>765){ //More than max display is black
                     rgb = 0xFF000000;
                 }
-                else if(val<0){ //Less than min is white
-                    rgb=0xFFFFFFFF;
+                else if(val<0){ //Less than min is black
+                    rgb=0xFF000000;
                 }else{
                     val=val*mul; //Multiply by dynamic range
                     temp=(int) Math.floor(val/255);
