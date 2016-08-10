@@ -18,6 +18,7 @@ import java.util.zip.GZIPOutputStream;
 import java.awt.image.*;
 import domain.mathUtils.arrayTools.ArrayOperations;
 import domain.mathUtils.linearAlgebra.LinearAlgebra;
+import user.gui.tools.UITools;
 
 
 public class NiftiVolume
@@ -28,6 +29,7 @@ public class NiftiVolume
     public char[] orient;
     private String orientation;
     private double max;
+    private double min;
 
     public NiftiVolume(int nx, int ny, int nz, int dim)
     {
@@ -294,20 +296,17 @@ public class NiftiVolume
      * @return <p>b -A gray-scale BufferedImage with the slice adjusted to its 
      * dimensions </p>
      */ 
-    public BufferedImage drawNiftiSlice(int sliceNum, String plane, int dimension){
+    public BufferedImage drawNiftiSlice(int sliceNum, String plane, int dimension,String colormap){
 	// Initialize variables
         double temp;
-        int rgb,temp_int,alpha,z_idx,x_idx,y_idx;
+        int rgb,z_idx,x_idx,y_idx;
         BufferedImage b;
-        
         // get image dimensions
         int nx  = header.dim[1];
         int ny  = header.dim[2];
         int nz  = header.dim[3];
         int dim = header.dim[4];
 
-        double mul;
-        
         if(orientation.equals("LPI")|orientation.equals("RPI")|
         orientation.equals("LPS")|orientation.equals("RPS")|
         orientation.equals("LAI")|orientation.equals("RAI")|
@@ -316,20 +315,17 @@ public class NiftiVolume
         if (dim>=dimension){
                 switch (plane) {
                     case "saggital":
-                        mul=254.0/max;
                         b=new BufferedImage(ny,nz,BufferedImage.TYPE_INT_ARGB);
-                        if(orient[1]=='A'){
-                            y_idx=ny-1;
-                        }else if(orient[1]=='P'){y_idx=0;}
+                        if(orient[1]=='A'){y_idx=ny-1;}
+                        else if(orient[1]=='P'){y_idx=0;}
                         else{
                             System.out.println("Invalid orientation: Use dcm2nii to change orientation");
                             b=null;
                             break;
                         }
                         for(int i=0;i<ny;i++){
-                            if(orient[2]=='I'){
-                                z_idx=nz-1; 
-                            }else if(orient[2]=='S'){z_idx=0;}
+                            if(orient[2]=='I'){z_idx=nz-1;}
+                            else if(orient[2]=='S'){z_idx=0;}
                             else{
                                 System.out.println("Invalid orientation: Use dcm2nii to change orientation");
                                 b=null;
@@ -337,19 +333,7 @@ public class NiftiVolume
                             }
                             for(int j=0;j<nz;j++){
                                 temp = data.get(sliceNum,i,j,dimension);
-                                if(temp==Double.NaN){
-                                    alpha=0;
-                                    rgb=alpha<<24;
-                                }
-                                else if((temp*mul)>255){
-                                    temp_int=255;
-                                    alpha=255;
-                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
-                                }else{
-                                    temp_int=(int)(temp*mul)+1;
-                                    alpha=255;
-                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
-                                }
+                                rgb=UITools.doubleToRGB(temp, max, min,colormap);
                                 if(orient[2]=='I'){
                                     if(orient[1]=='P'){
                                         b.setRGB(i,z_idx,rgb);
@@ -374,7 +358,6 @@ public class NiftiVolume
                         break;
                         
                     case "coronal":
-                        mul=254.0/max;
                         b=new BufferedImage(nx,nz,BufferedImage.TYPE_INT_ARGB);
                         if(orient[0]=='R'){
                             x_idx=nx-1;
@@ -395,19 +378,7 @@ public class NiftiVolume
                             }
                             for(int j=0;j<nz;j++){
                                 temp = data.get(i,sliceNum,j,dimension);
-                                if(temp==Double.NaN){
-                                    alpha=0;
-                                    rgb=alpha<<24;
-                                }
-                                else if((temp*mul)>255){
-                                    temp_int=255;
-                                    alpha=255;
-                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
-                                }else{
-                                    temp_int=(int)(temp*mul)+1;
-                                    alpha=255;
-                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
-                                }
+                                rgb=UITools.doubleToRGB(temp, max, min,colormap);
                                 if(orient[2]=='I'){
                                     if(orient[0]=='L'){
                                         b.setRGB(i,z_idx,rgb);
@@ -432,7 +403,6 @@ public class NiftiVolume
                         break;
                         
                     default:
-                        mul=254.0/max;
                         //Axial is the default plane to graph on
                         b=new BufferedImage(nx,ny,BufferedImage.TYPE_INT_ARGB);
                         if(orient[0]=='R'){
@@ -454,19 +424,7 @@ public class NiftiVolume
                             }
                             for(int j=0;j<ny;j++){
                                 temp =data.get(i,j,sliceNum,dimension);
-                                if(temp==Double.NaN){
-                                    alpha=0;
-                                    rgb=alpha<<24;
-                                }
-                                else if((temp*mul)>255){
-                                    temp_int=255;
-                                    alpha=255;
-                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
-                                }else{
-                                    temp_int=(int)(temp*mul)+1;
-                                    alpha=255;
-                                    rgb = alpha<<24|temp_int<<16|temp_int<<8|temp_int;
-                                }
+                                rgb=UITools.doubleToRGB(temp, max, min,colormap);
                                 if(orient[1]=='P'){
                                     if(orient[0]=='L'){
                                         b.setRGB(i,y_idx,rgb);
@@ -584,10 +542,23 @@ public class NiftiVolume
     public void setMax3D(int dimension){
         max=ArrayOperations.findMaximum(data.get3DArray(dimension));
     }
+    public void setMin3D(int dimension){
+        min=ArrayOperations.findMinimum(data.get3DArray(dimension));
+    }
+    
     public void setMax(double m){
         max=m;
     }
+    
+    public void setMin(double m){
+        min=m;
+    }
+    
     public double getMax(){
         return max;
+    }
+    
+    public double getMin(){
+        return min;
     }
 }
