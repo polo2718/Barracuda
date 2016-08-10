@@ -8,7 +8,7 @@ import domain.mathUtils.numericalMethods.GenericMathDefinitions;
 
 /**
  *This abstract class provides the general framework to perform any iterative process.
- * Any specific algorithm that performs an iterative process should be a subclass.
+ * Any specific algorithm that performs an iterative process should be a subclass of this class.
  * @author "Leopoldo Cendejas-Zaragoza, 2016, Illinois Institute of Technology"
  * Adapted from Didier H. Besset (2002) Object-Oriented Implementation of Numerical Methods. Morgan Kauffman Publishers
  */
@@ -34,6 +34,12 @@ public abstract class IterativeProcess {
     private double desiredPrecision=GenericMathDefinitions.defaultNumericalPrecision();
     
     /**
+     * Constructor
+     */
+    public IterativeProcess(){
+    }
+    
+    /**
      * Performs the iterative method
      */
     public void evaluate(){
@@ -46,12 +52,6 @@ public abstract class IterativeProcess {
                 break;
         }
         finalizeIterations();
-    }
-    
-    /**
-     * Constructor
-     */
-    public IterativeProcess(){
     }
     
     /**

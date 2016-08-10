@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package domain.mathUtils.numericalMethods.iterations;
+import domain.mathUtils.numericalMethods.interfaces.OneVariableFunction;
 
 /**
  * This class provides a framework to compute an infinite series. 
@@ -11,7 +12,7 @@ package domain.mathUtils.numericalMethods.iterations;
  * <p>When the series term has a lower value than the desired precision, then the computation should finish.
  * Thus the series computation can follow a general iterative process
  * <p>Each subclass should be able to retrieve specific elements of the series by implementing the abstract methods.
- * <p>A series is a function. Therefore the subclasses of this framework should implement the oneVariable function interface
+ * <p>A series is a function. Therefore the subclasses of this framework should implement the {@link OneVariableFunction} interface
  * @author "Leopoldo Cendejas-Zaragoza, 2016, Illinois Institute of Technology"
  * @see IterativeProcess
  * Adapted from Didier H. Besset (2002) Object-Oriented Implementation of Numerical Methods. Morgan Kauffman Publishers
@@ -26,12 +27,12 @@ public abstract class InfiniteSeries extends IterativeProcess {
     /**
      * Argument for the series
      */
-    private double argument;
+    protected double argument;
     
     /**
      * Value of the last evaluated term in the series
      */
-    private double lastTerm;
+    protected double lastTerm;
     
     /**
      * Computes the nth term of the series. The computed values is stored in
@@ -67,6 +68,10 @@ public abstract class InfiniteSeries extends IterativeProcess {
         this.result+=lastTerm;
         return super.relativePrecision(Math.abs(lastTerm), Math.abs(result));
     }
+
+    @Override
+    public void finalizeIterations(){
+    }
     
     /**
      * Sets the infinite series argument
@@ -74,5 +79,13 @@ public abstract class InfiniteSeries extends IterativeProcess {
      */
     public void setArgument(double argument){
         this.argument=argument;
+    }
+
+    /**
+     * 
+     * @return series estimate after performing the iterative process 
+     */
+    public double getResult() {
+        return result;
     }
 }
