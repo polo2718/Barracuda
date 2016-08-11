@@ -56,15 +56,25 @@ public class IncompleteGammaSeriesTest {
         x=3;
         variables[0]=x;
         variables[1]=alpha;
-        expResult = 2.21684106573;
+        expResult = 0.184736755476;
         result = incompleteGamma.value(variables);
         System.out.println("expResult= "+expResult);
         System.out.println("result= "+ result);
         System.out.println(incompleteGamma.toString());
         assertEquals(expResult, result, 1e-8);
         System.out.println("Test passed!!!");
-    }
-
-
-    
+        
+        System.out.println("***IncompleteGammaSeriesTest 2*****");
+        alpha=903.45;
+        x=800.8575;
+        variables[0]=x;
+        variables[1]=alpha;
+        expResult = 1.996767530907947e-04;
+        result = incompleteGamma.value(variables);
+        System.out.println("expResult= "+expResult);
+        System.out.println("result= "+ result);
+        System.out.println(incompleteGamma.toString());
+        assertEquals(expResult, result, 1e-6);
+        System.out.println("Test passed!!!");
+    }    
 }
