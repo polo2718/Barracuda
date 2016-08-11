@@ -30,6 +30,7 @@ public class NiftiVolume
     private String orientation;
     private double max;
     private double min;
+    private int[][] drawRange = new int[3][4];
 
     public NiftiVolume(int nx, int ny, int nz, int dim)
     {
@@ -301,11 +302,9 @@ public class NiftiVolume
         double temp;
         int rgb,z_idx,x_idx,y_idx;
         BufferedImage b;
-        // get image dimensions
-        int nx  = header.dim[1];
-        int ny  = header.dim[2];
-        int nz  = header.dim[3];
+        
         int dim = header.dim[4];
+        int dx,dy;
 
         if(orientation.equals("LPI")|orientation.equals("RPI")|
         orientation.equals("LPS")|orientation.equals("RPS")|
@@ -315,73 +314,82 @@ public class NiftiVolume
         if (dim>=dimension){
                 switch (plane) {
                     case "saggital":
-                        b=new BufferedImage(ny,nz,BufferedImage.TYPE_INT_ARGB);
-                        if(orient[1]=='A'){y_idx=ny-1;}
+                        
+                        dx=drawRange[0][2]-drawRange[0][0];
+                        dy=drawRange[0][3]-drawRange[0][1];
+                        b=new BufferedImage(dx,dy,BufferedImage.TYPE_INT_ARGB);
+                        if(orient[1]=='A'){y_idx=dx-1;}
                         else if(orient[1]=='P'){y_idx=0;}
                         else{
                             System.out.println("Invalid orientation: Use dcm2nii to change orientation");
                             b=null;
                             break;
                         }
-                        for(int i=0;i<ny;i++){
-                            if(orient[2]=='I'){z_idx=nz-1;}
+                        for(int i=drawRange[0][0];i<drawRange[0][2];i++){
+                            if(orient[2]=='I'){z_idx=dy-1;}
                             else if(orient[2]=='S'){z_idx=0;}
                             else{
                                 System.out.println("Invalid orientation: Use dcm2nii to change orientation");
                                 b=null;
                                 break;
                             }
-                            for(int j=0;j<nz;j++){
+                            for(int j=drawRange[0][1];j<drawRange[0][3];j++){
                                 temp = data.get(sliceNum,i,j,dimension);
                                 rgb=UITools.doubleToRGB(temp, max, min,colormap);
                                 if(orient[2]=='I'){
                                     if(orient[1]=='P'){
-                                        b.setRGB(i,z_idx,rgb);
+                                        b.setRGB(y_idx,z_idx,rgb);
                                         z_idx=z_idx-1;
+                                        
                                     }else{
                                         b.setRGB(y_idx,z_idx,rgb);
                                         z_idx=z_idx-1;   
                                     }
                                 }else{
                                     if(orient[1]=='P'){
-                                        b.setRGB(i,j,rgb);
+                                        b.setRGB(y_idx,z_idx,rgb);
+                                        z_idx=z_idx+1;
                                     }else{
-                                        b.setRGB(y_idx,j,rgb);   
+                                        b.setRGB(y_idx,z_idx,rgb); 
+                                        z_idx=z_idx+1;
                                     }
                                 }
                             }
                             if(orient[1]!='P'){
                             y_idx=y_idx-1;
-                            }else{y_idx=0;}
+                            }else{y_idx=y_idx+1;}
                         }
                         b = getNiftiScaledImage(b,scale[1],scale[2]);
                         break;
                         
                     case "coronal":
-                        b=new BufferedImage(nx,nz,BufferedImage.TYPE_INT_ARGB);
+                        
+                        dx=drawRange[1][2]-drawRange[1][0];
+                        dy=drawRange[1][3]-drawRange[1][1];
+                        b=new BufferedImage(dx,dy,BufferedImage.TYPE_INT_ARGB);
                         if(orient[0]=='R'){
-                            x_idx=nx-1;
+                            x_idx=dx-1;
                         }else if(orient[0]=='L'){x_idx=0;}
                          else{
                             System.out.println("Invalid orientation: Use dcm2nii to change orientation");
                             b=null;
                             break;
                         }
-                        for(int i=0;i<nx;i++){
+                        for(int i=drawRange[1][0];i<drawRange[1][2];i++){
                             if(orient[2]=='I'){
-                                z_idx=nz-1; 
+                                z_idx=dy-1; 
                             }else if(orient[2]=='S'){z_idx=0;}
                             else{
                                 System.out.println("Invalid orientation: Use dcm2nii to change orientation");
                                 b=null;
                                 break;
                             }
-                            for(int j=0;j<nz;j++){
+                            for(int j=drawRange[1][1];j<drawRange[1][3];j++){
                                 temp = data.get(i,sliceNum,j,dimension);
                                 rgb=UITools.doubleToRGB(temp, max, min,colormap);
                                 if(orient[2]=='I'){
                                     if(orient[0]=='L'){
-                                        b.setRGB(i,z_idx,rgb);
+                                        b.setRGB(x_idx,z_idx,rgb);
                                         z_idx=z_idx-1;
                                     }else{
                                         b.setRGB(x_idx,z_idx,rgb);
@@ -389,45 +397,49 @@ public class NiftiVolume
                                     }
                                 }else{
                                     if(orient[0]=='L'){
-                                        b.setRGB(i,j,rgb);
+                                        b.setRGB(x_idx,z_idx,rgb);
+                                        z_idx=z_idx+1;
                                     }else{
-                                        b.setRGB(x_idx,j,rgb);  
+                                        b.setRGB(x_idx,z_idx,rgb); 
+                                        z_idx=z_idx+1;
                                     }
                                 }
                             }
                             if(orient[0]!='L'){
                             x_idx=x_idx-1; 
-                            }else{x_idx=0;}
+                            }else{x_idx=x_idx+1;}
                         }
                         b = getNiftiScaledImage(b,scale[0],scale[2]);
                         break;
                         
                     default:
+                        dx=drawRange[2][2]-drawRange[2][0];
+                        dy=drawRange[2][3]-drawRange[2][1];
                         //Axial is the default plane to graph on
-                        b=new BufferedImage(nx,ny,BufferedImage.TYPE_INT_ARGB);
+                        b=new BufferedImage(dx,dy,BufferedImage.TYPE_INT_ARGB);
                         if(orient[0]=='R'){
-                            x_idx=nx-1;
+                            x_idx=dx-1;
                         }else if(orient[0]=='L'){x_idx=0;}
                         else{
                             System.out.println("Invalid orientation: Use dcm2nii to change orientation");
                             b=null;
                             break;
                         }
-                        for(int i=0;i<nx;i++){
+                        for(int i=drawRange[2][0];i<drawRange[2][2];i++){
                             if(orient[1]=='P'){
-                                y_idx=ny-1;
+                                y_idx=dy-1;
                             }else if(orient[1]=='A'){y_idx=0;}
                             else{
                                 System.out.println("Invalid orientation: Use dcm2nii to change orientation");
                                 b=null;
                                 break;
                             }
-                            for(int j=0;j<ny;j++){
+                            for(int j=drawRange[2][1];j<drawRange[2][3];j++){
                                 temp =data.get(i,j,sliceNum,dimension);
                                 rgb=UITools.doubleToRGB(temp, max, min,colormap);
                                 if(orient[1]=='P'){
                                     if(orient[0]=='L'){
-                                        b.setRGB(i,y_idx,rgb);
+                                        b.setRGB(x_idx,y_idx,rgb);
                                         y_idx=y_idx-1;
                                     }else{
                                         b.setRGB(x_idx,y_idx,rgb);
@@ -435,15 +447,17 @@ public class NiftiVolume
                                     }
                                 }else{
                                     if(orient[0]=='L'){
-                                        b.setRGB(i,j,rgb);
+                                        b.setRGB(x_idx,y_idx,rgb);
+                                        y_idx=y_idx+1;
                                     }else{
-                                        b.setRGB(x_idx,j,rgb); 
+                                        b.setRGB(x_idx,y_idx,rgb);
+                                        y_idx=y_idx+1;
                                     }
                                 }
                             }
                             if(orient[0]!='L'){
                             x_idx=x_idx-1;
-                            }else{x_idx=0;}
+                            }else{x_idx=x_idx+1;}
                         }
                         b = getNiftiScaledImage(b,scale[0],scale[1]);
                         break;
@@ -549,7 +563,6 @@ public class NiftiVolume
     public void setMax(double m){
         max=m;
     }
-    
     public void setMin(double m){
         min=m;
     }
@@ -557,8 +570,20 @@ public class NiftiVolume
     public double getMax(){
         return max;
     }
-    
     public double getMin(){
         return min;
+    }
+    
+    public int[][] getDrawRange(){
+        return drawRange;
+    }
+    public void setDrawRange(int range[][]){
+        drawRange=range;
+    }
+    public void setDrawRange(int x,int y, int val){
+        drawRange[x][y]=val;
+    }
+    public int getDrawRange(int x,int y){
+        return drawRange[x][y];
     }
 }

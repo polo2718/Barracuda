@@ -135,6 +135,9 @@
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Crosshair"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="crosshairMenuActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="zoomMenu">
               <Properties>
@@ -143,6 +146,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Zoom"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="zoomMenuActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="panMenu">
               <Properties>
@@ -151,6 +157,18 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Pan"/>
               </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="unZoomMenu">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Alt+MINUS"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Unzoom"/>
+                <Property name="actionCommand" type="java.lang.String" value="Reset Zoom"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="unZoomMenuActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -186,7 +204,7 @@
       <Connection code="getMainIcon()" type="code"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[700, 750]"/>
+      <Dimension value="[600, 650]"/>
     </Property>
   </Properties>
   <SyntheticProperties>
@@ -216,20 +234,20 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="axialPanel" pref="292" max="32767" attributes="0"/>
-                          <Component id="coronalPanel" pref="292" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="saggitalPanel" pref="293" max="32767" attributes="0"/>
-                          <Component id="infoPanel" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="axialPanel" pref="277" max="32767" attributes="0"/>
+                          <Component id="coronalPanel" pref="277" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" pref="115" max="-2" attributes="0"/>
                   </Group>
+              </Group>
+              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="saggitalPanel" pref="314" max="32767" attributes="0"/>
+                  <Component id="infoPanel" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
           </Group>
@@ -238,19 +256,24 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="coronalPanel" pref="328" max="32767" attributes="0"/>
-                  <Component id="saggitalPanel" pref="328" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="coronalPanel" pref="296" max="32767" attributes="0"/>
+                  <Component id="saggitalPanel" pref="296" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="infoPanel" min="-2" max="-2" attributes="0"/>
-                  <Component id="axialPanel" min="-2" pref="330" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="infoPanel" max="32767" attributes="0"/>
+                      <EmptySpace min="16" pref="16" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="axialPanel" pref="295" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -279,13 +302,13 @@
                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Component id="coronalLabel2" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
-                      <Component id="coronalSlider" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
-                      <Component id="coronalLabel" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
+                      <Component id="coronalSlider" alignment="2" pref="241" max="32767" attributes="0"/>
+                      <Component id="coronalLabel" alignment="2" max="32767" attributes="0"/>
                       <Component id="coronalLabel4" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="coronalLabel3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -295,15 +318,15 @@
                   <Component id="coronalSlider" min="-2" pref="26" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Component id="coronalLabel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="coronalLabel" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
+                      <Component id="coronalLabel" alignment="2" max="32767" attributes="0"/>
                       <Component id="coronalLabel1" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="coronalLabel3" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="coronalLabel4" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="4" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -334,6 +357,7 @@
           <Events>
             <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="coronalLabelMouseDragged"/>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="coronalLabelMouseClicked"/>
+            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="coronalLabelMouseReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="coronalLabel3">
@@ -404,13 +428,13 @@
                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Component id="axialLabel2" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
-                      <Component id="axialLabel" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
+                      <Component id="axialLabel" alignment="2" max="32767" attributes="0"/>
                       <Component id="axialLabel4" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
-                      <Component id="axialSlider" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
+                      <Component id="axialSlider" alignment="2" pref="241" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="axialLabel3" min="-2" pref="15" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -418,13 +442,13 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <Component id="axialLabel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Component id="axialLabel3" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="axialLabel" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
+                      <Component id="axialLabel" alignment="2" max="32767" attributes="0"/>
                       <Component id="axialLabel1" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="axialLabel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Component id="axialSlider" min="-2" pref="26" max="-2" attributes="0"/>
@@ -524,9 +548,9 @@
                   <Component id="saggitalLabel2" min="-2" pref="15" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="saggitalSlider" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
+                      <Component id="saggitalSlider" alignment="2" pref="262" max="32767" attributes="0"/>
                       <Component id="saggitalLabel4" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
-                      <Component id="saggitalLabel" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
+                      <Component id="saggitalLabel" alignment="2" max="32767" attributes="0"/>
                       <Component id="saggitalLabel5" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
@@ -541,15 +565,15 @@
                   <Component id="saggitalSlider" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Component id="saggitalLabel4" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Component id="saggitalLabel3" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="saggitalLabel" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
+                      <Component id="saggitalLabel" alignment="2" pref="230" max="32767" attributes="0"/>
                       <Component id="saggitalLabel2" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="saggitalLabel5" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -670,8 +694,8 @@
                       <Component id="neuroView" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="radioView" alignment="0" min="-2" pref="131" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -681,7 +705,8 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="cbm1" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                                  <Component id="colorBarMin" max="32767" attributes="0"/>
+                                  <Component id="colorBarMin" min="-2" pref="66" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -690,7 +715,8 @@
                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                           <Component id="cbm" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                          <Component id="colorBarMax" max="32767" attributes="0"/>
+                          <Component id="colorBarMax" min="-2" pref="63" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -760,7 +786,7 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="132" max="32767" attributes="0"/>
+                  <EmptySpace pref="87" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
