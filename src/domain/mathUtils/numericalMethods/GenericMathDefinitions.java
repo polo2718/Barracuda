@@ -40,6 +40,11 @@ public class GenericMathDefinitions {
      * Smallest number different from zero. A number that can be added to some value without noticeably changing the result of the computation
      */
     private static double smallestNumber=0;
+    
+    /**
+     * Typical small number. defined as the sqrt of the smallest number
+     */
+    private static double smallNumber=0;
 
     /**
      * Constructor
@@ -166,5 +171,12 @@ public class GenericMathDefinitions {
             smallestNumber=fullMantissa;
             fullMantissa *= inverseRadix;
         }
+    }
+    
+    public static double smallNumber()
+    {
+	if ( smallNumber == 0 )
+		smallNumber = Math.sqrt( getSmallestNumber()); 
+	return smallNumber;
     }
 }

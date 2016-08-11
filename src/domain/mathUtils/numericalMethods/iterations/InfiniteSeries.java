@@ -35,7 +35,7 @@ public abstract class InfiniteSeries extends IterativeProcess {
     protected double lastTerm;
     
     /**
-     * Computes the nth term of the series. The computed values is stored in
+     * Computes the nth term of the series. The computed value is stored in
      * {@link InfiniteSeries#lastTerm}
      * @param n - nth
      */
@@ -82,7 +82,7 @@ public abstract class InfiniteSeries extends IterativeProcess {
     }
 
     /**
-     * 
+     * Returns the series estimate after performing the iterative process
      * @return series estimate after performing the iterative process 
      */
     public double getResult() {
