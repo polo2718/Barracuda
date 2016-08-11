@@ -83,7 +83,7 @@ public abstract class IterativeProcess {
      * @return number of performed iterations
      */
     public int getIterations() {
-        return iterations;
+        return iterations==0 ? iterations : iterations-1;
     }
 
     /**
@@ -145,4 +145,17 @@ public abstract class IterativeProcess {
                 ?epsilon/x:epsilon;
     }
     
+    @Override
+    public String toString(){
+        String s;
+            s=("*******ITERATIVE PROCESS STATUS**********\n"+
+                    "Has converged= " + hasConverged()+ "\n"+
+                    "Number of maximum iterations= " +getMaximumIterations()+ "\n"+
+                    "Performed Iterations= " + getIterations() + "\n"+
+                    "Desired precision= " +getDesiredPrecision()+ "\n"+
+                    "Attained Precision= " +getPrecision()+ "\n"+
+                    "****************************************\n"
+                    );          
+        return s;
+    }
 }

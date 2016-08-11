@@ -11,30 +11,26 @@ import domain.mathUtils.numericalMethods.iterations.InfiniteSeries;
 import domain.mathUtils.numericalMethods.iterations.IterativeProcess;
 
 /**
- *
+ * This class defines the Incomplete Gamma Function through the evaluation of
+ * an infinite series expansion. The calculation of such series is performed through an iterative
+ * process
+ * <p>This is a protected class and can only be used within the package
  * @author "Leopoldo Cendejas-Zaragoza, 2016, Illinois Institute of Technology"
  * @see InfiniteSeries
  * @see IterativeProcess
+ * @see MultiVariableFunction
  */
-public class IncompleteGammaSeries extends InfiniteSeries implements MultiVariableFunction{
+class IncompleteGammaSeries extends InfiniteSeries implements MultiVariableFunction{
     
-    private final double alpha;
+    private double alpha;
+    private double denominator; //auxiliar variable
     private static GammaFunction gammaFunction;
 
     /**
      * Generic constructor for the Incomplete GammaSeries.
      */
     public IncompleteGammaSeries() {
-        alpha=Double.NaN;
         gammaFunction=new GammaFunction();
-    }
-    
-    /**
-     * Constructor for the Incomplete Gamma Series Class
-     * @param alpha independent variable alpha
-     */
-    private IncompleteGammaSeries(double alpha) {
-        this.alpha = alpha;
     }
     
     /**
@@ -52,35 +48,42 @@ public class IncompleteGammaSeries extends InfiniteSeries implements MultiVariab
             throw new IllegalArgumentException("Check input array. Wrong number of independent variables were provided."
                     + " IncompleteGamma function is defined for only two independent variables"
                     + " x and alpha");
-        //Extract first independent variable (x)
+        //Extract first independent variable (x) and set this value as the series argument
         double x= variables[0];
+        super.argument=x;
         //Extract second independent variable
-        double alpha=variables[1];
-        
+        this.alpha=variables[1]; 
         //Initialize auxiliar variables
         double seriesResult;
-        double leadingTerm=Math.exp(-x+alpha*Math.log(x)-gammaFunction.logValue(x));
-                
-        //Initialize an incomplete gamma series object
-        IncompleteGammaSeries incompleteGamma= new IncompleteGammaSeries(alpha);
+        double leadingTerm=Math.exp(-x+alpha*Math.log(x)-gammaFunction.logValue(alpha));
         
         //++++++++Iterative process++++++++++//
         //Perform iterative process for evaluation
-        //Set the argument x for the series
-        incompleteGamma.argument=x;
         //Set the desired precision of the result
-        incompleteGamma.setDesiredPrecision(GenericMathDefinitions.defaultNumericalPrecision());
+        super.setDesiredPrecision(GenericMathDefinitions.defaultNumericalPrecision());
         //Evaluate the series using the iterative method
-        incompleteGamma.evaluate();
-        seriesResult=incompleteGamma.getResult();
+        super.evaluate();
+        seriesResult=super.getResult();
         return leadingTerm*seriesResult;
     }
+    /**
+     * 
+     * @param n iteration number
+     * 
+     */
     @Override
     protected void compute_N_Term(int n) {
+        //Since only the last term in the series is of interest, the denominator auxiliary variable
+        //is used to avoid performing a loop to compute the last term
+        //denominator=alpha+n
+        /*
         super.lastTerm=initialValue();
         for(int i=1;i<=n;i++){
             super.lastTerm*=argument/(alpha+i);
         }
+        */
+        denominator+=1;
+        super.lastTerm*=super.argument/denominator;
     }
     
     /**
@@ -89,7 +92,8 @@ public class IncompleteGammaSeries extends InfiniteSeries implements MultiVariab
      */
     @Override
     protected double initialValue() {
-        return 1.0/alpha;
+        denominator=alpha; //this is an auxiliar variable that is used to avoid a loop calculation in the method compute_N_term
+        super.lastTerm=1.0/alpha;
+        return lastTerm;
     }
-   
 }
