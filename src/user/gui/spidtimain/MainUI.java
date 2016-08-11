@@ -257,6 +257,9 @@ public class MainUI extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 axialLabelMouseClicked(evt);
             }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                axialLabelMouseReleased(evt);
+            }
         });
 
         axialLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -330,6 +333,9 @@ public class MainUI extends javax.swing.JFrame {
         saggitalLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 saggitalLabelMouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                saggitalLabelMouseReleased(evt);
             }
         });
 
@@ -725,7 +731,7 @@ public class MainUI extends javax.swing.JFrame {
         viewMenu.add(panMenu);
 
         unZoomMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_MINUS, java.awt.event.InputEvent.ALT_MASK));
-        unZoomMenu.setText("Unzoom");
+        unZoomMenu.setText("Restore zoom");
         unZoomMenu.setActionCommand("Reset Zoom");
         unZoomMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -957,16 +963,25 @@ public class MainUI extends javax.swing.JFrame {
     private void saggitalLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saggitalLabelMouseDragged
         if(niiVol!=null){
             if(SwingUtilities.isLeftMouseButton(evt)){
-            if(crosshairMenu.isSelected()){
+                if(crosshairMenu.isSelected()){
                     saggitalMouseXHair();
+                }else if(zoomMenu.isSelected()){
+                    if(zoomStartPoint==null){
+                        zoomStartPoint=saggitalLabel.getMousePosition(false);
+                    }else{
+                        zoomEndPoint=saggitalLabel.getMousePosition(false);
+                        drawSaggitalZoomBox();
+                    }
                 }
             }else if(SwingUtilities.isRightMouseButton(evt)){
-                try{
-                mouseAdjustMax(saggitalLabel);
-                updateMaxColorbar();
-                }catch(Exception e){}
+                if(crosshairMenu.isSelected()){
+                    try{
+                        mouseAdjustMax(saggitalLabel);
+                        updateMaxColorbar();
+                    }catch(Exception e){}
+                    }
+                }
             }
-        }
     }//GEN-LAST:event_saggitalLabelMouseDragged
 
     private void axialLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_axialLabelMouseClicked
@@ -982,22 +997,27 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_axialLabelMouseClicked
 
     private void axialLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_axialLabelMouseDragged
-        if(niiVol!=null){
+         if(niiVol!=null){
             if(SwingUtilities.isLeftMouseButton(evt)){
                 if(crosshairMenu.isSelected()){
                     axialMouseXHair();
                 }else if(zoomMenu.isSelected()){
-                    
+                    if(zoomStartPoint==null){
+                        zoomStartPoint=axialLabel.getMousePosition(false);
+                    }else{
+                        zoomEndPoint=axialLabel.getMousePosition(false);
+                        drawAxialZoomBox();
+                    }
+                }
+            }else if(SwingUtilities.isRightMouseButton(evt)){
+                if(crosshairMenu.isSelected()){
+                    try{
+                        mouseAdjustMax(axialLabel);
+                        updateMaxColorbar();
+                    }catch(Exception e){}
+                    }
                 }
             }
-            else if(SwingUtilities.isRightMouseButton(evt)){
-                try{
-                mouseAdjustMax(axialLabel);
-                updateMaxColorbar();
-                }
-                catch(Exception e){}
-            }
-        }
     }//GEN-LAST:event_axialLabelMouseDragged
 
     private void grayScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grayScaleActionPerformed
@@ -1220,6 +1240,50 @@ public class MainUI extends javax.swing.JFrame {
         drawAllSlices();
     }//GEN-LAST:event_zoomMenuActionPerformed
 
+    private void saggitalLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saggitalLabelMouseReleased
+       if(niiVol!=null){
+            if(zoomMenu.isSelected()){
+                if(SwingUtilities.isLeftMouseButton(evt)){
+                    if(zoomStartPoint!=null){
+                        zoomEndPoint=saggitalLabel.getMousePosition(false);
+                        setSaggitalZoom();
+                        zoomStartPoint=null;
+                        zoomEndPoint=null; 
+                    }
+                }else if(SwingUtilities.isRightMouseButton(evt)){
+                    niiVol.setDrawRange(clearDrawRange());
+                    zoomStartPoint=null;
+                    zoomEndPoint=null;
+                    BufferedImage img;
+                    img = niiVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)jSpinner1.getValue(),colorScale);
+                    saggitalScale=UITools.imageToLabel(img, saggitalLabel);
+                }
+            }
+        }
+    }//GEN-LAST:event_saggitalLabelMouseReleased
+
+    private void axialLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_axialLabelMouseReleased
+        if(niiVol!=null){
+            if(zoomMenu.isSelected()){
+                if(SwingUtilities.isLeftMouseButton(evt)){
+                    if(zoomStartPoint!=null){
+                        zoomEndPoint=axialLabel.getMousePosition(false);
+                        setAxialZoom();
+                        zoomStartPoint=null;
+                        zoomEndPoint=null; 
+                    }
+                }else if(SwingUtilities.isRightMouseButton(evt)){
+                    niiVol.setDrawRange(clearDrawRange());
+                    zoomStartPoint=null;
+                    zoomEndPoint=null;
+                    BufferedImage img;
+                    img = niiVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)jSpinner1.getValue(),colorScale);
+                    axialScale=UITools.imageToLabel(img, axialLabel);
+                }
+            }
+        }
+    }//GEN-LAST:event_axialLabelMouseReleased
+
     /**
      * @param args the command line arguments
      */
@@ -1355,7 +1419,7 @@ public class MainUI extends javax.swing.JFrame {
             }
 
     }
-
+    
     private void drawLabelsXHair(){
         drawCoronalXHair();
         drawSaggitalXHair();
@@ -1400,20 +1464,16 @@ public class MainUI extends javax.swing.JFrame {
             int w=labelWidth*2;
             int labelHeight=coronalLabel.getHeight()/2;
             int h=labelHeight*2;
-            int xOffset;
-            int yOffset;
+            int xOffset=niiVol.getDrawRange(1,0);
+            int yOffset=niiVol.getDrawRange(1,1);
             if(niiVol.orient[0]=='L'){
-                xOffset=niiVol.getDrawRange(1,0);
                 x=((int)(((point.getX())-(labelWidth-iconWidth))/(coronalScale*niiVol.scale[0])))+xOffset;
             }else{
-                xOffset=niiVol.getDrawRange(1,0);
                 x=((int)(((w-point.getX())-(labelWidth-iconWidth))/(coronalScale*niiVol.scale[0])))+xOffset;
             }
             if(niiVol.orient[2]=='I'){
-                yOffset=niiVol.getDrawRange(1,1);
                 y=((int)(((h-point.getY())-(labelHeight-iconHeight))/(coronalScale*niiVol.scale[2])))+yOffset;
             }else{
-                yOffset=niiVol.getDrawRange(1,1);
                 y=(int)(((point.getY())-(labelHeight-iconHeight))/(coronalScale*niiVol.scale[2]))+yOffset;
             }
             saggitalSlider.setValue(x);
@@ -1423,8 +1483,8 @@ public class MainUI extends javax.swing.JFrame {
     
     private void drawSaggitalXHair(){
         int Val=saggitalSlider.getValue();
-        int xVal=coronalSlider.getValue();
-        int yVal=axialSlider.getValue();
+        int xVal=coronalSlider.getValue()-niiVol.getDrawRange(0,0);
+        int yVal=axialSlider.getValue()-niiVol.getDrawRange(0,1);
         if(xVal<niiVol.header.dim[2] & Val<niiVol.header.dim[1]& yVal<niiVol.header.dim[3]){
          BufferedImage img;
          img = niiVol.drawNiftiSlice(Val, "saggital",(int)jSpinner1.getValue(),colorScale);
@@ -1459,15 +1519,17 @@ public class MainUI extends javax.swing.JFrame {
             int w=labelWidth*2;
             int labelHeight=saggitalLabel.getHeight()/2;
             int h=labelHeight*2;
+            int xOffset=niiVol.getDrawRange(0,0);
+            int yOffset=niiVol.getDrawRange(0,1);
             if(niiVol.orient[1]=='P'){
-                x=(int)(((point.getX())-(labelWidth-iconWidth))/(saggitalScale*niiVol.scale[1]));
+                x=(int)(((point.getX())-(labelWidth-iconWidth))/(saggitalScale*niiVol.scale[1]))+xOffset;
             }else{
-                x=(int)(((w-point.getX())-(labelWidth-iconWidth))/(saggitalScale*niiVol.scale[1]));
+                x=(int)(((w-point.getX())-(labelWidth-iconWidth))/(saggitalScale*niiVol.scale[1]))+xOffset;
             }
             if(niiVol.orient[2]=='I'){
-                y=(int)(((h-point.getY())-(labelHeight-iconHeight))/(saggitalScale*niiVol.scale[2]));
+                y=(int)(((h-point.getY())-(labelHeight-iconHeight))/(saggitalScale*niiVol.scale[2]))+yOffset;
             }else{
-                y=(int)(((point.getY())-(labelHeight-iconHeight))/(saggitalScale*niiVol.scale[2]));
+                y=(int)(((point.getY())-(labelHeight-iconHeight))/(saggitalScale*niiVol.scale[2]))+yOffset;
             }
             coronalSlider.setValue(x);
             axialSlider.setValue(y);
@@ -1477,8 +1539,8 @@ public class MainUI extends javax.swing.JFrame {
     private void drawAxialXHair(){
         
         int Val=axialSlider.getValue();
-        int xVal=saggitalSlider.getValue();
-        int yVal=coronalSlider.getValue();
+        int xVal=saggitalSlider.getValue()-niiVol.getDrawRange(2,0);
+        int yVal=coronalSlider.getValue()-niiVol.getDrawRange(2,1);
         if(yVal<niiVol.header.dim[2] & xVal<niiVol.header.dim[1] & Val<niiVol.header.dim[3]){
         BufferedImage img;
         img = niiVol.drawNiftiSlice(Val, "axial",(int)jSpinner1.getValue(),colorScale);
@@ -1515,15 +1577,17 @@ public class MainUI extends javax.swing.JFrame {
             int w=labelWidth*2;
             int labelHeight=axialLabel.getHeight()/2;
             int h=labelHeight*2;
+            int xOffset=niiVol.getDrawRange(2,0);
+            int yOffset=niiVol.getDrawRange(2,1);
             if(niiVol.orient[0]=='L'){
-                x=(int)(((point.getX())-(labelWidth-iconWidth))/(axialScale*niiVol.scale[0]));
+                x=(int)(((point.getX())-(labelWidth-iconWidth))/(axialScale*niiVol.scale[0]))+xOffset;
             }else{
-                x=(int)(((w-point.getX())-(labelWidth-iconWidth))/(axialScale*niiVol.scale[0]));
+                x=(int)(((w-point.getX())-(labelWidth-iconWidth))/(axialScale*niiVol.scale[0]))+xOffset;
             }
             if(niiVol.orient[1]=='P'){
-                y=(int)(((h-point.getY())-(labelHeight-iconHeight))/(axialScale*niiVol.scale[1]));
+                y=(int)(((h-point.getY())-(labelHeight-iconHeight))/(axialScale*niiVol.scale[1]))+yOffset;
             }else{
-                y=(int)(((point.getY())-(labelHeight-iconHeight))/(axialScale*niiVol.scale[1]));
+                y=(int)(((point.getY())-(labelHeight-iconHeight))/(axialScale*niiVol.scale[1]))+yOffset;
             }
             saggitalSlider.setValue(x);
             coronalSlider.setValue(y);
@@ -1644,8 +1708,6 @@ public class MainUI extends javax.swing.JFrame {
         int labelHeight=coronalLabel.getHeight()/2;
         int iconHeight=img.getHeight()/2;
         int iconWidth=img.getWidth()/2;
-        int w=labelWidth*2;
-        int h=labelHeight*2;
         
         if(zoomStartPoint!=null & zoomEndPoint!=null){
         int x0=(int)(zoomStartPoint.getX()-(labelWidth-iconWidth));
@@ -1666,10 +1728,14 @@ public class MainUI extends javax.swing.JFrame {
             y0=y1;
             y1=temp;    
         }
+        if(x0<0){x0=0;}
+        if(x1>(2*iconWidth)){x1=2*iconWidth;}
+        if(y0<0){y0=0;}
+        if(y1>(2*iconHeight)){y1=2*iconHeight;}
+        
         g.drawRect(x0,y0,x1-x0,y1-y0);
         }
     }
-    
     private void setCoronalZoom(){
         BufferedImage img;
         img = niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)jSpinner1.getValue(),colorScale);
@@ -1682,13 +1748,14 @@ public class MainUI extends javax.swing.JFrame {
         int iconWidth=img.getWidth()/2;
         int w=iconWidth*2;
         int h=iconHeight*2;
+        
         if(zoomStartPoint!=null & zoomEndPoint!=null){
             //Transform x0,x1,y0,y1 to icon coordinates
             int x0=(int)(zoomStartPoint.getX()-(labelWidth-iconWidth));
             int x1=(int)(zoomEndPoint.getX()-(labelWidth-iconWidth));
             int y0=(int)(zoomStartPoint.getY()-(labelHeight-iconHeight));
             int y1=(int)(zoomEndPoint.getY()-(labelHeight-iconHeight));
-            //Paint rectangle
+            
             Graphics g =img.getGraphics();
             g.setColor(Color.GREEN);
             int temp;
@@ -1702,6 +1769,11 @@ public class MainUI extends javax.swing.JFrame {
                 y0=y1;
                 y1=temp;    
             }
+            if(x0<0){x0=0;}
+            if(x1>(2*iconWidth)){x1=2*iconWidth;}
+            if(y0<0){y0=0;}
+            if(y1>(2*iconHeight)){y1=2*iconHeight;}
+            
             g.drawRect(x0,y0,x1-x0,y1-y0);
             double x00,x11,y00,y11;
             double r=coronalScale*niiVol.scale[0];
@@ -1728,6 +1800,214 @@ public class MainUI extends javax.swing.JFrame {
 
             img = niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)jSpinner1.getValue(),colorScale);
             coronalScale=UITools.imageToLabel(img, coronalLabel);
+        }
+    }
+    
+    private void drawSaggitalZoomBox(){
+        BufferedImage img;
+        img = niiVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)jSpinner1.getValue(),colorScale);
+        saggitalScale=UITools.imageToLabel(img, saggitalLabel);
+        img=(BufferedImage)((ImageIcon)saggitalLabel.getIcon()).getImage();
+        
+        int labelWidth=saggitalLabel.getWidth()/2;
+        int labelHeight=saggitalLabel.getHeight()/2;
+        int iconHeight=img.getHeight()/2;
+        int iconWidth=img.getWidth()/2;
+        
+        if(zoomStartPoint!=null & zoomEndPoint!=null){
+        int x0=(int)(zoomStartPoint.getX()-(labelWidth-iconWidth));
+        int x1=(int)(zoomEndPoint.getX()-(labelWidth-iconWidth));
+        int y0=(int)(zoomStartPoint.getY()-(labelHeight-iconHeight));
+        int y1=(int)(zoomEndPoint.getY()-(labelHeight-iconHeight));
+        
+        Graphics g =img.getGraphics();
+        g.setColor(Color.GREEN);
+        int temp;
+        if(x0>x1){
+            temp=x0;
+            x0=x1;
+            x1=temp;
+        }
+        if(y0>y1){
+            temp=y0;
+            y0=y1;
+            y1=temp;    
+        }
+        
+        if(x0<0){x0=0;}
+        if(x1>(2*iconWidth)){x1=2*iconWidth;}
+        if(y0<0){y0=0;}
+        if(y1>(2*iconHeight)){y1=2*iconHeight;}
+        g.drawRect(x0,y0,x1-x0,y1-y0);
+        }
+    }
+    private void setSaggitalZoom(){
+        BufferedImage img;
+        img = niiVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)jSpinner1.getValue(),colorScale);
+        saggitalScale=UITools.imageToLabel(img, saggitalLabel);
+        img=(BufferedImage)((ImageIcon)saggitalLabel.getIcon()).getImage();
+        
+        int labelWidth=saggitalLabel.getWidth()/2;
+        int labelHeight=saggitalLabel.getHeight()/2;
+        int iconHeight=img.getHeight()/2;
+        int iconWidth=img.getWidth()/2;
+        int w=iconWidth*2;
+        int h=iconHeight*2;
+        
+        if(zoomStartPoint!=null & zoomEndPoint!=null){
+            //Transform x0,x1,y0,y1 to icon coordinates
+            int x0=(int)(zoomStartPoint.getX()-(labelWidth-iconWidth));
+            int x1=(int)(zoomEndPoint.getX()-(labelWidth-iconWidth));
+            int y0=(int)(zoomStartPoint.getY()-(labelHeight-iconHeight));
+            int y1=(int)(zoomEndPoint.getY()-(labelHeight-iconHeight));
+            
+            //Paint rectangle
+            Graphics g =img.getGraphics();
+            g.setColor(Color.GREEN);
+            int temp;
+            if(x0>x1){
+                temp=x0;
+                x0=x1;
+                x1=temp;
+            }
+            if(y0>y1){
+                temp=y0;
+                y0=y1;
+                y1=temp;    
+            }
+            if(x0<0){x0=0;}
+            if(x1>(2*iconWidth)){x1=2*iconWidth;}
+            if(y0<0){y0=0;}
+            if(y1>(2*iconHeight)){y1=2*iconHeight;}
+            g.drawRect(x0,y0,x1-x0,y1-y0);
+            double x00,x11,y00,y11;
+            double r=saggitalScale*niiVol.scale[1];
+            if(niiVol.orient[1]=='P'){
+                    x00=((double)x1/r)+((double)niiVol.getDrawRange(0,0));
+                    x11=((double)x0/r)+((double)niiVol.getDrawRange(0,0));
+            }else{
+                    x00=((double)(w-x0)/r)+((double)niiVol.getDrawRange(0,0));
+                    x11=((double)(w-x1)/r)+((double)niiVol.getDrawRange(0,0));
+            }
+            r=saggitalScale*niiVol.scale[2];
+            if(niiVol.orient[2]=='I'){
+                    y00=((double)(h-y0)/r)+((double)niiVol.getDrawRange(0,1));
+                    y11=((double)(h-y1)/r)+((double)niiVol.getDrawRange(0,1));
+            }else{
+                    y00=((double)y1/r)+((double)niiVol.getDrawRange(0,1));
+                    y11=((double)y0/r)+((double)niiVol.getDrawRange(0,1));
+            }
+            
+            niiVol.setDrawRange(0,0,(int)Math.round(x11));
+            niiVol.setDrawRange(0,1,(int)Math.round(y11));
+            niiVol.setDrawRange(0,2,(int)Math.round(x00));
+            niiVol.setDrawRange(0,3,(int)Math.round(y00));
+            img = niiVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)jSpinner1.getValue(),colorScale);
+            saggitalScale=UITools.imageToLabel(img, saggitalLabel);
+        }
+    }
+    
+    private void drawAxialZoomBox(){
+        BufferedImage img;
+        img = niiVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)jSpinner1.getValue(),colorScale);
+        axialScale=UITools.imageToLabel(img, axialLabel);
+        img=(BufferedImage)((ImageIcon)axialLabel.getIcon()).getImage();
+        
+        int labelWidth=axialLabel.getWidth()/2;
+        int labelHeight=axialLabel.getHeight()/2;
+        int iconHeight=img.getHeight()/2;
+        int iconWidth=img.getWidth()/2;
+        
+        if(zoomStartPoint!=null & zoomEndPoint!=null){
+        int x0=(int)(zoomStartPoint.getX()-(labelWidth-iconWidth));
+        int x1=(int)(zoomEndPoint.getX()-(labelWidth-iconWidth));
+        int y0=(int)(zoomStartPoint.getY()-(labelHeight-iconHeight));
+        int y1=(int)(zoomEndPoint.getY()-(labelHeight-iconHeight));
+        
+        Graphics g =img.getGraphics();
+        g.setColor(Color.GREEN);
+        int temp;
+        if(x0>x1){
+            temp=x0;
+            x0=x1;
+            x1=temp;
+        }
+        if(y0>y1){
+            temp=y0;
+            y0=y1;
+            y1=temp;    
+        }
+        if(x0<0){x0=0;}
+        if(x1>(2*iconWidth)){x1=2*iconWidth;}
+        if(y0<0){y0=0;}
+        if(y1>(2*iconHeight)){y1=2*iconHeight;}
+        g.drawRect(x0,y0,x1-x0,y1-y0);
+        }
+    }
+    private void setAxialZoom(){
+        BufferedImage img;
+        img = niiVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)jSpinner1.getValue(),colorScale);
+        axialScale=UITools.imageToLabel(img, axialLabel);
+        img=(BufferedImage)((ImageIcon)axialLabel.getIcon()).getImage();
+        
+        int labelWidth=axialLabel.getWidth()/2;
+        int labelHeight=axialLabel.getHeight()/2;
+        int iconHeight=img.getHeight()/2;
+        int iconWidth=img.getWidth()/2;
+        int w=iconWidth*2;
+        int h=iconHeight*2;
+        
+        if(zoomStartPoint!=null & zoomEndPoint!=null){
+            //Transform x0,x1,y0,y1 to icon coordinates
+            int x0=(int)(zoomStartPoint.getX()-(labelWidth-iconWidth));
+            int x1=(int)(zoomEndPoint.getX()-(labelWidth-iconWidth));
+            int y0=(int)(zoomStartPoint.getY()-(labelHeight-iconHeight));
+            int y1=(int)(zoomEndPoint.getY()-(labelHeight-iconHeight));
+            
+            //Paint rectangle
+            Graphics g =img.getGraphics();
+            g.setColor(Color.GREEN);
+            int temp;
+            if(x0>x1){
+                temp=x0;
+                x0=x1;
+                x1=temp;
+            }
+            if(y0>y1){
+                temp=y0;
+                y0=y1;
+                y1=temp;    
+            }
+            if(x0<0){x0=0;}
+            if(x1>(2*iconWidth)){x1=2*iconWidth;}
+            if(y0<0){y0=0;}
+            if(y1>(2*iconHeight)){y1=2*iconHeight;}
+            g.drawRect(x0,y0,x1-x0,y1-y0);
+            double x00,x11,y00,y11;
+            double r=axialScale*niiVol.scale[0];
+            if(niiVol.orient[0]=='L'){
+                    x00=((double)x1/r)+((double)niiVol.getDrawRange(2,0));
+                    x11=((double)x0/r)+((double)niiVol.getDrawRange(2,0));
+            }else{
+                    x00=((double)(w-x0)/r)+((double)niiVol.getDrawRange(2,0));
+                    x11=((double)(w-x1)/r)+((double)niiVol.getDrawRange(2,0));
+            }
+            r=axialScale*niiVol.scale[1];
+            if(niiVol.orient[1]=='P'){
+                    y00=((double)(h-y0)/r)+((double)niiVol.getDrawRange(2,1));
+                    y11=((double)(h-y1)/r)+((double)niiVol.getDrawRange(2,1));
+            }else{
+                    y00=((double)y1/r)+((double)niiVol.getDrawRange(2,1));
+                    y11=((double)y0/r)+((double)niiVol.getDrawRange(2,1));
+            }
+
+            niiVol.setDrawRange(2,0,(int)Math.round(x11));
+            niiVol.setDrawRange(2,1,(int)Math.round(y11));
+            niiVol.setDrawRange(2,2,(int)Math.round(x00));
+            niiVol.setDrawRange(2,3,(int)Math.round(y00));
+
+            img = niiVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)jSpinner1.getValue(),colorScale);
+           axialScale=UITools.imageToLabel(img, axialLabel);
         }
     }
     
