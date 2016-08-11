@@ -117,7 +117,4 @@ public abstract class ContinuedFractions extends IterativeProcess {
     public double getResult() {
         return result;
     }
-    
-    
-    
 }

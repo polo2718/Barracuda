@@ -11,9 +11,10 @@ import domain.mathUtils.numericalMethods.iterations.InfiniteSeries;
 import domain.mathUtils.numericalMethods.iterations.IterativeProcess;
 
 /**
- * This class defines the Incomplete Gamma Function through the evaluation of
+ * This class defines the Incomplete Gamma Function gamma(x,alpha) through the evaluation of
  * an infinite series expansion. The calculation of such series is performed through an iterative
  * process
+ * <p> The Incomplete Gamma Series is a Multivariable Function gamma(x,alpha)
  * <p>This is a protected class and can only be used within the package
  * @author "Leopoldo Cendejas-Zaragoza, 2016, Illinois Institute of Technology"
  * @see InfiniteSeries
