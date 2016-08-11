@@ -52,15 +52,16 @@ public class IncompleteGammaSeriesTest {
     public void testValue() {
         System.out.println("***IncompleteGammaSeriesTest*****");
         double[] variables = new double[2];
-        alpha=3;
-        x=5;
+        alpha=5;
+        x=3;
         variables[0]=x;
         variables[1]=alpha;
-        expResult = 0.072945665043;
+        expResult = 2.21684106573;
         result = incompleteGamma.value(variables);
         System.out.println("expResult= "+expResult);
         System.out.println("result= "+ result);
-        assertEquals(expResult, result, 1e-6);
+        System.out.println(incompleteGamma.toString());
+        assertEquals(expResult, result, 1e-8);
         System.out.println("Test passed!!!");
     }
 

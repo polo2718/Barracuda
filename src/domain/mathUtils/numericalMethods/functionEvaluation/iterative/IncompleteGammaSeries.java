@@ -18,7 +18,7 @@ import domain.mathUtils.numericalMethods.iterations.IterativeProcess;
  */
 public class IncompleteGammaSeries extends InfiniteSeries implements MultiVariableFunction{
     
-    private final double alpha;
+    private double alpha;
     private static GammaFunction gammaFunction;
 
     /**
@@ -27,14 +27,6 @@ public class IncompleteGammaSeries extends InfiniteSeries implements MultiVariab
     public IncompleteGammaSeries() {
         alpha=Double.NaN;
         gammaFunction=new GammaFunction();
-    }
-    
-    /**
-     * Constructor for the Incomplete Gamma Series Class
-     * @param alpha independent variable alpha
-     */
-    private IncompleteGammaSeries(double alpha) {
-        this.alpha = alpha;
     }
     
     /**
@@ -55,31 +47,26 @@ public class IncompleteGammaSeries extends InfiniteSeries implements MultiVariab
         //Extract first independent variable (x)
         double x= variables[0];
         //Extract second independent variable
-        double alpha=variables[1];
-        
+        this.alpha=variables[1]; 
         //Initialize auxiliar variables
         double seriesResult;
         double leadingTerm=Math.exp(-x+alpha*Math.log(x)-gammaFunction.logValue(x));
-                
-        //Initialize an incomplete gamma series object
-        IncompleteGammaSeries incompleteGamma= new IncompleteGammaSeries(alpha);
-        
         //++++++++Iterative process++++++++++//
         //Perform iterative process for evaluation
         //Set the argument x for the series
-        incompleteGamma.argument=x;
+        super.argument=x;
         //Set the desired precision of the result
-        incompleteGamma.setDesiredPrecision(GenericMathDefinitions.defaultNumericalPrecision());
+        super.setDesiredPrecision(GenericMathDefinitions.defaultNumericalPrecision());
         //Evaluate the series using the iterative method
-        incompleteGamma.evaluate();
-        seriesResult=incompleteGamma.getResult();
+        super.evaluate();
+        seriesResult=super.getResult();
         return leadingTerm*seriesResult;
     }
     @Override
     protected void compute_N_Term(int n) {
         super.lastTerm=initialValue();
         for(int i=1;i<=n;i++){
-            super.lastTerm*=argument/(alpha+i);
+            super.lastTerm*=argument/(alpha+i+1);
         }
     }
     
@@ -91,5 +78,4 @@ public class IncompleteGammaSeries extends InfiniteSeries implements MultiVariab
     protected double initialValue() {
         return 1.0/alpha;
     }
-   
 }
