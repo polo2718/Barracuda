@@ -28,8 +28,8 @@ public class BetaFunction implements MultiVariableFunction {
      * Returns the value of the beta function evaluated at x,y
      * @param variables 1D array containing two independent variables x and y
      * <p>Example:</p>
-     * <p>variables[1]=double x;</p>
-     * <p>variables[2]=double y;</p>
+     * <p>variables[0]=double x;</p>
+     * <p>variables[1]=double y;</p>
      * @return beta(x,y)
      * @throws IllegalArgumentException an exception is thrown when the input array containing the 2 independent variables has the wrong dimensionality
      */
