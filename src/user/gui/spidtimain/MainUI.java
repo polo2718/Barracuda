@@ -795,7 +795,11 @@ public class MainUI extends javax.swing.JFrame {
 
     private void coronalSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_coronalSliderStateChanged
         if(niiVol!=null){
-            drawLabelsXHair();
+             if(crosshairMenu.isSelected()){
+                 drawLabelsXHair();
+             }else{
+                 drawAllSlices();
+             }
             ySpinner.setValue(coronalSlider.getValue());
             setXYZLabels();
         }
@@ -804,7 +808,11 @@ public class MainUI extends javax.swing.JFrame {
 
     private void saggitalSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_saggitalSliderStateChanged
         if(niiVol!=null){
-            drawLabelsXHair();
+             if(crosshairMenu.isSelected()){
+                 drawLabelsXHair();
+             }else{
+                 drawAllSlices();
+             }
             xSpinner.setValue(saggitalSlider.getValue());
             setXYZLabels();
         }
@@ -812,7 +820,11 @@ public class MainUI extends javax.swing.JFrame {
 
     private void axialSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_axialSliderStateChanged
          if(niiVol!=null){
-            drawLabelsXHair();
+             if(crosshairMenu.isSelected()){
+                 drawLabelsXHair();
+             }else{
+                 drawAllSlices();
+             }
             zSpinner.setValue(axialSlider.getValue());
             setXYZLabels();
         }
@@ -863,14 +875,7 @@ public class MainUI extends javax.swing.JFrame {
                     else{System.out.println("Error");}
                     
                     setColorBar();
-                    //Set spinner and slider models
-                    saggitalSlider.setMaximum(niiVol.header.dim[1]-1);
-                    coronalSlider.setMaximum(niiVol.header.dim[2]-1);
-                    axialSlider.setMaximum(niiVol.header.dim[3]-1);
-                    coronalSlider.setValue((int)(niiVol.header.dim[2]/2));
-                    axialSlider.setValue((int)(niiVol.header.dim[3]/2));
-                    
-                    saggitalSlider.setValue((int)(niiVol.header.dim[1]/2));
+                    //Set spinner values & Models
                     SpinnerNumberModel model = new SpinnerNumberModel(0, 0,niiVol.header.dim[4]-1,1);
                     jSpinner1.setModel(model);
                     model = new SpinnerNumberModel(0,0,niiVol.header.dim[1]-1,1);
@@ -879,6 +884,15 @@ public class MainUI extends javax.swing.JFrame {
                     ySpinner.setModel(model);
                     model = new SpinnerNumberModel(0,0,niiVol.header.dim[3]-1,1);
                     zSpinner.setModel(model);
+                    
+                    //Set slider values
+                    saggitalSlider.setMaximum(niiVol.header.dim[1]-1);
+                    saggitalSlider.setValue((int)(niiVol.header.dim[1]/2));
+                    coronalSlider.setMaximum(niiVol.header.dim[2]-1);
+                    axialSlider.setMaximum(niiVol.header.dim[3]-1);
+                    coronalSlider.setValue((int)(niiVol.header.dim[2]/2));
+                    axialSlider.setValue((int)(niiVol.header.dim[3]/2));
+                    
                     //Get rotation matrix
                     R=niiVol.header.mat33();
                     setXYZLabels();
@@ -1192,9 +1206,7 @@ public class MainUI extends javax.swing.JFrame {
             niiVol.setDrawRange(clearDrawRange());
             zoomStartPoint=null;
             zoomEndPoint=null;
-            BufferedImage img;
-            img = niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)jSpinner1.getValue(),colorScale);
-            coronalScale=UITools.imageToLabel(img, coronalLabel);
+            drawAllSlices();
        }
     }//GEN-LAST:event_unZoomMenuActionPerformed
 
@@ -1519,22 +1531,25 @@ public class MainUI extends javax.swing.JFrame {
     }
     
     private void resizeGraphs(){
+        if(crosshairMenu.isSelected()){
         drawLabelsXHair();
+        }else{
+             drawAllSlices();
+        }
     }
-    
     private void drawAllSlices(){
         int yVal=coronalSlider.getValue();
         int xVal=saggitalSlider.getValue();
         int zVal=axialSlider.getValue();
-        if(zVal<niiVol.header.dim[2] & xVal<niiVol.header.dim[1] & yVal<niiVol.header.dim[3]){
-            BufferedImage img;
-            img = niiVol.drawNiftiSlice(yVal, "coronal",(int)jSpinner1.getValue(),colorScale);       
-            coronalScale=UITools.imageToLabel(img,coronalLabel);
-            img = niiVol.drawNiftiSlice(xVal, "saggital",(int)jSpinner1.getValue(),colorScale);       
-            saggitalScale=UITools.imageToLabel(img,saggitalLabel);
-            img = niiVol.drawNiftiSlice(zVal, "axial",(int)jSpinner1.getValue(),colorScale);       
-            axialScale=UITools.imageToLabel(img,axialLabel);
-        }
+        BufferedImage img;
+        img = niiVol.drawNiftiSlice(yVal, "coronal",(int)jSpinner1.getValue(),colorScale);       
+        coronalScale=UITools.imageToLabel(img,coronalLabel);
+        img=null;
+        img = niiVol.drawNiftiSlice(xVal, "saggital",(int)jSpinner1.getValue(),colorScale);       
+        saggitalScale=UITools.imageToLabel(img,saggitalLabel);
+        img=null;
+        img = niiVol.drawNiftiSlice(zVal, "axial",(int)jSpinner1.getValue(),colorScale);       
+        axialScale=UITools.imageToLabel(img,axialLabel);
     }
     
     private void mouseAdjustMax(JLabel label){
