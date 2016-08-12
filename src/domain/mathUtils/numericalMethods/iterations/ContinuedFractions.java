@@ -103,7 +103,7 @@ public abstract class ContinuedFractions extends IterativeProcess {
                 ?GenericMathDefinitions.smallNumber(): r;
     }
     /**
-     * Sets the infinite series argument
+     * Sets the continued series argument
      * @param argument series argument
      */
     public void setArgument(double argument){

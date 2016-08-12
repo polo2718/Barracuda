@@ -51,7 +51,7 @@ class IncompleteGammaSeries extends InfiniteSeries implements MultiVariableFunct
                     + " x and alpha");
         //Extract first independent variable (x) and set this value as the series argument
         double x= variables[0];
-        super.argument=x;
+        super.setArgument(x);
         //Extract second independent variable
         this.alpha=variables[1]; 
         //Initialize auxiliar variables
@@ -62,6 +62,7 @@ class IncompleteGammaSeries extends InfiniteSeries implements MultiVariableFunct
         //Perform iterative process for evaluation
         //Set the desired precision of the result
         super.setDesiredPrecision(GenericMathDefinitions.defaultNumericalPrecision());
+        super.setMaximumIterations(100);
         //Evaluate the series using the iterative method
         super.evaluate();
         seriesResult=super.getResult();
