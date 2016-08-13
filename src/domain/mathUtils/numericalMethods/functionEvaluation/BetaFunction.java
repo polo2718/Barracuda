@@ -15,21 +15,19 @@ import domain.mathUtils.numericalMethods.interfaces.MultiVariableFunction;
  */
 public class BetaFunction implements MultiVariableFunction {
     
-    private final GammaFunction gammaFunction; //Gamma function instance
+    private static final GammaFunction gammaFunction= new GammaFunction(); //Gamma function instance
     
     /**
      * Constructor
      */
     public BetaFunction(){
-        gammaFunction= new GammaFunction();
     }
     
     /**
      * Returns the value of the beta function evaluated at x,y
      * @param variables 1D array containing two independent variables x and y
-     * <p>Example:</p>
-     * <p>variables[0]=double x;</p>
-     * <p>variables[1]=double y;</p>
+     * <p>variables[0]=double containing x;</p>
+     * <p>variables[1]=double containing y;</p>
      * @return beta(x,y)
      * @throws IllegalArgumentException an exception is thrown when the input array containing the 2 independent variables has the wrong dimensionality
      */
@@ -47,10 +45,8 @@ public class BetaFunction implements MultiVariableFunction {
     /**
      * Computes the value of the natural logarithm if the beta function evaluated at x, y
      * @param variables 1D array containing two independent variables x and y
-     * Example:
-     * <p>Example:</p>
-     * <p>variables[1]=double x;</p>
-     * <p>variables[2]=double y;</p>
+     * <p>variables[1]=double containing x;</p>
+     * <p>variables[2]=double containing y;</p>
      * @return ln(beta(x,y))
      * @throws IllegalArgumentException an exception is thrown when the input array containing the 2 independent variables has the wrong dimensionality
      */

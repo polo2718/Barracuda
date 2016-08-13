@@ -43,13 +43,15 @@ public abstract class IterativeProcess {
      * Performs the iterative method
      */
     public void evaluate(){
+        iterations=0;
         initializeIterations();
         while(iterations++<maximumIterations){
             //perform next iteration
             precision=evaluateIteration();
             // end the method if the algorithm has already converged
-            if(hasConverged())
+            if(hasConverged()){
                 break;
+            }
         }
         finalizeIterations();
     }
@@ -83,7 +85,7 @@ public abstract class IterativeProcess {
      * @return number of performed iterations
      */
     public int getIterations() {
-        return iterations==0 ? iterations : iterations-1;
+        return iterations;
     }
 
     /**
@@ -150,11 +152,12 @@ public abstract class IterativeProcess {
         String s;
             s=("*******ITERATIVE PROCESS STATUS**********\n"+
                     "Has converged= " + hasConverged()+ "\n"+
-                    "Number of maximum iterations= " +getMaximumIterations()+ "\n"+
-                    "Performed Iterations= " + getIterations() + "\n"+
-                    "Desired precision= " +getDesiredPrecision()+ "\n"+
-                    "Attained Precision= " +getPrecision()+ "\n"+
-                    "****************************************\n"
+                    "Number of maximum iterations= " +maximumIterations+ "\n"+
+                    "Performed Iterations= " + (iterations!=0 ? iterations-1: iterations)
+                    + "\n"+
+                    "Desired precision= " +desiredPrecision+ "\n"+
+                    "Attained Precision= " +precision+ "\n"+
+                    "****************************************"
                     );          
         return s;
     }
