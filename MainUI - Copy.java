@@ -100,7 +100,7 @@ public class MainUI extends javax.swing.JFrame {
         colorBar14 = new javax.swing.JLabel();
         colorBarMax = new javax.swing.JTextField();
         colorBarMin = new javax.swing.JTextField();
-        valueLabel = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openVolumeMenu = new javax.swing.JMenuItem();
@@ -118,7 +118,7 @@ public class MainUI extends javax.swing.JFrame {
         crosshairMenu = new javax.swing.JRadioButtonMenuItem();
         zoomMenu = new javax.swing.JRadioButtonMenuItem();
         panMenu = new javax.swing.JRadioButtonMenuItem();
-        restoreZoomMenu = new javax.swing.JMenuItem();
+        unZoomMenu = new javax.swing.JMenuItem();
         volumeMenu = new javax.swing.JMenu();
         volumeSelect = new javax.swing.JRadioButtonMenuItem();
         overlaySelect = new javax.swing.JRadioButtonMenuItem();
@@ -620,7 +620,7 @@ public class MainUI extends javax.swing.JFrame {
                 .addContainerGap(87, Short.MAX_VALUE))
         );
 
-        valueLabel.setText("0.00");
+        jLabel5.setText("0.00");
 
         fileMenu.setText("File");
 
@@ -732,15 +732,15 @@ public class MainUI extends javax.swing.JFrame {
         panMenu.setText("Pan");
         viewMenu.add(panMenu);
 
-        restoreZoomMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_MINUS, java.awt.event.InputEvent.ALT_MASK));
-        restoreZoomMenu.setText("Restore zoom");
-        restoreZoomMenu.setActionCommand("Reset Zoom");
-        restoreZoomMenu.addActionListener(new java.awt.event.ActionListener() {
+        unZoomMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_MINUS, java.awt.event.InputEvent.ALT_MASK));
+        unZoomMenu.setText("Restore zoom");
+        unZoomMenu.setActionCommand("Reset Zoom");
+        unZoomMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                restoreZoomMenuActionPerformed(evt);
+                unZoomMenuActionPerformed(evt);
             }
         });
-        viewMenu.add(restoreZoomMenu);
+        viewMenu.add(unZoomMenu);
 
         jMenuBar1.add(viewMenu);
 
@@ -772,7 +772,7 @@ public class MainUI extends javax.swing.JFrame {
                             .addComponent(coronalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(valueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(saggitalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
@@ -794,7 +794,7 @@ public class MainUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
                         .addGap(2, 2, 2)
-                        .addComponent(valueLabel)))
+                        .addComponent(jLabel5)))
                 .addContainerGap())
         );
 
@@ -882,37 +882,7 @@ public class MainUI extends javax.swing.JFrame {
             returnVal=0;
         }
     }//GEN-LAST:event_openVolumeMenuActionPerformed
-    /******Spinner Behavior******/
-    private void volSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_volSpinnerStateChanged
-        if(niiVol!=null){
-            // Get volume maximum
-            niiVol.setMax3D((int)volSpinner.getValue());
-            niiVol.setMin3D((int)volSpinner.getValue());
-            if(crosshairMenu.isSelected()){
-                drawLabelsXHair();
-            }else{
-                drawAllSlices();
-            }
-            setXYZLabels();
-        }
 
-    }//GEN-LAST:event_volSpinnerStateChanged
-    private void ySpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ySpinnerStateChanged
-        if(niiVol!=null){
-            coronalSlider.setValue((int)ySpinner.getValue());
-        }
-    }//GEN-LAST:event_ySpinnerStateChanged
-    private void xSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_xSpinnerStateChanged
-        if(niiVol!=null){
-            saggitalSlider.setValue((int)xSpinner.getValue());
-        }
-    }//GEN-LAST:event_xSpinnerStateChanged
-    private void zSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_zSpinnerStateChanged
-        if(niiVol!=null){
-            axialSlider.setValue((int)zSpinner.getValue());
-        }
-    }//GEN-LAST:event_zSpinnerStateChanged
-    //Coronal mouse actions
     private void coronalLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_coronalLabelMouseDragged
         if(niiVol!=null){
             if(SwingUtilities.isLeftMouseButton(evt)){
@@ -936,6 +906,7 @@ public class MainUI extends javax.swing.JFrame {
                 }
             }
     }//GEN-LAST:event_coronalLabelMouseDragged
+
     private void coronalLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_coronalLabelMouseClicked
         if(niiVol!=null){
             if(SwingUtilities.isLeftMouseButton(evt)){
@@ -947,26 +918,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_coronalLabelMouseClicked
-    private void coronalLabelMouseReleased(java.awt.event.MouseEvent evt) {                                           
-	if(niiVol!=null){
-            if(zoomMenu.isSelected()){
-                if(SwingUtilities.isLeftMouseButton(evt)){
-                    if(zoomStartPoint!=null){
-                        zoomEndPoint=coronalLabel.getMousePosition(false);
-                        setCoronalZoom();
-                        zoomStartPoint=null;
-                        zoomEndPoint=null; 
-                    }
-                }else if(SwingUtilities.isRightMouseButton(evt)){
-                    niiVol.clearDrawRange();
-                    zoomStartPoint=null;
-                    zoomEndPoint=null;
-                    drawAllSlices();
-                }
-            }
-        }
-    }                                             
-    //Saggital mouse actions
+
     private void saggitalLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saggitalLabelMouseClicked
         if(niiVol!=null){
             if(SwingUtilities.isLeftMouseButton(evt)){
@@ -978,6 +930,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_saggitalLabelMouseClicked
+
     private void saggitalLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saggitalLabelMouseDragged
         if(niiVol!=null){
             if(SwingUtilities.isLeftMouseButton(evt)){
@@ -1001,26 +954,7 @@ public class MainUI extends javax.swing.JFrame {
                 }
             }
     }//GEN-LAST:event_saggitalLabelMouseDragged
-    private void saggitalLabelMouseReleased(java.awt.event.MouseEvent evt) {                                             
-	   if(niiVol!=null){
-				if(zoomMenu.isSelected()){
-					if(SwingUtilities.isLeftMouseButton(evt)){
-						if(zoomStartPoint!=null){
-							zoomEndPoint=saggitalLabel.getMousePosition(false);
-							setSaggitalZoom();
-							zoomStartPoint=null;
-							zoomEndPoint=null; 
-						}
-					}else if(SwingUtilities.isRightMouseButton(evt)){
-						niiVol.clearDrawRange();
-						zoomStartPoint=null;
-						zoomEndPoint=null;
-						drawAllSlices();
-					}
-				}
-			}
-	}                                           
-    //Axial mouse actions
+
     private void axialLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_axialLabelMouseClicked
         if(niiVol!=null){
             if(SwingUtilities.isLeftMouseButton(evt)){
@@ -1032,6 +966,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_axialLabelMouseClicked
+
     private void axialLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_axialLabelMouseDragged
          if(niiVol!=null){
             if(SwingUtilities.isLeftMouseButton(evt)){
@@ -1055,26 +990,7 @@ public class MainUI extends javax.swing.JFrame {
                 }
             }
     }//GEN-LAST:event_axialLabelMouseDragged
-    private void axialLabelMouseReleased(java.awt.event.MouseEvent evt) {                                         
-		if(niiVol!=null){
-            if(zoomMenu.isSelected()){
-                if(SwingUtilities.isLeftMouseButton(evt)){
-                    if(zoomStartPoint!=null){
-                        zoomEndPoint=axialLabel.getMousePosition(false);
-                        setAxialZoom();
-                        zoomStartPoint=null;
-                        zoomEndPoint=null; 
-                    }
-                }else if(SwingUtilities.isRightMouseButton(evt)){
-                    niiVol.clearDrawRange();
-                    zoomStartPoint=null;
-                    zoomEndPoint=null;
-                    drawAllSlices();
-                }
-            }
-        }
-    }                                           
-    /****ColorBar menu actions*****/	
+
     private void grayScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grayScaleActionPerformed
         if(niiVol!=null){
             colorScale="grayscale";
@@ -1086,6 +1002,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_grayScaleActionPerformed
+
     private void hotScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotScaleActionPerformed
         if(niiVol!=null){
             colorScale="hot";
@@ -1097,6 +1014,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_hotScaleActionPerformed
+
     private void hotInvertScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotInvertScaleActionPerformed
         if(niiVol!=null){
             colorScale="hot_invert";
@@ -1108,6 +1026,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_hotInvertScaleActionPerformed
+
     private void winterScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_winterScaleActionPerformed
         if(niiVol!=null){
             colorScale="winter";
@@ -1119,6 +1038,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_winterScaleActionPerformed
+
     private void winterInvertScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_winterInvertScaleActionPerformed
         if(niiVol!=null){
             colorScale="winter_invert";
@@ -1130,6 +1050,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_winterInvertScaleActionPerformed
+
     private void rainbowScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rainbowScaleActionPerformed
         if(niiVol!=null){
             colorScale="rainbow";
@@ -1141,6 +1062,7 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_rainbowScaleActionPerformed
+
     private void resetColorScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetColorScaleActionPerformed
         if(niiVol!=null){
         niiVol.setMax3D((int)volSpinner.getValue());
@@ -1152,21 +1074,49 @@ public class MainUI extends javax.swing.JFrame {
         updateMaxColorbar();
         }
     }//GEN-LAST:event_resetColorScaleActionPerformed
+
+    private void zSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_zSpinnerStateChanged
+        if(niiVol!=null){
+            axialSlider.setValue((int)zSpinner.getValue());
+        }
+    }//GEN-LAST:event_zSpinnerStateChanged
+
+    private void ySpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ySpinnerStateChanged
+        if(niiVol!=null){
+            coronalSlider.setValue((int)ySpinner.getValue());
+        }
+    }//GEN-LAST:event_ySpinnerStateChanged
+
+    private void xSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_xSpinnerStateChanged
+        if(niiVol!=null){
+            saggitalSlider.setValue((int)xSpinner.getValue());
+        }
+    }//GEN-LAST:event_xSpinnerStateChanged
+
+    private void volSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_volSpinnerStateChanged
+        if(niiVol!=null){
+            // Get volume maximum
+            niiVol.setMax3D((int)volSpinner.getValue());
+            niiVol.setMin3D((int)volSpinner.getValue());
+            if(crosshairMenu.isSelected()){
+                drawLabelsXHair();
+            }else{
+                drawAllSlices();
+            }
+            setXYZLabels();
+        }
+
+    }//GEN-LAST:event_volSpinnerStateChanged
+
     private void colorBarMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorBarMinActionPerformed
        if(niiVol!=null){
             String minString=colorBarMin.getText();
            try{
                 double min=Double.parseDouble(minString);
                 if(min<0){
-                    /*System.out.println("Negative number : not valid");
+                    System.out.println("Negative number : not valid");
                     minString=String.format("%.2f",niiVol.getMin());
-                    colorBarMin.setText(minString);*/
-                    niiVol.setMin(min);
-                    if(crosshairMenu.isSelected()){
-                        drawLabelsXHair();
-                    }else{
-                        drawAllSlices();
-                    }
+                    colorBarMin.setText(minString);
                 }
                 else if(min>niiVol.getMax()){
                     System.out.println("Min > max : not valid");
@@ -1189,6 +1139,7 @@ public class MainUI extends javax.swing.JFrame {
            }
        }
     }//GEN-LAST:event_colorBarMinActionPerformed
+
     private void colorBarMaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorBarMaxActionPerformed
         if(niiVol!=null){
             String maxString=colorBarMax.getText();
@@ -1220,7 +1171,7 @@ public class MainUI extends javax.swing.JFrame {
            }
        }
     }//GEN-LAST:event_colorBarMaxActionPerformed
-    /*****Radiological or neurological view******/
+
     private void neuroViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_neuroViewActionPerformed
         boolean bool =neuroView.isSelected();
         if(bool!=viewState){
@@ -1243,6 +1194,7 @@ public class MainUI extends javax.swing.JFrame {
         }
         }
     }//GEN-LAST:event_neuroViewActionPerformed
+
     private void radioViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioViewActionPerformed
         boolean bool=!radioView.isSelected();
         if(bool!=viewState){
@@ -1265,24 +1217,86 @@ public class MainUI extends javax.swing.JFrame {
         }
         }
     }//GEN-LAST:event_radioViewActionPerformed
-    /*****Other Menu actions*****/
-    private void restoreZoomMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreZoomMenuActionPerformed
+
+    private void coronalLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_coronalLabelMouseReleased
+        if(niiVol!=null){
+            if(zoomMenu.isSelected()){
+                if(SwingUtilities.isLeftMouseButton(evt)){
+                    if(zoomStartPoint!=null){
+                        zoomEndPoint=coronalLabel.getMousePosition(false);
+                        setCoronalZoom();
+                        zoomStartPoint=null;
+                        zoomEndPoint=null; 
+                    }
+                }else if(SwingUtilities.isRightMouseButton(evt)){
+                    niiVol.clearDrawRange();
+                    zoomStartPoint=null;
+                    zoomEndPoint=null;
+                    drawAllSlices();
+                }
+            }
+        }
+    }//GEN-LAST:event_coronalLabelMouseReleased
+
+    private void unZoomMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unZoomMenuActionPerformed
        if(niiVol!=null){
             niiVol.clearDrawRange();
             zoomStartPoint=null;
             zoomEndPoint=null;
             drawAllSlices();
        }
-    }//GEN-LAST:event_restoreZoomMenuActionPerformed
+    }//GEN-LAST:event_unZoomMenuActionPerformed
+
     private void crosshairMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crosshairMenuActionPerformed
         if(niiVol!=null)
         drawLabelsXHair();
     }//GEN-LAST:event_crosshairMenuActionPerformed
+
     private void zoomMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomMenuActionPerformed
        if(niiVol!=null)
         drawAllSlices();
     }//GEN-LAST:event_zoomMenuActionPerformed
-                                    
+
+    private void saggitalLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saggitalLabelMouseReleased
+       if(niiVol!=null){
+            if(zoomMenu.isSelected()){
+                if(SwingUtilities.isLeftMouseButton(evt)){
+                    if(zoomStartPoint!=null){
+                        zoomEndPoint=saggitalLabel.getMousePosition(false);
+                        setSaggitalZoom();
+                        zoomStartPoint=null;
+                        zoomEndPoint=null; 
+                    }
+                }else if(SwingUtilities.isRightMouseButton(evt)){
+                    niiVol.clearDrawRange();
+                    zoomStartPoint=null;
+                    zoomEndPoint=null;
+                    drawAllSlices();
+                }
+            }
+        }
+    }//GEN-LAST:event_saggitalLabelMouseReleased
+
+    private void axialLabelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_axialLabelMouseReleased
+        if(niiVol!=null){
+            if(zoomMenu.isSelected()){
+                if(SwingUtilities.isLeftMouseButton(evt)){
+                    if(zoomStartPoint!=null){
+                        zoomEndPoint=axialLabel.getMousePosition(false);
+                        setAxialZoom();
+                        zoomStartPoint=null;
+                        zoomEndPoint=null; 
+                    }
+                }else if(SwingUtilities.isRightMouseButton(evt)){
+                    niiVol.clearDrawRange();
+                    zoomStartPoint=null;
+                    zoomEndPoint=null;
+                    drawAllSlices();
+                }
+            }
+        }
+    }//GEN-LAST:event_axialLabelMouseReleased
+
     /**
      * @param args the command line arguments
      */
@@ -1353,6 +1367,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JRadioButton neuroView;
@@ -1363,7 +1378,6 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JRadioButton radioView;
     private javax.swing.JCheckBoxMenuItem rainbowScale;
     private javax.swing.JMenuItem resetColorScale;
-    private javax.swing.JMenuItem restoreZoomMenu;
     private javax.swing.JLabel saggitalLabel;
     private javax.swing.JLabel saggitalLabel2;
     private javax.swing.JLabel saggitalLabel3;
@@ -1371,7 +1385,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel saggitalLabel5;
     private javax.swing.JPanel saggitalPanel;
     private javax.swing.JSlider saggitalSlider;
-    private javax.swing.JLabel valueLabel;
+    private javax.swing.JMenuItem unZoomMenu;
     private javax.swing.ButtonGroup viewActionsGroup;
     private javax.swing.ButtonGroup viewGroup;
     private javax.swing.JMenu viewMenu;
@@ -1639,7 +1653,7 @@ public class MainUI extends javax.swing.JFrame {
             
             double num=niiVol.data.get(XVal, YVal, ZVal, (int)volSpinner.getValue());
             numString=String.format("%.8f ", num);
-            valueLabel.setText(numString);
+            jLabel5.setText(numString);
         }
     }//X,Y,Z units
     
