@@ -43,6 +43,7 @@ public abstract class IterativeProcess {
      * Performs the iterative method
      */
     public void evaluate(){
+        iterations=0;
         initializeIterations();
         while(iterations++<maximumIterations){
             //perform next iteration
@@ -156,7 +157,7 @@ public abstract class IterativeProcess {
                     + "\n"+
                     "Desired precision= " +desiredPrecision+ "\n"+
                     "Attained Precision= " +precision+ "\n"+
-                    "****************************************\n"
+                    "****************************************"
                     );          
         return s;
     }

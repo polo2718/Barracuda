@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.mathUtils.numericalMethods.functionEvaluation.iterative;
+package domain.mathUtils.numericalMethods.functionEvaluation;
 import domain.mathUtils.numericalMethods.GenericMathDefinitions;
-import domain.mathUtils.numericalMethods.functionEvaluation.GammaFunction;
+//import domain.mathUtils.numericalMethods.functionEvaluation.GammaFunction;
 import domain.mathUtils.numericalMethods.interfaces.MultiVariableFunction;
 import domain.mathUtils.numericalMethods.iterations.ContinuedFractions;
 
@@ -27,12 +27,12 @@ class IncompleteGammaFractions extends ContinuedFractions implements MultiVariab
     private double x;
     private double alpha;
     private double sum; //auxiliary variable
-    private static GammaFunction gammaFunction;    
+    //private static GammaFunction gammaFunction;    
     /**
      * Generic constructor
      */
     public IncompleteGammaFractions() {
-        gammaFunction= new GammaFunction();
+        //gammaFunction= new GammaFunction();
     }
     
     
@@ -66,7 +66,7 @@ class IncompleteGammaFractions extends ContinuedFractions implements MultiVariab
      * <p> variables[0]=x
      * <p> variables[1]=alpha
      * @return value of the incompleteGamma function evaluated at gamma(x,alpha)
-     * @throws IllegalArgumentException 
+     * @throws IllegalArgumentException an exception is thrown when the input array containing the 2 independent variables has the wrong dimensionality
      */
     @Override
     public double value(double[] variables) throws Exception {
@@ -81,14 +81,14 @@ class IncompleteGammaFractions extends ContinuedFractions implements MultiVariab
         super.setArgument(x-alpha+1);
         //initialize auxiliar variables
         double fraction;
-        double leadingTerm=Math.exp(-x+alpha*Math.log(x)-gammaFunction.logValue(alpha));
+        //double leadingTerm=Math.exp(-x+alpha*Math.log(x)-gammaFunction.logValue(alpha));
 
         /*************ITERATIVE PROCESS************/
         //Set Precision
         super.setDesiredPrecision(GenericMathDefinitions.defaultNumericalPrecision());
         super.evaluate();
         fraction=super.getResult();
-        return 1-leadingTerm/fraction;
+        return fraction;
     }
 
 }

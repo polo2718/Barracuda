@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.mathUtils.numericalMethods.functionEvaluation.iterative;
+package domain.mathUtils.numericalMethods.functionEvaluation;
 import domain.mathUtils.numericalMethods.GenericMathDefinitions;
-import domain.mathUtils.numericalMethods.functionEvaluation.GammaFunction;
+//import domain.mathUtils.numericalMethods.functionEvaluation.GammaFunction;
 import domain.mathUtils.numericalMethods.interfaces.MultiVariableFunction;
 import domain.mathUtils.numericalMethods.iterations.InfiniteSeries;
 import domain.mathUtils.numericalMethods.iterations.IterativeProcess;
@@ -25,13 +25,13 @@ class IncompleteGammaSeries extends InfiniteSeries implements MultiVariableFunct
     
     private double alpha;
     private double denominator; //auxiliar variable
-    private static GammaFunction gammaFunction;
+    //private static GammaFunction gammaFunction;
 
     /**
      * Generic constructor for the Incomplete GammaSeries.
      */
     public IncompleteGammaSeries() {
-        gammaFunction=new GammaFunction();
+        //gammaFunction=new GammaFunction();
     }
     
     /**
@@ -56,7 +56,7 @@ class IncompleteGammaSeries extends InfiniteSeries implements MultiVariableFunct
         this.alpha=variables[1]; 
         //Initialize auxiliar variables
         double seriesResult;
-        double leadingTerm=Math.exp(-x+alpha*Math.log(x)-gammaFunction.logValue(alpha));
+        //double leadingTerm=Math.exp(-x+alpha*Math.log(x)-gammaFunction.logValue(alpha));
         
         //++++++++Iterative process++++++++++//
         //Perform iterative process for evaluation
@@ -66,7 +66,8 @@ class IncompleteGammaSeries extends InfiniteSeries implements MultiVariableFunct
         //Evaluate the series using the iterative method
         super.evaluate();
         seriesResult=super.getResult();
-        return leadingTerm*seriesResult;
+        //return leadingTerm*seriesResult;
+        return seriesResult;
     }
     /**
      * 

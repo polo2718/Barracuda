@@ -1,4 +1,4 @@
 /**
- * Classes for performing numerical methods are stored here
+ * Classes for performing numerical methods
  */
 package domain.mathUtils.numericalMethods;
