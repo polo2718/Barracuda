@@ -7,6 +7,7 @@ package data.niftilibrary.niftijio;
 
 import domain.mathUtils.arrayTools.ArrayOperations;
 import domain.mathUtils.linearAlgebra.LinearAlgebra;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -76,8 +77,9 @@ public class DrawableNiftiVolume extends NiftiVolume{
     public BufferedImage drawNiftiSlice(int sliceNum, String plane, int dimension,String colormap){
 	// Initialize variables
         double temp;
-        int rgb,z_idx,x_idx,y_idx;
+        int z_idx,x_idx,y_idx;
         BufferedImage b;
+        Color rgb;
         
         int dim = header.dim[4];
         int dx,dy;
@@ -104,18 +106,18 @@ public class DrawableNiftiVolume extends NiftiVolume{
                                     rgb=UITools.doubleToRGB(temp, max, min,colormap);//Turns double to ARGB
                                     if(orient[2]=='I'){
                                         if(orient[1]=='P'){
-                                            b.setRGB(y_idx,z_idx,rgb);
+                                            b.setRGB(y_idx,z_idx,rgb.getRGB());
                                             z_idx=z_idx-1;
                                         }else{
-                                            b.setRGB(y_idx,z_idx,rgb);
+                                            b.setRGB(y_idx,z_idx,rgb.getRGB());
                                             z_idx=z_idx-1;   
                                         }
                                     }else{
                                         if(orient[1]=='P'){
-                                            b.setRGB(y_idx,z_idx,rgb);
+                                            b.setRGB(y_idx,z_idx,rgb.getRGB());
                                             z_idx=z_idx+1;
                                         }else{
-                                            b.setRGB(y_idx,z_idx,rgb); 
+                                            b.setRGB(y_idx,z_idx,rgb.getRGB()); 
                                             z_idx=z_idx+1;
                                         }
                                     }
@@ -144,18 +146,18 @@ public class DrawableNiftiVolume extends NiftiVolume{
                                     rgb=UITools.doubleToRGB(temp, max, min,colormap);
                                     if(orient[2]=='I'){
                                         if(orient[0]=='L'){
-                                            b.setRGB(x_idx,z_idx,rgb);
+                                            b.setRGB(x_idx,z_idx,rgb.getRGB());
                                             z_idx=z_idx-1;
                                         }else{
-                                            b.setRGB(x_idx,z_idx,rgb);
+                                            b.setRGB(x_idx,z_idx,rgb.getRGB());
                                             z_idx=z_idx-1;
                                         }
                                     }else{
                                         if(orient[0]=='L'){
-                                            b.setRGB(x_idx,z_idx,rgb);
+                                            b.setRGB(x_idx,z_idx,rgb.getRGB());
                                             z_idx=z_idx+1;
                                         }else{
-                                            b.setRGB(x_idx,z_idx,rgb); 
+                                            b.setRGB(x_idx,z_idx,rgb.getRGB()); 
                                             z_idx=z_idx+1;
                                         }
                                     }
@@ -183,18 +185,18 @@ public class DrawableNiftiVolume extends NiftiVolume{
                                     rgb=UITools.doubleToRGB(temp, max, min,colormap);
                                     if(orient[1]=='P'){
                                         if(orient[0]=='L'){
-                                            b.setRGB(x_idx,y_idx,rgb);
+                                            b.setRGB(x_idx,y_idx,rgb.getRGB());
                                             y_idx=y_idx-1;
                                         }else{
-                                            b.setRGB(x_idx,y_idx,rgb);
+                                            b.setRGB(x_idx,y_idx,rgb.getRGB());
                                             y_idx=y_idx-1; 
                                         }
                                     }else{
                                         if(orient[0]=='L'){
-                                            b.setRGB(x_idx,y_idx,rgb);
+                                            b.setRGB(x_idx,y_idx,rgb.getRGB());
                                             y_idx=y_idx+1;
                                         }else{
-                                            b.setRGB(x_idx,y_idx,rgb);
+                                            b.setRGB(x_idx,y_idx,rgb.getRGB());
                                             y_idx=y_idx+1;
                                         }
                                     }
@@ -232,10 +234,11 @@ public class DrawableNiftiVolume extends NiftiVolume{
         finalh = (int)(finalh * factor_h);                
         finalw = (int)(finalw * factor_w);
 
-        BufferedImage resizedImg = new BufferedImage(finalw, finalh, BufferedImage.TYPE_INT_RGB);
+        BufferedImage resizedImg = new BufferedImage(finalw, finalh, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(src, 0, 0, finalw, finalh, null);
+        Color c=new Color(0,0,0,0);
+        g2.drawImage(src, 0, 0, finalw, finalh,c, null);
         g2.dispose();
         return resizedImg;
     }
