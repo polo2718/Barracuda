@@ -111,8 +111,9 @@ public abstract class UITools {
         return s;
     }
     
-    public static int doubleToRGB(double val,double max,double min,String colormap){
-        int rgb,temp,mod;
+    public static Color doubleToRGB(double val,double max,double min,String colormap){
+        int temp,mod;
+        Color rgb;
         double mul;
         double range=max-min;
         switch(colormap){
@@ -120,30 +121,30 @@ public abstract class UITools {
                 mul=765/range;
                 val=val-min;
                 if(Double.isNaN(val)){ // NaN is zero
-                    rgb=0;
+                    rgb=new Color(0,0,0,0);
                 }
                 else if((val*mul)>765){ //More than max display is white
 
-                    rgb = 0xFFFFFFFF;
+                    rgb=new Color(255,255,255,255);
                 }
-                else if(val<0){ //Less than min is black
-                    rgb=0xFF000000;
+                else if(val<0){ //Less than min is not shown
+                    rgb=new Color(0,0,0,0);;
                 }else{
                     val=val*mul; //Multiply by dynamic range
                     temp=(int) Math.floor(val/255);
                     mod=(int) val%255;
                     switch(temp){
                         case 0: //Only red
-                            rgb=255<<24|mod<<16;
+                            rgb=new Color(mod,0,0,255);
                             break;
                         case 1: //Red and green
-                            rgb=255<<24|255<<16|mod<<8;
+                            rgb=new Color(255,mod,0,255);
                             break;
                         case 2: //Red green and blue
-                            rgb=255<<24|255<<16|255<<8|mod;
+                            rgb=new Color(255,255,mod,255);
                             break;
                         default:
-                            rgb=0;
+                            rgb=new Color(0,0,0,0);
                             break;
                     }
                 }
@@ -152,29 +153,29 @@ public abstract class UITools {
                 mul=765/range;
                 val=val-min;
                 if(Double.isNaN(val)){ // NaN is zero
-                    rgb=0;
+                   rgb=new Color(0,0,0,0);
                 }
-                else if((val*mul)>765){ //More than max display is black
-                    rgb = 0xFF000000;
+                else if((val*mul)>765){ //More than max display is transparent
+                    rgb=new Color(0,0,0,0);
                 }
-                else if(val<0){ //Less than min is black
-                    rgb=0xFF000000;
+                else if(val<0){ //Less than min is white
+                    rgb=new Color(255,255,255,255);
                 }else{
                     val=val*mul; //Multiply by dynamic range
                     temp=(int) Math.floor(val/255);
                     mod=(int) val%255;
                     switch(temp){
                         case 0: //
-                            rgb=255<<24|255<<16|255<<8|(255-mod);
+                            rgb=new Color(255,255,255-mod,255);
                             break;
                         case 1: //
-                            rgb=255<<24|255<<16|(255-mod)<<8;
+                            rgb=new Color(255,255-mod,0,255);
                             break;
                         case 2: //
-                            rgb=255<<24|(255-mod)<<16;
+                            rgb=new Color(255-mod,0,0,255);
                             break;
                         default:
-                            rgb=0;
+                            rgb=new Color(0,0,0,0);
                             break;
                     }
                 }
@@ -183,29 +184,29 @@ public abstract class UITools {
                 mul=765/range;
                 val=val-min;
                 if(Double.isNaN(val)){ // NaN is zero
-                    rgb=0;
+                    rgb=new Color(0,0,0,0);
                 }
                 else if((val*mul)>765){ //More than max display is white
-                    rgb = 0xFFFFFFFF;
+                    rgb=new Color(255,255,255,255);
                 }
                 else if(val<0){ //Less than min is black
-                    rgb=0xFF000000;
+                    rgb=new Color(0,0,0,0);
                 }else{
                     val=val*mul; //Multiply by dynamic range
                     temp=(int) Math.floor(val/255);
                     mod=(int) val%255;
                     switch(temp){
                         case 0: //Only blue
-                            rgb=255<<24|mod;
+                            rgb=new Color(0,0,mod,255);
                             break;
                         case 1: //Blue and green
-                            rgb=255<<24|mod<<8|255;
+                            rgb=new Color(0,mod,255,255);
                             break;
                         case 2: //Blue Green and red
-                            rgb=255<<24|mod<<16|255<<8|255;
+                            rgb=new Color(mod,255,255,255);
                             break;
                         default:
-                            rgb=0;
+                            rgb=new Color(0,0,0,0);
                             break;
                     }
                 }
@@ -214,29 +215,29 @@ public abstract class UITools {
                 mul=765/range;
                 val=val-min;
                 if(Double.isNaN(val)){ // NaN is zero
-                    rgb=0;
+                    rgb=new Color(0,0,0,0);
                 }
-                else if((val*mul)>765){ //More than max display is black
-                    rgb = 0xFF000000;
+                else if((val*mul)>765){ //More than max display is transparent
+                    rgb=new Color(0,0,0,0);
                 }
-                else if(val<0){ //Less than min is black
-                    rgb=0xFF000000;
+                else if(val<0){ //Less than min is white
+                    rgb=new Color(255,255,255,255);
                 }else{
                     val=val*mul; //Multiply by dynamic range
                     temp=(int) Math.floor(val/255);
                     mod=(int) val%255;
                     switch(temp){
                         case 0: //
-                            rgb=255<<24|(255-mod)<<16|255<<8|255;
+                            rgb=new Color(255-mod,255,255,255);
                             break;
                         case 1: //
-                            rgb=255<<24|(255-mod)<<8|255;
+                            rgb=new Color(0,255-mod,255,255);
                             break;
                         case 2: //
-                            rgb=255<<24|(255-mod);
+                            rgb=new Color(0,0,255-mod,255);
                             break;
                         default:
-                            rgb=0;
+                            rgb=new Color(0,0,0,0);
                             break;
                     }
                 }
@@ -244,50 +245,50 @@ public abstract class UITools {
             case"rainbow":
                 mul=1020/range;
                 if(Double.isNaN(val)){ // NaN is zero
-                    rgb=0;
+                    rgb=new Color(0,0,0,0);
                 }
                 else if((val*mul)>1020){ //More than max display is red
-                    rgb = 0xFFFF0000;
+                    rgb=new Color(255,0,0,255);
                 }
-                else if(val<0){ //Less than min is black
-                    rgb=0xFF000000;
+                else if(val<0){ //Less than min is blue
+                    rgb=new Color(0,0,255,255);
                 }else{
                     val=(val-min)*mul; //Multiply by dynamic range
                     temp=(int) Math.floor(val/255);
                     mod=(int) val%255;
                     switch(temp){
                         case 0: //Blue to Yellow
-                            rgb=255<<24|mod<<8|255;
+                            rgb=new Color(0,mod,255,255);
                             break;
                         case 1: //Yellow to Green
-                            rgb=255<<24|255<<8|(255-mod);
+                            rgb=new Color(0,255,255-mod,255);
                             break;
                         case 2: //Green to orange
-                            rgb=255<<24|mod<<16|255<<8;
+                            rgb=new Color(mod,255,0,255);
                             break;
                         case 3:
-                            rgb=255<<24|255<<16|(255-mod)<<8;
+                            rgb=new Color(255,255-mod,0,255);
                             break;
                         default:
-                            rgb=0;
+                            rgb=new Color(0,0,0,0);
                             break;
                     }
                 }
                 break;
             default://Default is grayscale
                 mul=255.0/range;
-                if(Double.isNaN(val)){ // NaN is zero
-                    rgb=0;
+                if(Double.isNaN(val)){ // NaN is transparent
+                    rgb=new Color(0,0,0,0);
                 }
                 else if((val*mul)>255){ //More than 255 is white
-                     rgb = 0xFFFFFFFF;
+                     rgb=new Color(255,255,255,255);
                 }
-                else if(val<0){ //Less than min is black
-                    rgb=0xFF000000;
+                else if(val<0){ //Less than min is transparent
+                    rgb=new Color(0,0,0,0);
                 }
                 else{
                     temp=(int)(val*mul);
-                    rgb = 255<<24|temp<<16|temp<<8|temp;
+                    rgb=new Color(temp,temp,temp,255);
                 }
                 break;
         }
