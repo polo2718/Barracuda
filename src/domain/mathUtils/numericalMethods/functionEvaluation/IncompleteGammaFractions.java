@@ -87,8 +87,7 @@ class IncompleteGammaFractions extends ContinuedFractions implements MultiVariab
         //Set Precision
         super.setDesiredPrecision(GenericMathDefinitions.defaultNumericalPrecision());
         super.evaluate();
-        fraction=super.getResult();
-        return fraction;
+        return super.getResult();
     }
 
 }

@@ -63,6 +63,7 @@ public abstract class ContinuedFractions extends IterativeProcess {
     public void initializeIterations(){
         //compute the initial values for  b_n coefficients
         double b_n=limitedSmallValue(initialValue());
+        fractionCoeff[1]=b_n;
         c_n=b_n;
         d_n=0; 
         result=c_n;

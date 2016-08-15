@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.mathUtils.numericalMethods.functionEvaluation.iterative;
+package domain.mathUtils.numericalMethods.functionEvaluation;
 
 import domain.mathUtils.numericalMethods.functionEvaluation.IncompleteGammaFunction;
 import org.junit.After;
