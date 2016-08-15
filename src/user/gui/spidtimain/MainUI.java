@@ -803,13 +803,13 @@ public class MainUI extends javax.swing.JFrame {
 
     /**********Slider action**********/
     private void coronalSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_coronalSliderStateChanged
-        drawNifti(coronalSlider,ySpinner);
+        drawNiftiSlice(coronalSlider,ySpinner);
     }//GEN-LAST:event_coronalSliderStateChanged
     private void saggitalSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_saggitalSliderStateChanged
-        drawNifti(saggitalSlider,xSpinner);
+        drawNiftiSlice(saggitalSlider,xSpinner);
     }//GEN-LAST:event_saggitalSliderStateChanged
     private void axialSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_axialSliderStateChanged
-         drawNifti(axialSlider,zSpinner);
+         drawNiftiSlice(axialSlider,zSpinner);
     }//GEN-LAST:event_axialSliderStateChanged
     /*****Resize window*******/
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
@@ -888,29 +888,18 @@ public class MainUI extends javax.swing.JFrame {
             // Get volume maximum
             niiVol.setMax3D((int)volSpinner.getValue());
             niiVol.setMin3D((int)volSpinner.getValue());
-            if(crosshairMenu.isSelected()){
-                drawLabelsXHair();
-            }else{
-                drawAllSlices();
-            }
             setXYZLabels();
         }
-
+        drawNifti();
     }//GEN-LAST:event_volSpinnerStateChanged
     private void ySpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ySpinnerStateChanged
-        if(niiVol!=null){
-            coronalSlider.setValue((int)ySpinner.getValue());
-        }
+        coronalSlider.setValue((int)ySpinner.getValue());
     }//GEN-LAST:event_ySpinnerStateChanged
     private void xSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_xSpinnerStateChanged
-        if(niiVol!=null){
             saggitalSlider.setValue((int)xSpinner.getValue());
-        }
     }//GEN-LAST:event_xSpinnerStateChanged
     private void zSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_zSpinnerStateChanged
-        if(niiVol!=null){
-            axialSlider.setValue((int)zSpinner.getValue());
-        }
+        axialSlider.setValue((int)zSpinner.getValue());
     }//GEN-LAST:event_zSpinnerStateChanged
     //Coronal mouse actions
     private void coronalLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_coronalLabelMouseDragged
@@ -1079,76 +1068,48 @@ public class MainUI extends javax.swing.JFrame {
         if(niiVol!=null){
             colorScale="grayscale";
             setColorBar();
-            if(crosshairMenu.isSelected()){
-                drawLabelsXHair();
-            }else{
-                drawAllSlices();
-            }
+            drawNifti();
         }
     }//GEN-LAST:event_grayScaleActionPerformed
     private void hotScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotScaleActionPerformed
         if(niiVol!=null){
             colorScale="hot";
             setColorBar();
-            if(crosshairMenu.isSelected()){
-                drawLabelsXHair();
-            }else{
-                drawAllSlices();
-            }
+            drawNifti();
         }
     }//GEN-LAST:event_hotScaleActionPerformed
     private void hotInvertScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotInvertScaleActionPerformed
         if(niiVol!=null){
             colorScale="hot_invert";
             setColorBar();
-            if(crosshairMenu.isSelected()){
-                drawLabelsXHair();
-            }else{
-                drawAllSlices();
-            }
+            drawNifti();
         }
     }//GEN-LAST:event_hotInvertScaleActionPerformed
     private void winterScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_winterScaleActionPerformed
         if(niiVol!=null){
             colorScale="winter";
             setColorBar();
-            if(crosshairMenu.isSelected()){
-                drawLabelsXHair();
-            }else{
-                drawAllSlices();
-            }
+            drawNifti();
         }
     }//GEN-LAST:event_winterScaleActionPerformed
     private void winterInvertScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_winterInvertScaleActionPerformed
         if(niiVol!=null){
             colorScale="winter_invert";
             setColorBar();
-            if(crosshairMenu.isSelected()){
-                drawLabelsXHair();
-            }else{
-                drawAllSlices();
-            }
+            drawNifti();
         }
     }//GEN-LAST:event_winterInvertScaleActionPerformed
     private void rainbowScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rainbowScaleActionPerformed
         if(niiVol!=null){
             colorScale="rainbow";
             setColorBar();
-            if(crosshairMenu.isSelected()){
-                drawLabelsXHair();
-            }else{
-                drawAllSlices();
-            }
+            drawNifti();
         }
     }//GEN-LAST:event_rainbowScaleActionPerformed
     private void resetColorScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetColorScaleActionPerformed
         if(niiVol!=null){
         niiVol.setMax3D((int)volSpinner.getValue());
-        if(crosshairMenu.isSelected()){
-            drawLabelsXHair();
-        }else{
-            drawAllSlices();
-        }
+        drawNifti();
         updateMaxColorbar();
         }
     }//GEN-LAST:event_resetColorScaleActionPerformed
@@ -1157,29 +1118,14 @@ public class MainUI extends javax.swing.JFrame {
             String minString=colorBarMin.getText();
            try{
                 double min=Double.parseDouble(minString);
-                if(min<0){
-                    /*System.out.println("Negative number : not valid");
-                    minString=String.format("%.2f",niiVol.getMin());
-                    colorBarMin.setText(minString);*/
-                    niiVol.setMin(min);
-                    if(crosshairMenu.isSelected()){
-                        drawLabelsXHair();
-                    }else{
-                        drawAllSlices();
-                    }
-                }
-                else if(min>niiVol.getMax()){
+                if(min>niiVol.getMax()){
                     System.out.println("Min > max : not valid");
                     minString=String.format("%.2f",niiVol.getMin());
                     colorBarMin.setText(minString);
                 }
                 else{
                     niiVol.setMin(min);
-                    if(crosshairMenu.isSelected()){
-                        drawLabelsXHair();
-                    }else{
-                        drawAllSlices();
-                    }
+                    drawNifti();
                 }
 
            }catch(Exception e){
@@ -1194,23 +1140,14 @@ public class MainUI extends javax.swing.JFrame {
             String maxString=colorBarMax.getText();
            try{
                 double max=Double.parseDouble(maxString);
-                if(max<0){
-                    System.out.println("Negative number : not valid");
-                    maxString=String.format("%.2f",niiVol.getMax());
-                    colorBarMax.setText(maxString);
-                }
-                else if(niiVol.getMin()>max){
+                if(niiVol.getMin()>max){
                     System.out.println("Max < Min : not valid");
                     maxString=String.format("%.2f",niiVol.getMax());
                     colorBarMax.setText(maxString);
                 }
                 else{
                     niiVol.setMax(max);
-                    if(crosshairMenu.isSelected()){
-                        drawLabelsXHair();
-                    }else{
-                        drawAllSlices();
-                    }
+                    drawNifti();
                 }
 
            }catch(Exception e){
@@ -1234,11 +1171,7 @@ public class MainUI extends javax.swing.JFrame {
             coronalLabel3.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
             axialLabel1.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
             axialLabel3.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
-            if(crosshairMenu.isSelected()){
-                drawLabelsXHair();
-            }else{
-                drawAllSlices();
-            }
+            drawNifti();
             viewState=true;
         }
         }
@@ -1256,11 +1189,7 @@ public class MainUI extends javax.swing.JFrame {
             coronalLabel3.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
             axialLabel1.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
             axialLabel3.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
-            if(crosshairMenu.isSelected()){
-                drawLabelsXHair();
-            }else{
-                drawAllSlices();
-            }
+            drawNifti();
             viewState=false;
         }
         }
@@ -1417,7 +1346,7 @@ public class MainUI extends javax.swing.JFrame {
         img = niiVol.drawNiftiSlice(zVal, "axial",(int)volSpinner.getValue(),colorScale);       
         axialScale=UITools.imageToLabel(img,axialLabel);
     }//Images w/o Crosshairs
-    private void drawNifti(JSlider slider,JSpinner spinner){
+    private void drawNiftiSlice(JSlider slider,JSpinner spinner){
          if(niiVol!=null){
              if(crosshairMenu.isSelected()){
                  drawLabelsXHair();
@@ -1426,6 +1355,15 @@ public class MainUI extends javax.swing.JFrame {
              }
             spinner.setValue(slider.getValue());
             setXYZLabels();
+        }
+    }
+    private void drawNifti(){
+        if(niiVol!=null & volumeSelect.isSelected()){
+             if(crosshairMenu.isSelected()){
+                 drawLabelsXHair();
+             }else{
+                 drawAllSlices();
+             }
         }
     }
     //Coronal

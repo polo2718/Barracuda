@@ -13,11 +13,12 @@ import java.awt.image.BufferedImage;
 import user.gui.tools.UITools;
 
 /**
- *<p> This class is an extension of NiftiVolume to be used when drawing methods 
+ *<p> This class is a variation of NiftiVolume to be used when drawing methods 
  * in a UI are required</p>
  * @author <p>Diego Garibay-Pulido 2016</p>
  */
-public class DrawableNiftiVolume extends NiftiVolume {
+public class DrawableNiftiVolume extends NiftiVolume{
+    
     public  double scale[];
     public  char[] orient;
     private  String orientation;
@@ -44,7 +45,21 @@ public class DrawableNiftiVolume extends NiftiVolume {
         if(header.cal_min==0){setMin3D(0);}
         else{setMin(header.cal_min);}
     }
+
+    public DrawableNiftiVolume() {
+    }
     
+    public void initDrawableNiftiVolume(){
+        getNiftiScale();//Sets scale, orientation & orient
+        clearDrawRange();//Sets to zero the DrawRange;
+        
+        // Get volume maximum if not already embedded in the header
+        if(header.cal_max==0){setMax3D(0);}
+        else{setMax(header.cal_max);}
+        //Get volume minimum if not alread embedded in the header
+        if(header.cal_min==0){setMin3D(0);}
+        else{setMin(header.cal_min);}
+    }
     
     /**
      * <p>This function returns an image containing a slice for a given nifti

@@ -1,7 +1,5 @@
 package data.niftilibrary.niftijio;
 
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInput;
@@ -15,11 +13,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-import java.awt.image.*;
-import domain.mathUtils.arrayTools.ArrayOperations;
-import domain.mathUtils.linearAlgebra.LinearAlgebra;
-import user.gui.tools.UITools;
-
 
 public class NiftiVolume
 {
@@ -55,6 +48,9 @@ public class NiftiVolume
         this.data = new FourDimensionalArray(data);
     }
 
+    public NiftiVolume() {
+    }
+    
     public static NiftiVolume read(String filename) throws IOException {
         NiftiHeader hdr = NiftiHeader.read(filename);
         
@@ -62,7 +58,8 @@ public class NiftiVolume
         if (hdr.filename.endsWith(".gz"))
             is = new GZIPInputStream(is);
         try {
-            return read(new BufferedInputStream(is), hdr); 
+            NiftiVolume a=new NiftiVolume();
+            return a= read(new BufferedInputStream(is), hdr); 
         } finally {
             is.close();
         }

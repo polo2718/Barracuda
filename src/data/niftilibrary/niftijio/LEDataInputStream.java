@@ -36,7 +36,7 @@ import java.io.InputStream;
  * @version 1.8 2007-05-24
  * @since 1998
  */
-public final class LEDataInputStream implements DataInput
+ final class LEDataInputStream implements DataInput
 {
     // ------------------------------ CONSTANTS ------------------------------
 
