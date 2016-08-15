@@ -57,6 +57,9 @@ public class MainUI extends javax.swing.JFrame {
         volumeSelectorGroup = new javax.swing.ButtonGroup();
         viewActionsGroup = new javax.swing.ButtonGroup();
         colorScaleGroup = new javax.swing.ButtonGroup();
+        errorDialog = new javax.swing.JDialog();
+        jLabel5 = new javax.swing.JLabel();
+        errorLabel = new javax.swing.JLabel();
         coronalPanel = new javax.swing.JPanel();
         coronalLabel1 = new javax.swing.JLabel();
         coronalLabel = new javax.swing.JLabel();
@@ -140,6 +143,37 @@ public class MainUI extends javax.swing.JFrame {
         colorScaleGroup.add(winterScale);
         colorScaleGroup.add(winterInvertScale);
         colorScaleGroup.add(rainbowScale);
+
+        errorDialog.setTitle("Error!!!");
+        errorDialog.setModal(true);
+        errorDialog.setSize(new java.awt.Dimension(280, 120));
+
+        jLabel5.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+
+        errorLabel.setText("Error Message");
+
+        javax.swing.GroupLayout errorDialogLayout = new javax.swing.GroupLayout(errorDialog.getContentPane());
+        errorDialog.getContentPane().setLayout(errorDialogLayout);
+        errorDialogLayout.setHorizontalGroup(
+            errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(errorDialogLayout.createSequentialGroup()
+                .addGap(105, 105, 105)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(119, Short.MAX_VALUE))
+            .addGroup(errorDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        errorDialogLayout.setVerticalGroup(
+            errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(errorDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Barracuda View");
@@ -636,6 +670,11 @@ public class MainUI extends javax.swing.JFrame {
 
         overlayVolumeMenu.setText("Overlay Volume");
         overlayVolumeMenu.setToolTipText("");
+        overlayVolumeMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                overlayVolumeMenuActionPerformed(evt);
+            }
+        });
         fileMenu.add(overlayVolumeMenu);
 
         jMenuBar1.add(fileMenu);
@@ -847,7 +886,10 @@ public class MainUI extends javax.swing.JFrame {
                     // Added code so default view would be neurological
                     if(niiVol.orient[0]=='L'){niiVol.orient[0]='R';}
                     else if(niiVol.orient[0]=='R'){niiVol.orient[0]='L';}
-                    else{System.out.println("Error");}
+                    else{
+                        errorLabel.setText("Error");
+                        errorDialog.setVisible(true);
+                    }
                     //Set Color Bar
                     setColorBar();
                     //Set spinner models
@@ -876,7 +918,8 @@ public class MainUI extends javax.swing.JFrame {
                 }
             }
             catch (IOException e){
-                System.err.println("error: " + e.getMessage());
+                errorLabel.setText("Error: "+e.getMessage());
+                errorDialog.setVisible(true);
             }
         } else {
             returnVal=0;
@@ -1119,19 +1162,34 @@ public class MainUI extends javax.swing.JFrame {
            try{
                 double min=Double.parseDouble(minString);
                 if(min>niiVol.getMax()){
-                    System.out.println("Min > max : not valid");
-                    minString=String.format("%.2f",niiVol.getMin());
-                    colorBarMin.setText(minString);
+                    errorLabel.setText("Min > max : not valid");
+                    errorDialog.setVisible(true);
+                    if(volumeSelect.isSelected()){
+                        minString=String.format("%.2f",niiVol.getMin());
+                    }else{
+                        minString=String.format("%.2f",overlayVol.getMin());
+                    }
+                    colorBarMax.setText(minString);
                 }
                 else{
-                    niiVol.setMin(min);
+                    if(volumeSelect.isSelected()){
+                        niiVol.setMin(min);
+                    }else{
+                        overlayVol.setMin(min);
+                    }
+                    
                     drawNifti();
                 }
 
            }catch(Exception e){
-               System.out.println("Must be a valid number :" +e);
-               minString=String.format("%.2f",niiVol.getMin());
-               colorBarMin.setText(minString);
+               errorLabel.setText("Must be a valid number :" +e.getMessage());
+               errorDialog.setVisible(true);
+               if(volumeSelect.isSelected()){
+                    minString=String.format("%.2f",niiVol.getMin());
+               }else{
+                    minString=String.format("%.2f",overlayVol.getMin());
+               }
+               colorBarMax.setText(minString);
            }
        }
     }//GEN-LAST:event_colorBarMinActionPerformed
@@ -1141,18 +1199,33 @@ public class MainUI extends javax.swing.JFrame {
            try{
                 double max=Double.parseDouble(maxString);
                 if(niiVol.getMin()>max){
-                    System.out.println("Max < Min : not valid");
-                    maxString=String.format("%.2f",niiVol.getMax());
+                    errorLabel.setText("Max < Min : not valid");
+                    errorDialog.setVisible(true);
+                    if(volumeSelect.isSelected()){
+                        maxString=String.format("%.2f",niiVol.getMax());
+                    }else{
+                        maxString=String.format("%.2f",overlayVol.getMax());
+                    }
                     colorBarMax.setText(maxString);
                 }
                 else{
-                    niiVol.setMax(max);
+                    if(volumeSelect.isSelected()){
+                        niiVol.setMax(max);
+                    }else{
+                        overlayVol.setMax(max);
+                    }
+                    
                     drawNifti();
                 }
 
            }catch(Exception e){
-               System.out.println("Must be a valid number :" +e);
-               maxString=String.format("%.2f",niiVol.getMax());
+               errorLabel.setText("Must be a valid number :" +e.getMessage());
+               errorDialog.setVisible(true);
+               if(volumeSelect.isSelected()){
+                    maxString=String.format("%.2f",niiVol.getMax());
+               }else{
+                    maxString=String.format("%.2f",overlayVol.getMax());
+               }
                colorBarMax.setText(maxString);
            }
        }
@@ -1211,6 +1284,70 @@ public class MainUI extends javax.swing.JFrame {
        if(niiVol!=null)
         drawAllSlices();
     }//GEN-LAST:event_zoomMenuActionPerformed
+
+    private void overlayVolumeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_overlayVolumeMenuActionPerformed
+        if(niiVol!=null){    
+            //Set up and display file chooser
+            JFileChooser fc = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+            "NIFTI (*.nii,*.gz)", "nii", "gz");
+            fc.setFileFilter(filter);
+            fc.addChoosableFileFilter(filter);
+            fc.setAcceptAllFileFilterUsed(false);
+            int returnVal = fc.showOpenDialog(MainUI.this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                String filename = file.getAbsolutePath();
+            //Try to read nifti file    
+                try{
+                    //Set neurological view as default
+                    resetGrayScale();
+                    overlayVol=null;
+
+                    overlayVol=new DrawableNiftiVolume(NiftiVolume.read(filename));
+                    if(overlayVol!=null){
+                        if(overlayVol.header.dim[1]==niiVol.header.dim[1] &
+                           overlayVol.header.dim[2]==niiVol.header.dim[2] &
+                           overlayVol.header.dim[3]==niiVol.header.dim[3] &
+                           overlayVol.header.dim[4]==niiVol.header.dim[4]){
+                            overlaySelect.setSelected(true);
+                            if(neuroView.isSelected()){
+                                // Added code so default view would be neurological
+                                if(overlayVol.orient[0]=='L'){overlayVol.orient[0]='R';}
+                                else if(overlayVol.orient[0]=='R'){overlayVol.orient[0]='L';}
+                                else{
+                                    errorLabel.setText("Error");
+                                    errorDialog.setVisible(true);
+                                }
+                            }
+                            BufferedImage ovImg=overlayVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),"hot_invert");
+                            BufferedImage niiImg=niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),"grayscale");
+                            int w=ovImg.getWidth();
+                            int h=ovImg.getHeight();
+                            BufferedImage combined = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+                            Graphics2D g=combined.createGraphics();
+                            Color c=new Color(0,0,0,0);
+                            g.drawImage(niiImg,0,0,c,null);
+                            g.drawImage(ovImg,0,0,c,null);
+                            UITools.imageToLabel(combined,coronalLabel);
+                        }else{
+                            errorLabel.setText("Dimensions dont agree");
+                            errorDialog.setVisible(true);
+                            overlayVol=null;
+                        }
+                    }
+                }
+                catch (IOException e){
+                    errorLabel.setText("Error: "+ e.getMessage());
+                    errorDialog.setVisible(true);
+                }
+            } else {
+                returnVal=0;
+            }
+        }else{
+            
+        }
+    }//GEN-LAST:event_overlayVolumeMenuActionPerformed
                                     
     /**
      * @param args the command line arguments
@@ -1273,6 +1410,8 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JPanel coronalPanel;
     private javax.swing.JSlider coronalSlider;
     private javax.swing.JRadioButtonMenuItem crosshairMenu;
+    private javax.swing.JDialog errorDialog;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JCheckBoxMenuItem grayScale;
     private javax.swing.JCheckBoxMenuItem hotInvertScale;
@@ -1282,6 +1421,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JRadioButton neuroView;
@@ -1359,6 +1499,13 @@ public class MainUI extends javax.swing.JFrame {
     }
     private void drawNifti(){
         if(niiVol!=null & volumeSelect.isSelected()){
+             if(crosshairMenu.isSelected()){
+                 drawLabelsXHair();
+             }else{
+                 drawAllSlices();
+             }
+        }
+        if(overlayVol!=null & !volumeSelect.isSelected()){
              if(crosshairMenu.isSelected()){
                  drawLabelsXHair();
              }else{
