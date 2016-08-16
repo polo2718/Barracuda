@@ -60,5 +60,4 @@ public class BetaFunction implements MultiVariableFunction {
             throw new IllegalArgumentException("Check input array. Wrong number of independent variables were provided. Beta "
                     + "function is defined for only two independent variables");
     }
-    
 }
