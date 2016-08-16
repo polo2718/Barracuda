@@ -36,7 +36,7 @@ public class MainUI extends javax.swing.JFrame {
     Point zoomStartPoint;//Zoom area initial point
     Point zoomEndPoint;//Zoom area end point
     String colorScale;//Display colorscale (Main volume)
-    String colorScaleOverlay;//Overlay colorscale
+    String colorScaleOverlay="hot_invert";//Overlay colorscale
     Color xHairColor=Color.GREEN;
     boolean viewState=true;//Boolean flag to indicate radiological or neurological view
     
@@ -1319,17 +1319,11 @@ public class MainUI extends javax.swing.JFrame {
                                     errorLabel.setText("Error");
                                     errorDialog.setVisible(true);
                                 }
+                                drawCoronalOverlay();
+                                drawAxialOverlay();
+                                drawSaggitalOverlay();
                             }
-                            BufferedImage ovImg=overlayVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),"hot_invert");
-                            BufferedImage niiImg=niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),"grayscale");
-                            int w=ovImg.getWidth();
-                            int h=ovImg.getHeight();
-                            BufferedImage combined = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
-                            Graphics2D g=combined.createGraphics();
-                            Color c=new Color(0,0,0,0);
-                            g.drawImage(niiImg,0,0,c,null);
-                            g.drawImage(ovImg,0,0,c,null);
-                            UITools.imageToLabel(combined,coronalLabel);
+                            
                         }else{
                             errorLabel.setText("Dimensions dont agree");
                             errorDialog.setVisible(true);
@@ -1567,6 +1561,18 @@ public class MainUI extends javax.swing.JFrame {
             axialSlider.setValue(y);
         }
     }
+    private void drawCoronalOverlay(){
+        BufferedImage ovImg=overlayVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),colorScaleOverlay);
+        BufferedImage niiImg=niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),colorScale);
+        int w=niiImg.getWidth();
+        int h=niiImg.getHeight();
+        BufferedImage combined = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g=combined.createGraphics();
+        Color c=new Color(0,0,0,0);
+        g.drawImage(niiImg,0,0,c,null);
+        g.drawImage(ovImg,0,0,c,null);
+        coronalScale=UITools.imageToLabel(combined,coronalLabel);
+    }
     //Saggital
     private void drawSaggitalXHair(){
         int Val=saggitalSlider.getValue();
@@ -1620,6 +1626,18 @@ public class MainUI extends javax.swing.JFrame {
             coronalSlider.setValue(x);
             axialSlider.setValue(y);
         }
+    }
+    private void drawSaggitalOverlay(){
+        BufferedImage ovImg=overlayVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)volSpinner.getValue(),colorScaleOverlay);
+        BufferedImage niiImg=niiVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)volSpinner.getValue(),colorScale);
+        int w=niiImg.getWidth();
+        int h=niiImg.getHeight();
+        BufferedImage combined = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g=combined.createGraphics();
+        Color c=new Color(0,0,0,0);
+        g.drawImage(niiImg,0,0,c,null);
+        g.drawImage(ovImg,0,0,c,null);
+        saggitalScale=UITools.imageToLabel(combined,saggitalLabel);
     }
     //Axial
     private void drawAxialXHair(){
@@ -1677,6 +1695,18 @@ public class MainUI extends javax.swing.JFrame {
             saggitalSlider.setValue(x);
             coronalSlider.setValue(y);
         }
+    }
+    private void drawAxialOverlay(){
+        BufferedImage ovImg=overlayVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)volSpinner.getValue(),colorScaleOverlay);
+        BufferedImage niiImg=niiVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)volSpinner.getValue(),colorScale);
+        int w=niiImg.getWidth();
+        int h=niiImg.getHeight();
+        BufferedImage combined = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g=combined.createGraphics();
+        Color c=new Color(0,0,0,0);
+        g.drawImage(niiImg,0,0,c,null);
+        g.drawImage(ovImg,0,0,c,null);
+        axialScale=UITools.imageToLabel(combined,axialLabel);
     }
     /********Display functions***********/
     private void resizeGraphs(){
