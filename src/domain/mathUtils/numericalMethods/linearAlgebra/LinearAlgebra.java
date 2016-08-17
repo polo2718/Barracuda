@@ -12,7 +12,7 @@ package domain.mathUtils.numericalMethods.linearAlgebra;
  * Diego Garibay-Pulido 2016</p>
  */
 public abstract class LinearAlgebra {
-    
+    @Deprecated
     public static double[] matrixTimesVector(double[][] mat,double[] vec){
         double result[]=new double[mat.length];
         if(mat[0].length==vec.length){
