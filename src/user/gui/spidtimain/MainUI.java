@@ -36,7 +36,7 @@ public class MainUI extends javax.swing.JFrame {
     Point zoomStartPoint;//Zoom area initial point
     Point zoomEndPoint;//Zoom area end point
     String colorScale;//Display colorscale (Main volume)
-    String colorScaleOverlay;//Overlay colorscale
+    String colorScaleOverlay="hot";//Overlay colorscale
     Color xHairColor=Color.GREEN;
     boolean viewState=true;//Boolean flag to indicate radiological or neurological view
     
@@ -788,10 +788,20 @@ public class MainUI extends javax.swing.JFrame {
 
         volumeSelect.setSelected(true);
         volumeSelect.setText("Volume");
+        volumeSelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                volumeSelectActionPerformed(evt);
+            }
+        });
         volumeMenu.add(volumeSelect);
 
         overlaySelect.setText("Overlay");
         overlaySelect.setToolTipText("");
+        overlaySelect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                overlaySelectActionPerformed(evt);
+            }
+        });
         volumeMenu.add(overlaySelect);
 
         jMenuBar1.add(volumeMenu);
@@ -811,7 +821,8 @@ public class MainUI extends javax.swing.JFrame {
                             .addComponent(coronalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(valueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(valueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                        .addGap(170, 170, 170)))
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(saggitalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
@@ -872,6 +883,7 @@ public class MainUI extends javax.swing.JFrame {
                 //Set neurological view as default
                 resetGrayScale();
                 niiVol=null;
+                overlayVol=null;
                 neuroView.setSelected(true);
                 viewState=true;
                 //Set Orientation Labels
@@ -931,6 +943,11 @@ public class MainUI extends javax.swing.JFrame {
             // Get volume maximum
             niiVol.setMax3D((int)volSpinner.getValue());
             niiVol.setMin3D((int)volSpinner.getValue());
+            if(overlayVol!=null){
+                // Get volume maximum
+                overlayVol.setMax3D((int)volSpinner.getValue());
+                overlayVol.setMin3D((int)volSpinner.getValue());
+            }
             setXYZLabels();
         }
         drawNifti();
@@ -993,7 +1010,13 @@ public class MainUI extends javax.swing.JFrame {
                     niiVol.clearDrawRange();
                     zoomStartPoint=null;
                     zoomEndPoint=null;
-                    drawAllSlices();
+                    if(overlayVol==null){
+                        drawAllSlices();
+                    }else{
+                        overlayVol.clearDrawRange();
+                        drawAllSlicesOverlay();
+                    }
+                    
                 }
             }
         }
@@ -1047,7 +1070,12 @@ public class MainUI extends javax.swing.JFrame {
 						niiVol.clearDrawRange();
 						zoomStartPoint=null;
 						zoomEndPoint=null;
-						drawAllSlices();
+						if(overlayVol==null){
+                                                    drawAllSlices();
+                                                }else{
+                                                    overlayVol.clearDrawRange();
+                                                    drawAllSlicesOverlay();
+                                                }
 					}
 				}
 			}
@@ -1101,59 +1129,103 @@ public class MainUI extends javax.swing.JFrame {
                     niiVol.clearDrawRange();
                     zoomStartPoint=null;
                     zoomEndPoint=null;
-                    drawAllSlices();
+                    if(overlayVol==null){
+                        drawAllSlices();
+                    }else{
+                        overlayVol.clearDrawRange();
+                        drawAllSlicesOverlay();
+                    }
                 }
             }
         }
     }                                           
     /****ColorBar menu actions*****/	
     private void grayScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grayScaleActionPerformed
-        if(niiVol!=null){
+        if(niiVol!=null & volumeSelect.isSelected()){
             colorScale="grayscale";
             setColorBar();
             drawNifti();
         }
+        if(overlayVol!=null & !volumeSelect.isSelected()){
+            colorScaleOverlay="grayscale";
+            setColorBar();
+            drawNifti();
+        } 
     }//GEN-LAST:event_grayScaleActionPerformed
     private void hotScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotScaleActionPerformed
-        if(niiVol!=null){
+        if(niiVol!=null & volumeSelect.isSelected()){
             colorScale="hot";
             setColorBar();
             drawNifti();
         }
+        if(overlayVol!=null & !volumeSelect.isSelected()){
+            colorScaleOverlay="hot";
+            setColorBar();
+            drawNifti();
+        } 
     }//GEN-LAST:event_hotScaleActionPerformed
     private void hotInvertScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hotInvertScaleActionPerformed
         if(niiVol!=null){
+            if(niiVol!=null & volumeSelect.isSelected()){
             colorScale="hot_invert";
             setColorBar();
             drawNifti();
         }
+        if(overlayVol!=null & !volumeSelect.isSelected()){
+            colorScaleOverlay="hot_invert";
+            setColorBar();
+            drawNifti();
+        } 
+        }
     }//GEN-LAST:event_hotInvertScaleActionPerformed
     private void winterScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_winterScaleActionPerformed
         if(niiVol!=null){
+            if(niiVol!=null & volumeSelect.isSelected()){
             colorScale="winter";
             setColorBar();
             drawNifti();
         }
+        if(overlayVol!=null & !volumeSelect.isSelected()){
+            colorScaleOverlay="winter";
+            setColorBar();
+            drawNifti();
+        } 
+        }
     }//GEN-LAST:event_winterScaleActionPerformed
     private void winterInvertScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_winterInvertScaleActionPerformed
         if(niiVol!=null){
+            if(niiVol!=null & volumeSelect.isSelected()){
             colorScale="winter_invert";
             setColorBar();
             drawNifti();
         }
+        if(overlayVol!=null & !volumeSelect.isSelected()){
+            colorScaleOverlay="winter_invert";
+            setColorBar();
+            drawNifti();
+        } 
+        }
     }//GEN-LAST:event_winterInvertScaleActionPerformed
     private void rainbowScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rainbowScaleActionPerformed
-        if(niiVol!=null){
+        if(niiVol!=null & volumeSelect.isSelected()){
             colorScale="rainbow";
             setColorBar();
             drawNifti();
         }
+        if(overlayVol!=null & !volumeSelect.isSelected()){
+            colorScaleOverlay="rainbow";
+            setColorBar();
+            drawNifti();
+        } 
     }//GEN-LAST:event_rainbowScaleActionPerformed
     private void resetColorScaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetColorScaleActionPerformed
         if(niiVol!=null){
-        niiVol.setMax3D((int)volSpinner.getValue());
-        drawNifti();
-        updateMaxColorbar();
+            niiVol.setMax3D((int)volSpinner.getValue());
+            if(overlayVol!=null){
+                overlayVol.setMax3D((int)volSpinner.getValue());
+            }
+            drawNifti();
+            updateMaxColorbar();
         }
     }//GEN-LAST:event_resetColorScaleActionPerformed
     private void colorBarMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorBarMinActionPerformed
@@ -1165,9 +1237,9 @@ public class MainUI extends javax.swing.JFrame {
                     errorLabel.setText("Min > max : not valid");
                     errorDialog.setVisible(true);
                     if(volumeSelect.isSelected()){
-                        minString=String.format("%.2f",niiVol.getMin());
+                        minString=String.format("%.3f",niiVol.getMin());
                     }else{
-                        minString=String.format("%.2f",overlayVol.getMin());
+                        minString=String.format("%.3f",overlayVol.getMin());
                     }
                     colorBarMax.setText(minString);
                 }
@@ -1185,9 +1257,9 @@ public class MainUI extends javax.swing.JFrame {
                errorLabel.setText("Must be a valid number :" +e.getMessage());
                errorDialog.setVisible(true);
                if(volumeSelect.isSelected()){
-                    minString=String.format("%.2f",niiVol.getMin());
+                    minString=String.format("%.3f",niiVol.getMin());
                }else{
-                    minString=String.format("%.2f",overlayVol.getMin());
+                    minString=String.format("%.3f",overlayVol.getMin());
                }
                colorBarMax.setText(minString);
            }
@@ -1202,9 +1274,9 @@ public class MainUI extends javax.swing.JFrame {
                     errorLabel.setText("Max < Min : not valid");
                     errorDialog.setVisible(true);
                     if(volumeSelect.isSelected()){
-                        maxString=String.format("%.2f",niiVol.getMax());
+                        maxString=String.format("%.3f",niiVol.getMax());
                     }else{
-                        maxString=String.format("%.2f",overlayVol.getMax());
+                        maxString=String.format("%.3f",overlayVol.getMax());
                     }
                     colorBarMax.setText(maxString);
                 }
@@ -1222,9 +1294,9 @@ public class MainUI extends javax.swing.JFrame {
                errorLabel.setText("Must be a valid number :" +e.getMessage());
                errorDialog.setVisible(true);
                if(volumeSelect.isSelected()){
-                    maxString=String.format("%.2f",niiVol.getMax());
+                    maxString=String.format("%.3f",niiVol.getMax());
                }else{
-                    maxString=String.format("%.2f",overlayVol.getMax());
+                    maxString=String.format("%.3f",overlayVol.getMax());
                }
                colorBarMax.setText(maxString);
            }
@@ -1239,6 +1311,13 @@ public class MainUI extends javax.swing.JFrame {
                 niiVol.orient[0]='R';
             }else{
                 niiVol.orient[0]='L';
+            }
+            if(overlayVol!=null){
+                if(overlayVol.orient[0]=='L'){
+                    overlayVol.orient[0]='R';
+                }else{
+                    overlayVol.orient[0]='L';
+                }
             }
             coronalLabel1.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
             coronalLabel3.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
@@ -1258,6 +1337,13 @@ public class MainUI extends javax.swing.JFrame {
             }else{
                 niiVol.orient[0]='L';
             }
+            if(overlayVol!=null){
+                if(overlayVol.orient[0]=='L'){
+                    overlayVol.orient[0]='R';
+                }else{
+                    overlayVol.orient[0]='L';
+                }
+            }
             coronalLabel1.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
             coronalLabel3.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
             axialLabel1.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
@@ -1271,9 +1357,15 @@ public class MainUI extends javax.swing.JFrame {
     private void restoreZoomMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreZoomMenuActionPerformed
        if(niiVol!=null){
             niiVol.clearDrawRange();
+            if(overlayVol!=null){
+                overlayVol.clearDrawRange();
+                drawAllSlicesOverlay();
+            }
+            else{
+                drawAllSlices();  
+            }
             zoomStartPoint=null;
             zoomEndPoint=null;
-            drawAllSlices();
        }
     }//GEN-LAST:event_restoreZoomMenuActionPerformed
     private void crosshairMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crosshairMenuActionPerformed
@@ -1281,8 +1373,13 @@ public class MainUI extends javax.swing.JFrame {
         drawLabelsXHair();
     }//GEN-LAST:event_crosshairMenuActionPerformed
     private void zoomMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomMenuActionPerformed
-       if(niiVol!=null)
-        drawAllSlices();
+       if(niiVol!=null){
+           if(overlayVol!=null){
+                drawAllSlicesOverlay();
+           }else{
+                drawAllSlices();
+           }
+       }
     }//GEN-LAST:event_zoomMenuActionPerformed
 
     private void overlayVolumeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_overlayVolumeMenuActionPerformed
@@ -1300,17 +1397,15 @@ public class MainUI extends javax.swing.JFrame {
                 String filename = file.getAbsolutePath();
             //Try to read nifti file    
                 try{
-                    //Set neurological view as default
-                    resetGrayScale();
                     overlayVol=null;
-
+                    
                     overlayVol=new DrawableNiftiVolume(NiftiVolume.read(filename));
                     if(overlayVol!=null){
                         if(overlayVol.header.dim[1]==niiVol.header.dim[1] &
                            overlayVol.header.dim[2]==niiVol.header.dim[2] &
                            overlayVol.header.dim[3]==niiVol.header.dim[3] &
                            overlayVol.header.dim[4]==niiVol.header.dim[4]){
-                            overlaySelect.setSelected(true);
+                            
                             if(neuroView.isSelected()){
                                 // Added code so default view would be neurological
                                 if(overlayVol.orient[0]=='L'){overlayVol.orient[0]='R';}
@@ -1319,19 +1414,17 @@ public class MainUI extends javax.swing.JFrame {
                                     errorLabel.setText("Error");
                                     errorDialog.setVisible(true);
                                 }
+                                if(zoomMenu.isSelected()){
+                                    drawNifti();
+                                }else{
+                                    drawLabelsXHair();
+                                }
+                                
                             }
-                            BufferedImage ovImg=overlayVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),"hot_invert");
-                            BufferedImage niiImg=niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),"grayscale");
-                            int w=ovImg.getWidth();
-                            int h=ovImg.getHeight();
-                            BufferedImage combined = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
-                            Graphics2D g=combined.createGraphics();
-                            Color c=new Color(0,0,0,0);
-                            g.drawImage(niiImg,0,0,c,null);
-                            g.drawImage(ovImg,0,0,c,null);
-                            UITools.imageToLabel(combined,coronalLabel);
+                        overlaySelect.setSelected(true);   
+                        setColorBar();
                         }else{
-                            errorLabel.setText("Dimensions dont agree");
+                            errorLabel.setText("Dimensions do not agree");
                             errorDialog.setVisible(true);
                             overlayVol=null;
                         }
@@ -1348,6 +1441,20 @@ public class MainUI extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_overlayVolumeMenuActionPerformed
+
+    private void overlaySelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_overlaySelectActionPerformed
+        if(overlayVol==null){
+            volumeSelect.setSelected(true);
+        }else{
+            setColorBar();
+            setXYZLabels();
+        }
+    }//GEN-LAST:event_overlaySelectActionPerformed
+
+    private void volumeSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volumeSelectActionPerformed
+        setColorBar();
+        setXYZLabels();
+    }//GEN-LAST:event_volumeSelectActionPerformed
                                     
     /**
      * @param args the command line arguments
@@ -1487,31 +1594,49 @@ public class MainUI extends javax.swing.JFrame {
         axialScale=UITools.imageToLabel(img,axialLabel);
     }//Images w/o Crosshairs
     private void drawNiftiSlice(JSlider slider,JSpinner spinner){
-         if(niiVol!=null){
-             if(crosshairMenu.isSelected()){
-                 drawLabelsXHair();
-             }else{
-                 drawAllSlices();
-             }
-            spinner.setValue(slider.getValue());
-            setXYZLabels();
+        if(overlayVol==null){
+            if(niiVol!=null){
+                 if(crosshairMenu.isSelected()){
+                     drawLabelsXHair();
+                 }else{
+                     drawAllSlices();
+                 }
+                spinner.setValue(slider.getValue());
+                setXYZLabels();
+            }
+        }else{
+                if(crosshairMenu.isSelected()){
+                     drawLabelsXHair();
+                 }else{
+                     drawAllSlicesOverlay();
+                 }
+                spinner.setValue(slider.getValue());
+                setXYZLabels();
         }
     }
     private void drawNifti(){
-        if(niiVol!=null & volumeSelect.isSelected()){
-             if(crosshairMenu.isSelected()){
-                 drawLabelsXHair();
-             }else{
-                 drawAllSlices();
-             }
+        if(overlayVol==null){
+            if(niiVol!=null){
+                 if(crosshairMenu.isSelected()){
+                     drawLabelsXHair();
+                 }else{
+                     drawAllSlices();
+                 }
+                setXYZLabels();
+            }
+        }else{
+            if(crosshairMenu.isSelected()){
+                     drawLabelsXHair();
+                 }else{
+                     drawAllSlicesOverlay();
+                 }
+                setXYZLabels();
         }
-        if(overlayVol!=null & !volumeSelect.isSelected()){
-             if(crosshairMenu.isSelected()){
-                 drawLabelsXHair();
-             }else{
-                 drawAllSlices();
-             }
-        }
+    }
+    private void drawAllSlicesOverlay(){
+        drawCoronalOverlay();
+        drawAxialOverlay();
+        drawSaggitalOverlay();
     }
     //Coronal
     private void drawCoronalXHair(){
@@ -1520,7 +1645,20 @@ public class MainUI extends javax.swing.JFrame {
             int yVal=axialSlider.getValue()-niiVol.getDrawRange(1,1);
             if(Val<niiVol.header.dim[2] & xVal<niiVol.header.dim[1] & yVal<niiVol.header.dim[3]){
                 BufferedImage img;
+                
+                if(overlayVol==null){
                 img = niiVol.drawNiftiSlice(Val, "coronal",(int)volSpinner.getValue(),colorScale);
+                }else{
+                    BufferedImage ovImg=overlayVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),colorScaleOverlay);
+                    BufferedImage niiImg=niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),colorScale);
+                    int w=niiImg.getWidth();
+                    int h=niiImg.getHeight();
+                    img = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+                    Graphics2D g=img.createGraphics();
+                    Color c=new Color(0,0,0,0);
+                    g.drawImage(niiImg,0,0,c,null);
+                    g.drawImage(ovImg,0,0,c,null);
+                }
                 if(img!=null){         
                     coronalScale=UITools.imageToLabel(img,coronalLabel);
                     int actualnx=(int) Math.ceil((xVal*niiVol.scale[0])*coronalScale);
@@ -1567,14 +1705,38 @@ public class MainUI extends javax.swing.JFrame {
             axialSlider.setValue(y);
         }
     }
+    private void drawCoronalOverlay(){
+        BufferedImage ovImg=overlayVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),colorScaleOverlay);
+        BufferedImage niiImg=niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),colorScale);
+        int w=niiImg.getWidth();
+        int h=niiImg.getHeight();
+        BufferedImage combined = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g=combined.createGraphics();
+        Color c=new Color(0,0,0,0);
+        g.drawImage(niiImg,0,0,c,null);
+        g.drawImage(ovImg,0,0,c,null);
+        coronalScale=UITools.imageToLabel(combined,coronalLabel);
+    }
     //Saggital
     private void drawSaggitalXHair(){
         int Val=saggitalSlider.getValue();
         int xVal=coronalSlider.getValue()-niiVol.getDrawRange(0,0);
         int yVal=axialSlider.getValue()-niiVol.getDrawRange(0,1);
         if(xVal<niiVol.header.dim[2] & Val<niiVol.header.dim[1]& yVal<niiVol.header.dim[3]){
-         BufferedImage img;
-         img = niiVol.drawNiftiSlice(Val, "saggital",(int)volSpinner.getValue(),colorScale);
+        BufferedImage img;
+        if(overlayVol==null){
+            img = niiVol.drawNiftiSlice(Val, "saggital",(int)volSpinner.getValue(),colorScale);
+        }else{
+            BufferedImage ovImg=overlayVol.drawNiftiSlice(Val, "saggital",(int)volSpinner.getValue(),colorScaleOverlay);
+            BufferedImage niiImg=niiVol.drawNiftiSlice(Val, "saggital",(int)volSpinner.getValue(),colorScale);
+            int w=niiImg.getWidth();
+            int h=niiImg.getHeight();
+            img = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g=img.createGraphics();
+            Color c=new Color(0,0,0,0);
+            g.drawImage(niiImg,0,0,c,null);
+            g.drawImage(ovImg,0,0,c,null);
+        }
         if(img!=null){
             saggitalScale= UITools.imageToLabel(img,saggitalLabel);
             int actualnx=(int) Math.round((xVal*niiVol.scale[1])*saggitalScale);
@@ -1621,6 +1783,18 @@ public class MainUI extends javax.swing.JFrame {
             axialSlider.setValue(y);
         }
     }
+    private void drawSaggitalOverlay(){
+        BufferedImage ovImg=overlayVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)volSpinner.getValue(),colorScaleOverlay);
+        BufferedImage niiImg=niiVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)volSpinner.getValue(),colorScale);
+        int w=niiImg.getWidth();
+        int h=niiImg.getHeight();
+        BufferedImage combined = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g=combined.createGraphics();
+        Color c=new Color(0,0,0,0);
+        g.drawImage(niiImg,0,0,c,null);
+        g.drawImage(ovImg,0,0,c,null);
+        saggitalScale=UITools.imageToLabel(combined,saggitalLabel);
+    }
     //Axial
     private void drawAxialXHair(){
         
@@ -1629,7 +1803,19 @@ public class MainUI extends javax.swing.JFrame {
         int yVal=coronalSlider.getValue()-niiVol.getDrawRange(2,1);
         if(yVal<niiVol.header.dim[2] & xVal<niiVol.header.dim[1] & Val<niiVol.header.dim[3]){
         BufferedImage img;
-        img = niiVol.drawNiftiSlice(Val, "axial",(int)volSpinner.getValue(),colorScale);
+        if(overlayVol==null){
+            img = niiVol.drawNiftiSlice(Val, "axial",(int)volSpinner.getValue(),colorScale);
+        }else{
+            BufferedImage ovImg=overlayVol.drawNiftiSlice(Val, "axial",(int)volSpinner.getValue(),colorScaleOverlay);
+            BufferedImage niiImg=niiVol.drawNiftiSlice(Val, "axial",(int)volSpinner.getValue(),colorScale);
+            int w=niiImg.getWidth();
+            int h=niiImg.getHeight();
+            img = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g=img.createGraphics();
+            Color c=new Color(0,0,0,0);
+            g.drawImage(niiImg,0,0,c,null);
+            g.drawImage(ovImg,0,0,c,null);
+        }
         if(img!=null){
             axialScale=UITools.imageToLabel(img,axialLabel);
             //x saggital, y coronal
@@ -1678,13 +1864,33 @@ public class MainUI extends javax.swing.JFrame {
             coronalSlider.setValue(y);
         }
     }
+    private void drawAxialOverlay(){
+        BufferedImage ovImg=overlayVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)volSpinner.getValue(),colorScaleOverlay);
+        BufferedImage niiImg=niiVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)volSpinner.getValue(),colorScale);
+        int w=niiImg.getWidth();
+        int h=niiImg.getHeight();
+        BufferedImage combined = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g=combined.createGraphics();
+        Color c=new Color(0,0,0,0);
+        g.drawImage(niiImg,0,0,c,null);
+        g.drawImage(ovImg,0,0,c,null);
+        axialScale=UITools.imageToLabel(combined,axialLabel);
+    }
     /********Display functions***********/
     private void resizeGraphs(){
-        if(niiVol!=null){
+        if(overlayVol==null){
+            if(niiVol!=null){
+                if(crosshairMenu.isSelected()){
+                     drawLabelsXHair();
+                }else{
+                     drawAllSlices();
+                }
+            }
+        }else{
             if(crosshairMenu.isSelected()){
-                 drawLabelsXHair();
+                drawLabelsXHair();
             }else{
-                 drawAllSlices();
+                drawAllSlicesOverlay();
             }
         }
     }//When graphs are resized
@@ -1693,12 +1899,20 @@ public class MainUI extends javax.swing.JFrame {
         if(prevMouse!=null){
             //If new point>prev point decrease max
             if(prevMouse.getY()<point.getY()){
-                niiVol.setMax(niiVol.getMax()*0.98);
+                if(volumeSelect.isSelected()){
+                    niiVol.setMax(niiVol.getMax()*0.98);
+                }else{
+                    overlayVol.setMax(overlayVol.getMax()*0.98);
+                }
                 drawLabelsXHair();
             }
             //If new point<prev point increase max
             else if(prevMouse.getY()>point.getY()){
-                niiVol.setMax(niiVol.getMax()*1.02);
+                if(volumeSelect.isSelected()){
+                    niiVol.setMax(niiVol.getMax()*1.02);
+                }else{
+                    overlayVol.setMax(overlayVol.getMax()*1.02);
+                }
                 drawLabelsXHair();
             }
         }
@@ -1709,11 +1923,20 @@ public class MainUI extends javax.swing.JFrame {
         int XVal=(int)saggitalSlider.getValue();
         int YVal=(int)coronalSlider.getValue();
         int ZVal=(int)axialSlider.getValue();
-        if(YVal<niiVol.header.dim[2] & XVal<niiVol.header.dim[1] & ZVal<niiVol.header.dim[3]){
+        DrawableNiftiVolume vol;
+        String str;
+        if(volumeSelect.isSelected()){
+            vol=niiVol;
+            str="Volume: ";
+        }else{
+            vol=overlayVol;
+            str="Overlay: ";
+        }
+        if(YVal<vol.header.dim[2] & XVal<vol.header.dim[1] & ZVal<vol.header.dim[3]){
             //Get nifti units
-            String units=niiVol.header.getUnits();
+            String units=vol.header.getUnits();
             //Coompute position using qform and sform matrices
-            double xyz[]=niiVol.computeXYZ(R,XVal,YVal,ZVal);
+            double xyz[]=vol.computeXYZ(R,XVal,YVal,ZVal);
             //Format strings
             String numString = String.format ("%.2f ", xyz[0]);
             xPosLabel.setText(numString+units);
@@ -1722,9 +1945,10 @@ public class MainUI extends javax.swing.JFrame {
             numString = String.format ("%.2f ", xyz[2]);
             zPosLabel.setText(numString+units);
             
-            double num=niiVol.data.get(XVal, YVal, ZVal, (int)volSpinner.getValue());
+            double num=vol.data.get(XVal, YVal, ZVal, (int)volSpinner.getValue());
             numString=String.format("%.8f ", num);
-            valueLabel.setText(numString);
+            
+            valueLabel.setText(str+numString);
         }
     }//X,Y,Z units
     
@@ -1732,7 +1956,13 @@ public class MainUI extends javax.swing.JFrame {
     private void setColorBar(){
         Image img;
         URL imageurl;
-        switch(colorScale){
+        String str;
+        if(volumeSelect.isSelected()){
+            str=colorScale;
+        }else{
+            str=colorScaleOverlay;
+        }
+        switch(str){
             case"grayscale": imageurl= getClass().getResource("/images/grayMap.png");
                 break;
             case"hot":imageurl= getClass().getResource("/images/hotMap.png");
@@ -1748,6 +1978,7 @@ public class MainUI extends javax.swing.JFrame {
             default:imageurl= getClass().getResource("/images/grayMap.png");
                 break;
         }
+ 
         img =  Toolkit.getDefaultToolkit().getImage(imageurl);
         updateMaxColorbar();
         ImageIcon imageIcon = new ImageIcon(img);
@@ -1755,8 +1986,14 @@ public class MainUI extends javax.swing.JFrame {
     }//Sets colorbar image
     private void updateMaxColorbar(){
         double max,min;
-        max=niiVol.getMax();
-        min=niiVol.getMin();
+        DrawableNiftiVolume vol;
+        if(volumeSelect.isSelected()){
+            vol=niiVol;
+        }else{
+            vol=overlayVol;
+        }
+        max=vol.getMax();
+        min=vol.getMin();
         String numString = String.format ("%.2f",max);
         colorBarMax.setText(numString);
         numString=String.format("_%.2f",(3*(max-min)/4));
@@ -1771,7 +2008,11 @@ public class MainUI extends javax.swing.JFrame {
     private void resetGrayScale(){
         //Set the colorscale
         grayScale.setSelected(true);
-        colorScale="grayscale";
+        if(volumeSelect.isSelected()){
+            colorScale="grayscale";
+        }else{
+             colorScaleOverlay="grayscale";
+        }
     }//Resets the colorbar to gray
 
     /**********Zoom Functions***********/    
@@ -1779,8 +2020,12 @@ public class MainUI extends javax.swing.JFrame {
         if(zoomStartPoint!=null & zoomEndPoint!=null){
             //Get label image
             BufferedImage img;
-            img = niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),colorScale);
-            coronalScale=UITools.imageToLabel(img, coronalLabel);
+            if(overlayVol==null){
+                img = niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),colorScale);
+                coronalScale=UITools.imageToLabel(img, coronalLabel);
+            }else{
+                drawCoronalOverlay();
+            }
             img=(BufferedImage)((ImageIcon)coronalLabel.getIcon()).getImage();
             //Get mouse coordinates
             int xy[]=getZoomArea(coronalLabel,img);
@@ -1793,8 +2038,12 @@ public class MainUI extends javax.swing.JFrame {
     private void setCoronalZoom(){
         //Get label image & Draw to erase previous zoom box
         BufferedImage img;
-        img = niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),colorScale);
-        coronalScale=UITools.imageToLabel(img, coronalLabel);
+        if(overlayVol==null){
+            img = niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),colorScale);
+            coronalScale=UITools.imageToLabel(img, coronalLabel);
+        }else{
+            drawCoronalOverlay();
+        }
         img=(BufferedImage)((ImageIcon)coronalLabel.getIcon()).getImage();
         
         if(zoomStartPoint!=null & zoomEndPoint!=null){
@@ -1829,8 +2078,16 @@ public class MainUI extends javax.swing.JFrame {
                 niiVol.setDrawRange(1,1,(int)Math.round(y11));
                 niiVol.setDrawRange(1,2,(int)Math.round(x00));
                 niiVol.setDrawRange(1,3,(int)Math.round(y00));
-                img = niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),colorScale);
-                coronalScale=UITools.imageToLabel(img, coronalLabel);
+                if(overlayVol!=null){
+                    overlayVol.setDrawRange(1,0,(int)Math.round(x11));
+                    overlayVol.setDrawRange(1,1,(int)Math.round(y11));
+                    overlayVol.setDrawRange(1,2,(int)Math.round(x00));
+                    overlayVol.setDrawRange(1,3,(int)Math.round(y00));
+                    drawCoronalOverlay();
+                }else{
+                    img = niiVol.drawNiftiSlice(coronalSlider.getValue(), "coronal",(int)volSpinner.getValue(),colorScale);
+                    coronalScale=UITools.imageToLabel(img, coronalLabel);
+                }
             }
         }
     }//Zoom-in action
@@ -1838,8 +2095,12 @@ public class MainUI extends javax.swing.JFrame {
     private void drawSaggitalZoomBox(){
         if(zoomStartPoint!=null & zoomEndPoint!=null){
             BufferedImage img;
+            if(overlayVol==null){
             img = niiVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)volSpinner.getValue(),colorScale);
-            saggitalScale=UITools.imageToLabel(img, saggitalLabel);
+                saggitalScale=UITools.imageToLabel(img, saggitalLabel);
+            }else{
+                drawSaggitalOverlay();
+            }
             img=(BufferedImage)((ImageIcon)saggitalLabel.getIcon()).getImage();
 
             int xy[]=getZoomArea(saggitalLabel,img);
@@ -1850,8 +2111,12 @@ public class MainUI extends javax.swing.JFrame {
     }
     private void setSaggitalZoom(){
         BufferedImage img;
-        img = niiVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)volSpinner.getValue(),colorScale);
-        saggitalScale=UITools.imageToLabel(img, saggitalLabel);
+        if(overlayVol==null){
+            img = niiVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)volSpinner.getValue(),colorScale);
+            saggitalScale=UITools.imageToLabel(img, saggitalLabel);
+        }else{
+            drawSaggitalOverlay();
+        }
         img=(BufferedImage)((ImageIcon)saggitalLabel.getIcon()).getImage();
 
         if(zoomStartPoint!=null & zoomEndPoint!=null){
@@ -1885,8 +2150,16 @@ public class MainUI extends javax.swing.JFrame {
                 niiVol.setDrawRange(0,1,(int)Math.round(y11));
                 niiVol.setDrawRange(0,2,(int)Math.round(x00));
                 niiVol.setDrawRange(0,3,(int)Math.round(y00));
-                img = niiVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)volSpinner.getValue(),colorScale);
-                saggitalScale=UITools.imageToLabel(img, saggitalLabel);
+                if(overlayVol!=null){
+                    overlayVol.setDrawRange(0,0,(int)Math.round(x11));
+                    overlayVol.setDrawRange(0,1,(int)Math.round(y11));
+                    overlayVol.setDrawRange(0,2,(int)Math.round(x00));
+                    overlayVol.setDrawRange(0,3,(int)Math.round(y00));
+                    drawSaggitalOverlay();
+                }else{
+                    img = niiVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)volSpinner.getValue(),colorScale);
+                    saggitalScale=UITools.imageToLabel(img, saggitalLabel);
+                }
             }
         }
     }
@@ -1894,8 +2167,12 @@ public class MainUI extends javax.swing.JFrame {
     private void drawAxialZoomBox(){
         if(zoomStartPoint!=null & zoomEndPoint!=null){
             BufferedImage img;
-            img = niiVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)volSpinner.getValue(),colorScale);
-            axialScale=UITools.imageToLabel(img, axialLabel);
+            if(overlayVol==null){
+                img = niiVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)volSpinner.getValue(),colorScale);
+                axialScale=UITools.imageToLabel(img, axialLabel);
+            }else{
+                drawAxialOverlay();
+            }
             img=(BufferedImage)((ImageIcon)axialLabel.getIcon()).getImage();
         
             int xy[]=getZoomArea(axialLabel,img);
@@ -1906,8 +2183,12 @@ public class MainUI extends javax.swing.JFrame {
     }
     private void setAxialZoom(){
         BufferedImage img;
-        img = niiVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)volSpinner.getValue(),colorScale);
-        axialScale=UITools.imageToLabel(img, axialLabel);
+        if(overlayVol==null){
+            img = niiVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)volSpinner.getValue(),colorScale);
+            axialScale=UITools.imageToLabel(img, axialLabel);
+        }else{
+            drawAxialOverlay();
+        }
         img=(BufferedImage)((ImageIcon)axialLabel.getIcon()).getImage();
         
         if(zoomStartPoint!=null & zoomEndPoint!=null){
@@ -1941,8 +2222,16 @@ public class MainUI extends javax.swing.JFrame {
                 niiVol.setDrawRange(2,1,(int)Math.round(y11));
                 niiVol.setDrawRange(2,2,(int)Math.round(x00));
                 niiVol.setDrawRange(2,3,(int)Math.round(y00));
-                img = niiVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)volSpinner.getValue(),colorScale);
-                axialScale=UITools.imageToLabel(img, axialLabel);
+                if(overlayVol!=null){
+                    overlayVol.setDrawRange(2,0,(int)Math.round(x11));
+                    overlayVol.setDrawRange(2,1,(int)Math.round(y11));
+                    overlayVol.setDrawRange(2,2,(int)Math.round(x00));
+                    overlayVol.setDrawRange(2,3,(int)Math.round(y00));
+                    drawAxialOverlay();
+                }else{
+                    img = niiVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)volSpinner.getValue(),colorScale);
+                    axialScale=UITools.imageToLabel(img, axialLabel);
+                }
             }
         }
     }

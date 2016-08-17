@@ -127,7 +127,7 @@ public abstract class UITools {
 
                     rgb=new Color(255,255,255,255);
                 }
-                else if(val<0){ //Less than min is not shown
+                else if(val<=0){ //Less than min is not shown
                     rgb=new Color(0,0,0,0);;
                 }else{
                     val=val*mul; //Multiply by dynamic range
@@ -189,7 +189,7 @@ public abstract class UITools {
                 else if((val*mul)>765){ //More than max display is white
                     rgb=new Color(255,255,255,255);
                 }
-                else if(val<0){ //Less than min is black
+                else if(val<=0){ //Less than min is black
                     rgb=new Color(0,0,0,0);
                 }else{
                     val=val*mul; //Multiply by dynamic range
@@ -250,7 +250,7 @@ public abstract class UITools {
                 else if((val*mul)>1020){ //More than max display is red
                     rgb=new Color(255,0,0,255);
                 }
-                else if(val<0){ //Less than min is blue
+                else if(val<=0){ //Less than min is blue
                     rgb=new Color(0,0,255,255);
                 }else{
                     val=(val-min)*mul; //Multiply by dynamic range
