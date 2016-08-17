@@ -6,7 +6,7 @@
 package data.niftilibrary.niftijio;
 
 import domain.mathUtils.arrayTools.ArrayOperations;
-import domain.mathUtils.linearAlgebra.LinearAlgebra;
+import domain.mathUtils.numericalMethods.linearAlgebra.LinearAlgebra;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
