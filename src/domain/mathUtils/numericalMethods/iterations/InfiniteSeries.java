@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package domain.mathUtils.numericalMethods.iterations;
-import domain.mathUtils.numericalMethods.interfaces.OneVariableFunction;
+import domain.mathUtils.numericalMethods.functionEvaluation.interfaces.OneVariableFunction;
 
 /**
  * This class provides a framework to compute an infinite series. 

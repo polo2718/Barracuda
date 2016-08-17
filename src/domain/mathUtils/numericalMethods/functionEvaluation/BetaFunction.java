@@ -5,7 +5,7 @@
  */
 package domain.mathUtils.numericalMethods.functionEvaluation;
 
-import domain.mathUtils.numericalMethods.interfaces.MultiVariableFunction;
+import domain.mathUtils.numericalMethods.functionEvaluation.interfaces.MultiVariableFunction;
 
 /**
  * Provides methods regarding the beta Function

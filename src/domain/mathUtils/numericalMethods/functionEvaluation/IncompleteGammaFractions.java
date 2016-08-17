@@ -6,7 +6,7 @@
 package domain.mathUtils.numericalMethods.functionEvaluation;
 import domain.mathUtils.numericalMethods.GenericMathDefinitions;
 //import domain.mathUtils.numericalMethods.functionEvaluation.GammaFunction;
-import domain.mathUtils.numericalMethods.interfaces.MultiVariableFunction;
+import domain.mathUtils.numericalMethods.functionEvaluation.interfaces.MultiVariableFunction;
 import domain.mathUtils.numericalMethods.iterations.ContinuedFractions;
 
 /**
@@ -69,7 +69,7 @@ class IncompleteGammaFractions extends ContinuedFractions implements MultiVariab
      * @throws IllegalArgumentException an exception is thrown when the input array containing the 2 independent variables has the wrong dimensionality
      */
     @Override
-    public double value(double[] variables) throws Exception {
+    public double value(double[] variables) throws IllegalArgumentException{
         if(variables.length!=2)
             throw new IllegalArgumentException("Check input array. Wrong number of independent variables were provided."
             + " IncompleteGamma function is defined for only two independent variables"

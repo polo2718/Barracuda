@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package domain.mathUtils.numericalMethods.iterations;
-import domain.mathUtils.numericalMethods.interfaces.OneVariableFunction;
+import domain.mathUtils.numericalMethods.functionEvaluation.interfaces.OneVariableFunction;
 
 /**
  * This abstract class is a general framework to approximate a result by means of an iterative process based on a function definition.

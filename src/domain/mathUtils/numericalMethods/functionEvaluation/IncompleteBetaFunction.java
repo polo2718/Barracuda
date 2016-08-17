@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package domain.mathUtils.numericalMethods.functionEvaluation;
-import domain.mathUtils.numericalMethods.interfaces.MultiVariableFunction;
+import domain.mathUtils.numericalMethods.functionEvaluation.interfaces.MultiVariableFunction;
 
 /**
  * Provides the method to compute the Incomplete Beta Function beta(x,alpha1, alpha2)
@@ -35,7 +35,7 @@ public class IncompleteBetaFunction implements MultiVariableFunction{
 
      */
     @Override
-    public double value(double[] variables) throws Exception {
+    public double value(double[] variables) throws IllegalArgumentException {
         /*
         The continued fraction converges when x>(alpha1+1)/(alpha1+alpha2+2)
         When the fraction does not converge, the incomplete Beta function should be calculated as
