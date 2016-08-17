@@ -23,10 +23,8 @@ public interface OneVariableFunction extends MultiVariableFunction {
     @Override
     public default double value(double[] variables) throws IllegalArgumentException {
         if(variables.length!=1)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Wrong number of parameters supplied: One variable function should have only one parameter");
         double x=variables[1];
         return value(x);
     }
-     
-     
 }
