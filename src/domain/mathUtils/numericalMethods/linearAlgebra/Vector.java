@@ -18,10 +18,11 @@ public class Vector {
      * Vector components
      */
     protected double components[];
+    
     /**
      * Constructor
      * @param components 1D double array containing the components for the vector
-     * @throws NegativeArraySizeException 
+     * @throws NegativeArraySizeException throws exception if the components of the vector are defined as a negative array
      */
     public Vector(double components[]) throws NegativeArraySizeException{
         if(components.length<=0){
@@ -29,6 +30,7 @@ public class Vector {
         }
         this.components=components;
     }
+    
     /**
      * Return the vector components
      * @return 1D array containing the value of the vector components
@@ -41,14 +43,16 @@ public class Vector {
      * This method returns the value of the nth vector component
      * @param n nth component
      * @return The value of the nth component
-     * @throws IllegalArgumentException 
+     * @throws IllegalArgumentException A exception is thrown if the specified component
+     * does not exist in the current vector
      */
     public double getComponent(int n) throws IllegalArgumentException{
         if(n<0 || n>components.length)
-            throw new IllegalArgumentException("The specified component does not exist "
-                    + "in the component array");
+            throw new IllegalArgumentException("The specified component " + n + " does not exist "
+                    + "in the component array ");
         return components[n];
     }
+    
     /**
      * Returns the vector dimensionality
      * @return vector dimension (number of components)
@@ -69,6 +73,7 @@ public class Vector {
                     components.length+" and " + v.dimension());
         return secureScalarProduct(v);
     }
+   
     /**
      * Performs the scalar product (u dot v) between this vector (u) and the provided vector (v) without checking for dimensionality problems
      * @param v Vector with which the scalar product should be performed
@@ -79,6 +84,22 @@ public class Vector {
         for(int i=0; i<=this.dimension();i++)
             result+=this.components[i]*v.components[i];
         return result;
+    }
+    
+    /**
+     * Performs a vector addition between this vector (u) and other vector (v) u+v
+     * @param v vector to add (v)
+     * @return Vector resulting vector (u+v)
+     * @throws IllegalDimensionException
+     */
+    public Vector add(Vector v) throws IllegalDimensionException{
+        if(this.dimension()!=v.dimension())
+            throw new IllegalDimensionException("Cannot add a vector of "+ this.dimension()+
+                    " components whith a vector of"+ v.dimension()+ " components");
+        for(int i=0; i<this.dimension(); i++){
+            v.components[i]=v.components[i]+this.components[i];
+        }
+        return v;
     }
     
     /**

@@ -1,4 +1,4 @@
 /**
- * Contains classes that provide methods for performing array operations
+ * Contains classes that provide methods to perform array operations
  */
 package domain.mathUtils.arrayTools;
