@@ -145,7 +145,6 @@ public class MainUI extends javax.swing.JFrame {
         colorScaleGroup.add(rainbowScale);
 
         errorDialog.setTitle("Error!!!");
-        errorDialog.setIconImage(getErrorIcon());
         errorDialog.setModal(true);
         errorDialog.setSize(new java.awt.Dimension(280, 120));
 
@@ -231,7 +230,6 @@ public class MainUI extends javax.swing.JFrame {
         coronalLabel4.setToolTipText("");
 
         coronalSlider.setBackground(new java.awt.Color(0, 0, 0));
-        coronalSlider.setMaximum(10000);
         coronalSlider.setMinimumSize(new java.awt.Dimension(10, 5));
         coronalSlider.setName(""); // NOI18N
         coronalSlider.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -250,7 +248,7 @@ public class MainUI extends javax.swing.JFrame {
                 .addGap(1, 1, 1)
                 .addGroup(coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(coronalLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(coronalSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(coronalSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
                     .addComponent(coronalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(coronalLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(2, 2, 2)
@@ -310,7 +308,6 @@ public class MainUI extends javax.swing.JFrame {
         axialLabel3.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
 
         axialSlider.setBackground(new java.awt.Color(0, 0, 0));
-        axialSlider.setMaximum(10000);
         axialSlider.setMinimumSize(new java.awt.Dimension(10, 5));
         axialSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -334,7 +331,7 @@ public class MainUI extends javax.swing.JFrame {
                     .addComponent(axialLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(axialLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(axialLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(axialSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(axialSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE))
                 .addGap(2, 2, 2)
                 .addComponent(axialLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3))
@@ -398,7 +395,6 @@ public class MainUI extends javax.swing.JFrame {
         saggitalLabel5.setToolTipText("");
 
         saggitalSlider.setBackground(new java.awt.Color(0, 0, 0));
-        saggitalSlider.setMaximum(10000);
         saggitalSlider.setMinimumSize(new java.awt.Dimension(10, 5));
         saggitalSlider.setName(""); // NOI18N
         saggitalSlider.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -825,7 +821,8 @@ public class MainUI extends javax.swing.JFrame {
                             .addComponent(coronalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(valueLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(valueLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                        .addGap(170, 170, 170)))
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(saggitalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 314, Short.MAX_VALUE)
@@ -852,7 +849,6 @@ public class MainUI extends javax.swing.JFrame {
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**********Slider action**********/
@@ -903,14 +899,12 @@ public class MainUI extends javax.swing.JFrame {
                     if(niiVol.orient[0]=='L'){niiVol.orient[0]='R';}
                     else if(niiVol.orient[0]=='R'){niiVol.orient[0]='L';}
                     else{
-                        errorLabel.setText("Invalid orientation");
-                        errorDialog.setLocationRelativeTo(null);
+                        errorLabel.setText("Error");
                         errorDialog.setVisible(true);
                     }
                     //Set Color Bar
                     setColorBar();
                     //Set spinner models
-                    if(niiVol.header.dim[4]<=0){niiVol.header.dim[4]=1;}
                     SpinnerNumberModel model = new SpinnerNumberModel(0, 0,niiVol.header.dim[4]-1,1);
                     volSpinner.setModel(model);
                     model = new SpinnerNumberModel(0,0,niiVol.header.dim[1]-1,1);
@@ -936,8 +930,7 @@ public class MainUI extends javax.swing.JFrame {
                 }
             }
             catch (IOException e){
-                errorLabel.setText("Error: Cannot open file");
-                errorDialog.setLocationRelativeTo(null);
+                errorLabel.setText("Error: "+e.getMessage());
                 errorDialog.setVisible(true);
             }
         } else {
@@ -1242,7 +1235,6 @@ public class MainUI extends javax.swing.JFrame {
                 double min=Double.parseDouble(minString);
                 if(min>niiVol.getMax()){
                     errorLabel.setText("Min > max : not valid");
-                    errorDialog.setLocationRelativeTo(null);
                     errorDialog.setVisible(true);
                     if(volumeSelect.isSelected()){
                         minString=String.format("%.3f",niiVol.getMin());
@@ -1263,7 +1255,6 @@ public class MainUI extends javax.swing.JFrame {
 
            }catch(Exception e){
                errorLabel.setText("Must be a valid number :" +e.getMessage());
-               errorDialog.setLocationRelativeTo(null);
                errorDialog.setVisible(true);
                if(volumeSelect.isSelected()){
                     minString=String.format("%.3f",niiVol.getMin());
@@ -1281,7 +1272,6 @@ public class MainUI extends javax.swing.JFrame {
                 double max=Double.parseDouble(maxString);
                 if(niiVol.getMin()>max){
                     errorLabel.setText("Max < Min : not valid");
-                    errorDialog.setLocationRelativeTo(null);
                     errorDialog.setVisible(true);
                     if(volumeSelect.isSelected()){
                         maxString=String.format("%.3f",niiVol.getMax());
@@ -1302,7 +1292,6 @@ public class MainUI extends javax.swing.JFrame {
 
            }catch(Exception e){
                errorLabel.setText("Must be a valid number :" +e.getMessage());
-               errorDialog.setLocationRelativeTo(null);
                errorDialog.setVisible(true);
                if(volumeSelect.isSelected()){
                     maxString=String.format("%.3f",niiVol.getMax());
@@ -1415,8 +1404,7 @@ public class MainUI extends javax.swing.JFrame {
                         if(overlayVol.header.dim[1]==niiVol.header.dim[1] &
                            overlayVol.header.dim[2]==niiVol.header.dim[2] &
                            overlayVol.header.dim[3]==niiVol.header.dim[3] &
-                           overlayVol.header.dim[4]==niiVol.header.dim[4] &
-                           overlayVol.header.orientation().equals(niiVol.header.orientation())){
+                           overlayVol.header.dim[4]==niiVol.header.dim[4]){
                             
                             if(neuroView.isSelected()){
                                 // Added code so default view would be neurological
@@ -1424,7 +1412,6 @@ public class MainUI extends javax.swing.JFrame {
                                 else if(overlayVol.orient[0]=='R'){overlayVol.orient[0]='L';}
                                 else{
                                     errorLabel.setText("Error");
-                                    errorDialog.setLocationRelativeTo(null);
                                     errorDialog.setVisible(true);
                                 }
                                 if(zoomMenu.isSelected()){
@@ -1437,12 +1424,7 @@ public class MainUI extends javax.swing.JFrame {
                         overlaySelect.setSelected(true);   
                         setColorBar();
                         }else{
-                            if(!overlayVol.header.orientation().equals(niiVol.header.orientation())){
-                                errorLabel.setText("Volumes are not in the same space!");
-                            }else{
-                                errorLabel.setText("Dimensions are not the same!");
-                            }
-                            errorDialog.setLocationRelativeTo(null);
+                            errorLabel.setText("Dimensions do not agree");
                             errorDialog.setVisible(true);
                             overlayVol=null;
                         }
@@ -1451,7 +1433,6 @@ public class MainUI extends javax.swing.JFrame {
                 catch (IOException e){
                     errorLabel.setText("Error: "+ e.getMessage());
                     errorDialog.setVisible(true);
-                    errorDialog.setLocationRelativeTo(null);
                 }
             } else {
                 returnVal=0;
@@ -1590,13 +1571,6 @@ public class MainUI extends javax.swing.JFrame {
         URL imageurl = getClass().getResource("/images/synapticom2.png");//assuming your package name is images 
         img = Toolkit.getDefaultToolkit().getImage(imageurl);
         setIconImage(img);
-        return img;
-    }
-    private Image getErrorIcon(){
-        Image img;
-        URL imageurl = getClass().getResource("/images/error_icon.png");//assuming your package name is images 
-        img = Toolkit.getDefaultToolkit().getImage(imageurl);
-        errorDialog.setIconImage(img);
         return img;
     }
 
@@ -1990,25 +1964,18 @@ public class MainUI extends javax.swing.JFrame {
         }
         switch(str){
             case"grayscale": imageurl= getClass().getResource("/images/grayMap.png");
-                grayScale.setSelected(true);
                 break;
             case"hot":imageurl= getClass().getResource("/images/hotMap.png");
-                hotScale.setSelected(true);
                 break;
             case"hot_invert":imageurl= getClass().getResource("/images/hotInverseMap.png");
-                hotInvertScale.setSelected(true);
                 break;
             case"winter":imageurl= getClass().getResource("/images/winterMap.png");
-                winterScale.setSelected(true);
                 break;
             case"winter_invert":imageurl= getClass().getResource("/images/winterInverseMap.png");
-                winterInvertScale.setSelected(true);
                 break;
             case"rainbow":imageurl= getClass().getResource("/images/rainbowMap.png");
-                rainbowScale.setSelected(true);
                 break;
             default:imageurl= getClass().getResource("/images/grayMap.png");
-                grayScale.setSelected(true);
                 break;
         }
  
