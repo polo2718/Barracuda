@@ -13,8 +13,8 @@ package domain.mathUtils.numericalMethods.functionEvaluation.interfaces;
 public interface VectorFunction {
     /**
      * This method returns the resulting vector components after evaluating the vector function in a set of parameters
-     * @param parameters
-     * @return 
+     * @param parameters independent variables
+     * @return 2d array containing vector components
      */
     public double[] value(double[] parameters);
 }

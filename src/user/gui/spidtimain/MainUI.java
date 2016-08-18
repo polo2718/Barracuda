@@ -5,6 +5,8 @@
  */
 package user.gui.spidtimain;
 import data.niftilibrary.niftijio.*;
+import domain.mathUtils.numericalMethods.linearAlgebra.Matrix;
+import domain.mathUtils.numericalMethods.linearAlgebra.Vector;
 import java.io.IOException;
 import java.io.File;
 import java.awt.*;
@@ -28,7 +30,8 @@ public class MainUI extends javax.swing.JFrame {
      */
     DrawableNiftiVolume niiVol; //NIFTI main volume
     DrawableNiftiVolume overlayVol; //NIFTI Overlay volume
-    double[][] R = new double[3][3]; //Rotation matrix for NIFTI #1
+    //double[][] R = new double[3][3]; //Rotation matrix for NIFTI #1
+    Matrix rotationMtrx; //Rotation matrix for NIFTI #1
     double coronalScale; //Display scale on the coronalLabel
     double saggitalScale;//Display scale on the saggitalLabel
     double axialScale; //Display scale on the axialLabel
@@ -924,7 +927,8 @@ public class MainUI extends javax.swing.JFrame {
                     crosshairMenu.setSelected(true);
                     drawLabelsXHair();
                     //Get rotation matrix
-                    R=niiVol.header.mat33();
+                    //R=niiVol.header.mat33();
+                    rotationMtrx=new Matrix(niiVol.header.mat33());
                     //Set unit labels
                     setXYZLabels();
                 }
@@ -1935,14 +1939,18 @@ public class MainUI extends javax.swing.JFrame {
         if(YVal<vol.header.dim[2] & XVal<vol.header.dim[1] & ZVal<vol.header.dim[3]){
             //Get nifti units
             String units=vol.header.getUnits();
-            //Coompute position using qform and sform matrices
-            double xyz[]=vol.computeXYZ(R,XVal,YVal,ZVal);
+            //Coompute position coordinates using qform and sform matrices 
+            Vector coordinates=vol.computeXYZ(rotationMtrx, XVal, YVal, ZVal);
+            //double xyz[]=vol.computeXYZ(R,XVal,YVal,ZVal);
             //Format strings
-            String numString = String.format ("%.2f ", xyz[0]);
+            double x=coordinates.getComponent(0);
+            double y=coordinates.getComponent(1);
+            double z=coordinates.getComponent(2);
+            String numString = String.format ("%.2f ",x);
             xPosLabel.setText(numString+units);
-            numString = String.format ("%.2f ", xyz[1]);
+            numString = String.format ("%.2f ",y);
             yPosLabel.setText(numString+units);
-            numString = String.format ("%.2f ", xyz[2]);
+            numString = String.format ("%.2f ",z);
             zPosLabel.setText(numString+units);
             
             double num=vol.data.get(XVal, YVal, ZVal, (int)volSpinner.getValue());

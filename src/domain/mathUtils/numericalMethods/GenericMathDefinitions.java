@@ -45,6 +45,11 @@ public class GenericMathDefinitions {
      * Typical small number. defined as the sqrt of the smallest number
      */
     private static double smallNumber=0;
+    
+    /**
+     * String defining the default string formating for double precision numbers
+     */
+    public static final String DEFAULT_DOUBLE_FORMAT="%6.6E";
 
     /**
      * Constructor

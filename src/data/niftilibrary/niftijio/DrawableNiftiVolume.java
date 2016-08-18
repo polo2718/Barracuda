@@ -7,6 +7,8 @@ package data.niftilibrary.niftijio;
 
 import domain.mathUtils.arrayTools.ArrayOperations;
 import domain.mathUtils.numericalMethods.linearAlgebra.LinearAlgebra;
+import domain.mathUtils.numericalMethods.linearAlgebra.Matrix;
+import domain.mathUtils.numericalMethods.linearAlgebra.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -281,6 +283,7 @@ public class DrawableNiftiVolume extends NiftiVolume{
  
        }
     
+    @Deprecated
     public double[] computeXYZ(double[][] R,int xVal,int yVal,int zVal){
         double ijk[]= new double[3];
         ijk[0]=(double)xVal;
@@ -295,6 +298,37 @@ public class DrawableNiftiVolume extends NiftiVolume{
         
         return xyz;
     }
+    /**
+     * 
+     * @param rotationMtrx Matrix object containing the rotation matrix
+     * @param xVal
+     * @param yVal
+     * @param zVal
+     * @return Vector containing the x, y, and z coordinates
+     * @author Diego Garibay, Leopoldo Cendejas
+     */
+        public Vector computeXYZ(Matrix rotationMtrx,int xVal,int yVal,int zVal){
+        double ijk[]= new double[3];
+        ijk[0]=(double)xVal;
+        ijk[1]=(double)yVal;
+        ijk[2]=(double)zVal*header.qfac;
+        Vector v=new Vector(ijk);
+        //Perform the product of the rotation matrix with the vector
+        try{
+            v=rotationMtrx.product(v);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        
+        ijk=v.getComponents();
+        double xyz[]=new double[3];
+        for(int i=0;i<3;i++){
+            xyz[i]=ijk[i]+header.qoffset[i];
+        }
+        
+        return new Vector(xyz);
+    }
+   
     
     public void setMax3D(int dimension){
         max=ArrayOperations.findMaximum(data.get3DArray(dimension));
