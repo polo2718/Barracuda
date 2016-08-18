@@ -86,9 +86,6 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+O"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/images/open_icon.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Open Nifti"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -98,9 +95,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="openOverlayMenu">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/images/overlayIcon.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Overlay Volume"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -117,9 +111,6 @@
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="colormapMenu">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/images/colormap_icon.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Color scale"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>

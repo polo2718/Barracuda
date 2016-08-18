@@ -694,7 +694,6 @@ public class MainUI extends javax.swing.JFrame {
         fileMenu.setText("File");
 
         openVolumeMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        openVolumeMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/open_icon.png"))); // NOI18N
         openVolumeMenu.setText("Open Nifti");
         openVolumeMenu.setToolTipText("");
         openVolumeMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -704,7 +703,6 @@ public class MainUI extends javax.swing.JFrame {
         });
         fileMenu.add(openVolumeMenu);
 
-        openOverlayMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/overlayIcon.png"))); // NOI18N
         openOverlayMenu.setText("Overlay Volume");
         openOverlayMenu.setToolTipText("");
         openOverlayMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -718,7 +716,6 @@ public class MainUI extends javax.swing.JFrame {
 
         viewMenu.setText("View");
 
-        colormapMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/colormap_icon.png"))); // NOI18N
         colormapMenu.setText("Color scale");
         colormapMenu.setToolTipText("");
 
@@ -1601,21 +1598,17 @@ public class MainUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public void main(String args[]) {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Metal".equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }else{
-                  UIManager.setLookAndFeel(
-                  UIManager.getSystemLookAndFeelClassName());  
                 }
             }
         } catch (ClassNotFoundException ex) {
@@ -1627,7 +1620,6 @@ public class MainUI extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
