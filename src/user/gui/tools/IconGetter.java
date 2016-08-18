@@ -16,10 +16,11 @@ import java.net.URL;
  * Diego Garibay-Pulido 2016</p>
  */
 public abstract class IconGetter {
-    public  Image getProjectIcon(String filename){
+    public  static Image getProjectIcon(String filename){
+        Object o=new Object();
         Image img;
         filename="/images/"+filename;
-        URL imageurl = getClass().getResource(filename);
+        URL imageurl = o.getClass().getResource(filename);
         img = Toolkit.getDefaultToolkit().getImage(imageurl);
         return img;
     }
