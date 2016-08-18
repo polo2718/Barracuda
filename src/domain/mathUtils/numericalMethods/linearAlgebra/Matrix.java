@@ -11,7 +11,6 @@ import domain.mathUtils.numericalMethods.GenericMathDefinitions;
  * This class defines a matrix object and provides useful methods for performing vector
  * operations.
  * @author "Leopoldo Cendejas-Zaragoza, 2016, Illinois Institute of Technology"
- * @author "Leopoldo Cendejas-Zaragoza, 2016, Illinois Institute of Technology"
  */
 public class Matrix {
     /**
