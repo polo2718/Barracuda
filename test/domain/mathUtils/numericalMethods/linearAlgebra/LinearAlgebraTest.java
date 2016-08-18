@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.mathUtils.numericalMethods.functionEvaluation.linearAlgebra;
+package domain.mathUtils.numericalMethods.linearAlgebra;
 
 import domain.mathUtils.numericalMethods.linearAlgebra.LinearAlgebra;
 import org.junit.After;
