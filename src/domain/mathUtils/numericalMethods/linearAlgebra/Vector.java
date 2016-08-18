@@ -5,6 +5,7 @@
  */
 package domain.mathUtils.numericalMethods.linearAlgebra;
 
+import domain.mathUtils.numericalMethods.GenericMathDefinitions;
 import java.util.Arrays;
 
 /**
@@ -78,6 +79,23 @@ public class Vector {
         for(int i=0; i<=this.dimension();i++)
             result+=this.components[i]*v.components[i];
         return result;
+    }
+    
+    /**
+     * Return a string representation of the vector
+     * @return string representation of the Vector
+     */
+    @Override
+    public String toString(){
+        String s="";
+        String temp;
+        for(int i=0; i<this.dimension(); i++){
+            s+="|\t";
+            temp= String.format(GenericMathDefinitions.DEFAULT_DOUBLE_FORMAT,
+                    this.components[i]);
+            s+=temp+"\t|\n";
+        }
+        return s;
     }
     
     /**

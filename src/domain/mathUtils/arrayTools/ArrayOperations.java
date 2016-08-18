@@ -228,4 +228,21 @@ public abstract class ArrayOperations {
         }
     }
     
+    /**
+     * Returns the total count of actual numeric components in an array.
+     * <p>If the a NaN or an Inf is stored in the component, then that component is not counted
+     * towards the total count.
+     * @param x 1D double array
+     * @return int-number of actual numeric components in the array
+     */
+    public static int lengthActualVal(double [] x){
+        int count=0;
+        for(double x_i: x){
+            if(x_i!=Double.NaN && Double.isFinite(x_i)){
+                count+=1;
+            }
+        }
+        return count;
+    }
+    
 }

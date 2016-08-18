@@ -5,6 +5,8 @@
  */
 package domain.mathUtils.numericalMethods.linearAlgebra;
 
+import domain.mathUtils.numericalMethods.GenericMathDefinitions;
+
 /**
  * This class defines a matrix object and provides useful methods for performing vector
  * operations.
@@ -86,5 +88,25 @@ public class Matrix {
      */
     public Matrix product(Matrix b) throws IllegalDimensionException{
         throw new UnsupportedOperationException("Not implemented yet");
+    }
+    
+    /**
+     * Returns a string representation of the matrix
+     * @return string representation of the matrix
+     */
+    @Override
+    public String toString(){
+        String s="";
+        String temp;
+        for(int i=0; i<this.rows();i++){
+            s+="|\t";
+            for(int j=0; j<this.columns();j++){
+                temp=String.format(GenericMathDefinitions.DEFAULT_DOUBLE_FORMAT,
+                        this.components[i][j]);
+                s+=temp+"\t";
+            }
+            s+="|\n";
+        }
+        return s;
     }
 }

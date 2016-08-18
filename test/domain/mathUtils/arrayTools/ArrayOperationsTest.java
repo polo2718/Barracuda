@@ -319,9 +319,7 @@ public class ArrayOperationsTest {
         result=ArrayOperations.findMaximum(x);
         assertEquals(expResult, result,0);
         System.out.println("Test Passed!");
-    }
-
-    
+    }  
 
     /**
      * Test of hadamardProduct method, of class ArrayOperations.
@@ -336,5 +334,24 @@ public class ArrayOperationsTest {
         assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
+    }
+    
+    /** Test of lengthActualVal method, of class ArrayOperations 
+     */
+    public void testLengthActualVal(){
+        System.out.println("\nTest Lenght Actual Val ");
+        double [] x =new double[3];
+        for(int i=0; i<x.length; i++){
+            x[i]=Math.PI;
+        }
+        int expResult= x.length;
+        int result= ArrayOperations.lengthActualVal(x);
+        assertEquals(expResult, result);
+        
+        x[0]=Double.NaN;
+        x[2]=Double.NaN;
+        expResult=1;
+        result=ArrayOperations.lengthActualVal(x);
+        assertEquals(expResult, result);
     }
 }
