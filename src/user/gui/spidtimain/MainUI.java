@@ -129,6 +129,7 @@ public class MainUI extends javax.swing.JFrame {
         zoomMenu = new javax.swing.JRadioButtonMenuItem();
         panMenu = new javax.swing.JRadioButtonMenuItem();
         restoreZoomMenu = new javax.swing.JMenuItem();
+        mosaicViewMenu = new javax.swing.JMenuItem();
         volumeMenu = new javax.swing.JMenu();
         volumeSelect = new javax.swing.JRadioButtonMenuItem();
         overlaySelect = new javax.swing.JRadioButtonMenuItem();
@@ -694,6 +695,8 @@ public class MainUI extends javax.swing.JFrame {
         fileMenu.setText("File");
 
         openVolumeMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        openVolumeMenu.setIcon(IconGetter.getProjectImageIcon("open_icon.png")
+        );
         openVolumeMenu.setText("Open Nifti");
         openVolumeMenu.setToolTipText("");
         openVolumeMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -703,6 +706,8 @@ public class MainUI extends javax.swing.JFrame {
         });
         fileMenu.add(openVolumeMenu);
 
+        openOverlayMenu.setIcon(IconGetter.getProjectImageIcon("overlay_icon.png")
+        );
         openOverlayMenu.setText("Overlay Volume");
         openOverlayMenu.setToolTipText("");
         openOverlayMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -716,6 +721,7 @@ public class MainUI extends javax.swing.JFrame {
 
         viewMenu.setText("View");
 
+        colormapMenu.setIcon(IconGetter.getProjectImageIcon("colorbar_icon.png"));
         colormapMenu.setText("Color scale");
         colormapMenu.setToolTipText("");
 
@@ -820,6 +826,15 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
         viewMenu.add(restoreZoomMenu);
+
+        mosaicViewMenu.setText("Mosaic View");
+        mosaicViewMenu.setToolTipText("");
+        mosaicViewMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mosaicViewMenuActionPerformed(evt);
+            }
+        });
+        viewMenu.add(mosaicViewMenu);
 
         jMenuBar1.add(viewMenu);
 
@@ -1594,6 +1609,27 @@ public class MainUI extends javax.swing.JFrame {
            }
        }
     }//GEN-LAST:event_panMenuActionPerformed
+
+    private void mosaicViewMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mosaicViewMenuActionPerformed
+        if(niiVol!=null){
+            if(overlayVol!=null){
+                int[] dims=new int[2];
+                dims[0]=5;
+                dims[1]=5;
+                new MosaicViewFrame(niiVol,overlayVol,viewState,dims).setVisible(true);
+            }else{
+                int[] dims=new int[2];
+                dims[0]=5;
+                dims[1]=5;
+                new MosaicViewFrame(niiVol,null,viewState,dims).setVisible(true);
+            }
+        }else{
+            errorLabel.setText("Error: Add a volume first");
+            errorDialog.setLocationRelativeTo(null);
+            errorDialog.setVisible(true);
+        }
+        
+    }//GEN-LAST:event_mosaicViewMenuActionPerformed
                                     
     /**
      * @param args the command line arguments
@@ -1669,6 +1705,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenuItem mosaicViewMenu;
     private javax.swing.JRadioButton neuroView;
     private javax.swing.JMenuItem openOverlayMenu;
     private javax.swing.JMenuItem openVolumeMenu;

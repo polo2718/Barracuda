@@ -86,6 +86,9 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+O"/>
                 </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="IconGetter.getProjectImageIcon(&quot;open_icon.png&quot;)&#xd;&#xa;" type="code"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Open Nifti"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -95,6 +98,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="openOverlayMenu">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="IconGetter.getProjectImageIcon(&quot;overlay_icon.png&quot;)&#xd;&#xa;" type="code"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Overlay Volume"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -111,6 +117,9 @@
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="colormapMenu">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="IconGetter.getProjectImageIcon(&quot;colorbar_icon.png&quot;)" type="code"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Color scale"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -226,6 +235,15 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="restoreZoomMenuActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mosaicViewMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Mosaic View"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mosaicViewMenuActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

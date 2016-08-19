@@ -8,6 +8,7 @@ package user.gui.tools;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -23,5 +24,10 @@ public abstract class IconGetter {
         URL imageurl = o.getClass().getResource(filename);
         img = Toolkit.getDefaultToolkit().getImage(imageurl);
         return img;
+    }
+    public static ImageIcon getProjectImageIcon(String filename){
+        Image img=getProjectIcon(filename);
+        ImageIcon icon=new ImageIcon(img);
+        return icon;
     }
 }
