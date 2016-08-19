@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.JLabel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.Timer;
 import user.gui.tools.*;
 
@@ -29,27 +30,32 @@ public class MosaicViewFrame extends javax.swing.JFrame {
     boolean view;
     int n;
     int m;
-    String plane="";
+    String plane="coronal";
     boolean resize=false;
     Timer timer;
     String colorScale;
     String colorScaleOverlay;
+    int startSlice;
+    int endSlice;
+    
+    
     /**
      * Creates new form MosaicViewFrame
      */
-    public MosaicViewFrame(DrawableNiftiVolume niiVol ,DrawableNiftiVolume overlayVol,boolean view,int[] grid,String colorScale,String colorScaleOverlay) {
+    public MosaicViewFrame(DrawableNiftiVolume niiVol ,DrawableNiftiVolume overlayVol,boolean view,String colorScale,String colorScaleOverlay) {
         initComponents();
         niiVol.clearDrawRange();
         if(overlayVol!=null){overlayVol.clearDrawRange();}
-        
         this.niiVol=niiVol;
         this.overlayVol=overlayVol;
         this.view=view;
-        this.n=grid[0];
-        this.m=grid[1];
+        this.n=5;
+        this.m=5;
         this.colorScale=colorScale;
         this.colorScaleOverlay=colorScaleOverlay;
         initMosaic(n,m);
+        drawCoronalMosaic();
+        initSettings();
         //Timer for resizing event
         int delay = 100;
         timer = new Timer( delay, new ActionListener(){
@@ -85,12 +91,164 @@ public class MosaicViewFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        settingsDialog = new javax.swing.JDialog();
+        jPanel1 = new javax.swing.JPanel();
+        startSliceSlider = new javax.swing.JSlider();
+        endSliceSlider = new javax.swing.JSlider();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        mosaicNSpinner = new javax.swing.JSpinner();
+        mosaicMSpinner = new javax.swing.JSpinner();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        okButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
+        startSliceText = new javax.swing.JLabel();
+        endSliceText = new javax.swing.JLabel();
         mosaicToolbar = new javax.swing.JToolBar();
         coronalMosaicViewButton = new javax.swing.JButton();
         saggitalMosaicViewButton = new javax.swing.JButton();
         axialMosaicViewButton = new javax.swing.JButton();
         settingsButton = new javax.swing.JButton();
         displayPanel = new javax.swing.JPanel();
+
+        settingsDialog.setTitle("Settings");
+        settingsDialog.setPreferredSize(new java.awt.Dimension(400, 320));
+        settingsDialog.setResizable(false);
+        settingsDialog.setSize(new java.awt.Dimension(400, 320));
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings"));
+        jPanel1.setToolTipText("");
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel1.setText("Start Slice:");
+        jLabel1.setToolTipText("");
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel2.setText("End Slice:");
+        jLabel2.setToolTipText("");
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel3.setText("Width:");
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel4.setText("Height:");
+        jLabel4.setToolTipText("");
+
+        jLabel5.setText("Mosaic Dimensions");
+        jLabel5.setToolTipText("");
+
+        okButton.setText("Ok");
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
+
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
+        startSliceText.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        startSliceText.setText("0");
+
+        endSliceText.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        endSliceText.setText("0");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(endSliceText, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(startSliceText, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jLabel5)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addComponent(cancelButton)
+                .addGap(82, 82, 82))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(mosaicNSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mosaicMSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(startSliceSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(endSliceSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(startSliceText))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(startSliceSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(endSliceText))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(endSliceSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
+                .addComponent(jLabel5)
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mosaicNSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mosaicMSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cancelButton)
+                    .addComponent(okButton))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout settingsDialogLayout = new javax.swing.GroupLayout(settingsDialog.getContentPane());
+        settingsDialog.getContentPane().setLayout(settingsDialogLayout);
+        settingsDialogLayout.setHorizontalGroup(
+            settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(settingsDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        settingsDialogLayout.setVerticalGroup(
+            settingsDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(settingsDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(300, 300));
@@ -211,7 +369,8 @@ public class MosaicViewFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_saggitalMosaicViewButtonActionPerformed
 
     private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
-        
+        initSettings();
+        settingsDialog.setVisible(true);
     }//GEN-LAST:event_settingsButtonActionPerformed
 
     private void axialMosaicViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_axialMosaicViewButtonActionPerformed
@@ -226,22 +385,91 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         timer.start(); 
     }//GEN-LAST:event_formComponentResized
 
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        startSlice=startSliceSlider.getValue();
+        endSlice=endSliceSlider.getValue();
+        n=(int)mosaicNSpinner.getValue();
+        m=(int)mosaicMSpinner.getValue();
+        settingsDialog.setVisible(false);
+        displayPanel.removeAll();
+        drawMosaics();
+    }//GEN-LAST:event_okButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        settingsDialog.setVisible(false);
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton axialMosaicViewButton;
+    private javax.swing.JButton cancelButton;
     private javax.swing.JButton coronalMosaicViewButton;
     private javax.swing.JPanel displayPanel;
+    private javax.swing.JSlider endSliceSlider;
+    private javax.swing.JLabel endSliceText;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JSpinner mosaicMSpinner;
+    private javax.swing.JSpinner mosaicNSpinner;
     private javax.swing.JToolBar mosaicToolbar;
+    private javax.swing.JButton okButton;
     private javax.swing.JButton saggitalMosaicViewButton;
     private javax.swing.JButton settingsButton;
+    private javax.swing.JDialog settingsDialog;
+    private javax.swing.JSlider startSliceSlider;
+    private javax.swing.JLabel startSliceText;
     // End of variables declaration//GEN-END:variables
     
     private void initMosaic(int n,int m){
         GridLayout panelLayout = new GridLayout(n,m);
         displayPanel.setLayout(panelLayout);
     }
-   
+    private void initSettings(){
+        SpinnerNumberModel model;
+        startSlice=0;
+        switch(plane){
+            case "coronal":
+                endSlice=niiVol.header.dim[2];
+                break;
+            case "saggital":
+                endSlice=niiVol.header.dim[1];
+                break;
+            case "axial":
+                endSlice=niiVol.header.dim[3];
+                break;
+        }
+        startSliceSlider.setMaximum(endSlice-(n*m));
+        startSliceSlider.setValue(startSlice);
+        startSliceText.setText(Integer.toString(startSlice));
+                
+        endSliceSlider.setMinimum(startSlice+(n*m));
+        endSliceSlider.setMaximum(endSlice);
+        endSliceSlider.setValue(endSlice);
+        endSliceText.setText(Integer.toString(endSlice));
+        
+        model = new SpinnerNumberModel(5,2,10,1);
+        mosaicNSpinner.setModel(model);
+        model= new SpinnerNumberModel(5,2,10,1);
+        mosaicMSpinner.setModel(model);
+    }
     /****Draw Mosaics****/
+    private void drawMosaics(){
+        switch(plane){
+            case"coronal":
+                drawCoronalMosaic();
+                break;
+            case"saggital":
+                drawSaggitalMosaic();
+                break;
+            case"axial":
+                drawAxialMosaic();
+                break;
+        }
+    }
     private void drawCoronalMosaic (){
         BufferedImage img;
         BufferedImage img2;

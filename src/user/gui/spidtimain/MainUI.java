@@ -1613,15 +1613,9 @@ public class MainUI extends javax.swing.JFrame {
     private void mosaicViewMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mosaicViewMenuActionPerformed
         if(niiVol!=null){
             if(overlayVol!=null){
-                int[] dims=new int[2];
-                dims[0]=5;
-                dims[1]=5;
-                new MosaicViewFrame(niiVol,overlayVol,viewState,dims,colorScale,colorScaleOverlay).setVisible(true);
+                new MosaicViewFrame(niiVol,overlayVol,viewState,colorScale,colorScaleOverlay).setVisible(true);
             }else{
-                int[] dims=new int[2];
-                dims[0]=5;
-                dims[1]=5;
-                new MosaicViewFrame(niiVol,null,viewState,dims,colorScale, null).setVisible(true);
+                new MosaicViewFrame(niiVol,null,viewState,colorScale, null).setVisible(true);
             }
         }else{
             errorLabel.setText("Error: Add a volume first");
