@@ -54,27 +54,15 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         this.colorScale=colorScale;
         this.colorScaleOverlay=colorScaleOverlay;
         initMosaic(n,m);
-        drawCoronalMosaic();
         initSettings();
-        //Timer for resizing event
+        drawCoronalMosaic();
+         //Timer for resizing event
         int delay = 100;
         timer = new Timer( delay, new ActionListener(){
         @Override
         public void actionPerformed( ActionEvent e ){
             if(resize){  
-                switch(plane){
-                        case "coronal":
-                            drawCoronalMosaic();
-                            break;
-                        case "saggital":
-                            drawSaggitalMosaic();
-                            break;
-                        case "axial":
-                            drawAxialMosaic();
-                            break;
-                        default:
-                            break;
-                    }
+                drawMosaics();
                 resize=false;
             }
         }   
@@ -120,6 +108,18 @@ public class MosaicViewFrame extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings"));
         jPanel1.setToolTipText("");
+
+        startSliceSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                startSliceSliderStateChanged(evt);
+            }
+        });
+
+        endSliceSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                endSliceSliderStateChanged(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel1.setText("Start Slice:");
@@ -357,23 +357,32 @@ public class MosaicViewFrame extends javax.swing.JFrame {
 
     private void coronalMosaicViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_coronalMosaicViewButtonActionPerformed
         displayPanel.removeAll();
+        //If last one was a different plane
+        if(!plane.equals("coronal")){
+            initSettings();
+        }
         plane="coronal";
         drawCoronalMosaic();
-        
     }//GEN-LAST:event_coronalMosaicViewButtonActionPerformed
 
     private void saggitalMosaicViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saggitalMosaicViewButtonActionPerformed
         displayPanel.removeAll();
+        if(!plane.equals("saggital")){
+            initSettings();
+        }
         plane="saggital";
         drawSaggitalMosaic();
     }//GEN-LAST:event_saggitalMosaicViewButtonActionPerformed
 
     private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
-        initSettings();
+        //initSettings();
         settingsDialog.setVisible(true);
     }//GEN-LAST:event_settingsButtonActionPerformed
 
     private void axialMosaicViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_axialMosaicViewButtonActionPerformed
+        if(!plane.equals("axial")){
+            initSettings();
+        }
         plane="axial";
         displayPanel.removeAll();
         drawAxialMosaic();
@@ -392,12 +401,24 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         m=(int)mosaicMSpinner.getValue();
         settingsDialog.setVisible(false);
         displayPanel.removeAll();
-        drawMosaics();
+        resize=true;
+        initMosaic(n,m);
+        timer.start();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         settingsDialog.setVisible(false);
     }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void startSliceSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_startSliceSliderStateChanged
+        startSliceText.setText(Integer.toString(startSliceSlider.getValue()));
+        endSliceSlider.setMinimum(startSlice+(n*m));
+    }//GEN-LAST:event_startSliceSliderStateChanged
+
+    private void endSliceSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_endSliceSliderStateChanged
+        endSliceText.setText(Integer.toString(endSliceSlider.getValue()));
+        startSliceSlider.setMaximum(endSlice-(n*m));
+    }//GEN-LAST:event_endSliceSliderStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -451,9 +472,9 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         endSliceSlider.setValue(endSlice);
         endSliceText.setText(Integer.toString(endSlice));
         
-        model = new SpinnerNumberModel(5,2,10,1);
+        model = new SpinnerNumberModel(n,2,10,1);
         mosaicNSpinner.setModel(model);
-        model= new SpinnerNumberModel(5,2,10,1);
+        model= new SpinnerNumberModel(m,2,10,1);
         mosaicMSpinner.setModel(model);
     }
     /****Draw Mosaics****/
@@ -474,19 +495,23 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         BufferedImage img;
         BufferedImage img2;
         Color c=new Color(0,0,0,0);
-        int gap=(int)(niiVol.header.dim[2]/(double)(n*m));
+        int range=endSlice-startSlice;
+        int val=startSlice;
+        int gap=(int)(range/(double)(n*m));
         if(overlayVol==null){
             for(int i=0;i<n*m;i++){
-                if(gap*i<niiVol.header.dim[2]){
-                     img=niiVol.drawNiftiSlice(i*gap,"coronal",0,colorScale);
+                if(val<endSlice){
+                     val=startSlice+i*gap;
+                     img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
                      createTilePanel(img);
                 }
             }
         }else{
             for(int i=0;i<n*m;i++){
-                if(gap*i<niiVol.header.dim[2]){
-                     img=niiVol.drawNiftiSlice(i*gap,"coronal",0,colorScale);
-                     img2=overlayVol.drawNiftiSlice(i*gap,"coronal",0,colorScaleOverlay);
+                if(val<endSlice){
+                     val=startSlice+i*gap;
+                     img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
+                     img2=overlayVol.drawNiftiSlice(val,plane,0,colorScaleOverlay);
                      Graphics g=img.getGraphics();
                      g.drawImage(img2,0,0,c,null);
                      createTilePanel(img);
@@ -498,19 +523,23 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         BufferedImage img;
         BufferedImage img2;
         Color c=new Color(0,0,0,0);
-        int gap=(int)(niiVol.header.dim[1]/(double)(n*m));
+        int range=endSlice-startSlice;
+        int val=startSlice;
+        int gap=(int)(range/(double)(n*m));
         if(overlayVol==null){
             for(int i=0;i<n*m;i++){
-                if(gap*i<niiVol.header.dim[1]){
-                     img=niiVol.drawNiftiSlice(i*gap,plane,0,colorScale);
+                if(val<endSlice){
+                     val=startSlice+i*gap;
+                     img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
                      createTilePanel(img);
                 }
             }
         }else{
             for(int i=0;i<n*m;i++){
-                if(gap*i<niiVol.header.dim[1]){
-                     img=niiVol.drawNiftiSlice(i*gap,plane,0,colorScale);
-                     img2=overlayVol.drawNiftiSlice(i*gap,plane,0,colorScaleOverlay);
+                if(val<endSlice){
+                     val=startSlice+i*gap;
+                     img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
+                     img2=overlayVol.drawNiftiSlice(val,plane,0,colorScaleOverlay);
                      Graphics g=img.getGraphics();
                      g.drawImage(img2,0,0,c,null);
                      createTilePanel(img);
@@ -522,19 +551,23 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         BufferedImage img;
         BufferedImage img2;
         Color c=new Color(0,0,0,0);
-        int gap=(int)(niiVol.header.dim[3]/(double)(n*m));
+        int range=endSlice-startSlice;
+        int val=startSlice;
+        int gap=(int)(range/(double)(n*m));
         if(overlayVol==null){
             for(int i=0;i<n*m;i++){
-                if(gap*i<niiVol.header.dim[3]){
-                     img=niiVol.drawNiftiSlice(i*gap,plane,0,colorScale);
+                if(val<endSlice){
+                     val=startSlice+i*gap;
+                     img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
                      createTilePanel(img);
                 }
             }
         }else{
             for(int i=0;i<n*m;i++){
-                if(gap*i<niiVol.header.dim[3]){
-                     img=niiVol.drawNiftiSlice(i*gap,plane,0,colorScale);
-                     img2=overlayVol.drawNiftiSlice(i*gap,plane,0,colorScaleOverlay);
+                if(val<endSlice){
+                     val=startSlice+i*gap;
+                     img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
+                     img2=overlayVol.drawNiftiSlice(val,plane,0,colorScaleOverlay);
                      Graphics g=img.getGraphics();
                      g.drawImage(img2,0,0,c,null);
                      createTilePanel(img);

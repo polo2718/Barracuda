@@ -138,8 +138,14 @@
           </Layout>
           <SubComponents>
             <Component class="javax.swing.JSlider" name="startSliceSlider">
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="startSliceSliderStateChanged"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JSlider" name="endSliceSlider">
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="endSliceSliderStateChanged"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>

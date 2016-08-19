@@ -1534,6 +1534,7 @@ public class MainUI extends javax.swing.JFrame {
                     
                     overlayVol=new DrawableNiftiVolume(NiftiVolume.read(filename));
                     if(overlayVol!=null){
+                        if(overlayVol.header.dim[4]<=0){overlayVol.header.dim[4]=1;}
                         if(overlayVol.header.dim[1]==niiVol.header.dim[1] &
                            overlayVol.header.dim[2]==niiVol.header.dim[2] &
                            overlayVol.header.dim[3]==niiVol.header.dim[3] &
