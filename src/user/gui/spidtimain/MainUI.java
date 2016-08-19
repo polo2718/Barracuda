@@ -1616,12 +1616,12 @@ public class MainUI extends javax.swing.JFrame {
                 int[] dims=new int[2];
                 dims[0]=5;
                 dims[1]=5;
-                new MosaicViewFrame(niiVol,overlayVol,viewState,dims).setVisible(true);
+                new MosaicViewFrame(niiVol,overlayVol,viewState,dims,colorScale,colorScaleOverlay).setVisible(true);
             }else{
                 int[] dims=new int[2];
                 dims[0]=5;
                 dims[1]=5;
-                new MosaicViewFrame(niiVol,null,viewState,dims).setVisible(true);
+                new MosaicViewFrame(niiVol,null,viewState,dims,colorScale, null).setVisible(true);
             }
         }else{
             errorLabel.setText("Error: Add a volume first");

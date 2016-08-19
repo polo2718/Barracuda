@@ -6,8 +6,15 @@
 package user.gui.spidtimain;
 
 import data.niftilibrary.niftijio.DrawableNiftiVolume;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import javax.swing.JLabel;
+import javax.swing.Timer;
 import user.gui.tools.*;
 
 /**
@@ -20,16 +27,53 @@ public class MosaicViewFrame extends javax.swing.JFrame {
     DrawableNiftiVolume niiVol;
     DrawableNiftiVolume overlayVol;
     boolean view;
+    int n;
+    int m;
+    String plane="";
+    boolean resize=false;
+    Timer timer;
+    String colorScale;
+    String colorScaleOverlay;
     /**
      * Creates new form MosaicViewFrame
      */
-    public MosaicViewFrame(DrawableNiftiVolume niiVol ,DrawableNiftiVolume overlayVol,boolean view,int[] grid) {
+    public MosaicViewFrame(DrawableNiftiVolume niiVol ,DrawableNiftiVolume overlayVol,boolean view,int[] grid,String colorScale,String colorScaleOverlay) {
         initComponents();
+        niiVol.clearDrawRange();
+        if(overlayVol!=null){overlayVol.clearDrawRange();}
+        
         this.niiVol=niiVol;
         this.overlayVol=overlayVol;
         this.view=view;
-        initMosaic(grid[0],grid[1]);
-        
+        this.n=grid[0];
+        this.m=grid[1];
+        this.colorScale=colorScale;
+        this.colorScaleOverlay=colorScaleOverlay;
+        initMosaic(n,m);
+        //Timer for resizing event
+        int delay = 100;
+        timer = new Timer( delay, new ActionListener(){
+        @Override
+        public void actionPerformed( ActionEvent e ){
+            if(resize){  
+                switch(plane){
+                        case "coronal":
+                            drawCoronalMosaic();
+                            break;
+                        case "saggital":
+                            drawSaggitalMosaic();
+                            break;
+                        case "axial":
+                            drawAxialMosaic();
+                            break;
+                        default:
+                            break;
+                    }
+                resize=false;
+            }
+        }   
+        });
+        timer.setRepeats( false );
     }
 
     /**
@@ -49,7 +93,13 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         displayPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(300, 300));
         setSize(new java.awt.Dimension(800, 600));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
+        });
 
         mosaicToolbar.setFloatable(false);
         mosaicToolbar.setRollover(true);
@@ -93,6 +143,11 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         axialMosaicViewButton.setName(""); // NOI18N
         axialMosaicViewButton.setPreferredSize(new java.awt.Dimension(26, 26));
         axialMosaicViewButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        axialMosaicViewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                axialMosaicViewButtonActionPerformed(evt);
+            }
+        });
         mosaicToolbar.add(axialMosaicViewButton);
 
         settingsButton.setIcon(IconGetter.getProjectImageIcon("settings_icon.png")
@@ -128,9 +183,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(mosaicToolbar, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(mosaicToolbar, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
             .addComponent(displayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -145,19 +198,33 @@ public class MosaicViewFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void coronalMosaicViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_coronalMosaicViewButtonActionPerformed
-        /*JLabel label1= new JLabel();
-        displayPanel.add(label1);
-        label1.setText("Hi");*/
-        createTilePanel();
+        displayPanel.removeAll();
+        plane="coronal";
+        drawCoronalMosaic();
+        
     }//GEN-LAST:event_coronalMosaicViewButtonActionPerformed
 
     private void saggitalMosaicViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saggitalMosaicViewButtonActionPerformed
-        
+        displayPanel.removeAll();
+        plane="saggital";
+        drawSaggitalMosaic();
     }//GEN-LAST:event_saggitalMosaicViewButtonActionPerformed
 
     private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
         
     }//GEN-LAST:event_settingsButtonActionPerformed
+
+    private void axialMosaicViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_axialMosaicViewButtonActionPerformed
+        plane="axial";
+        displayPanel.removeAll();
+        drawAxialMosaic();
+    }//GEN-LAST:event_axialMosaicViewButtonActionPerformed
+
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        displayPanel.removeAll();
+        resize=true;
+        timer.start(); 
+    }//GEN-LAST:event_formComponentResized
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -173,30 +240,88 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         GridLayout panelLayout = new GridLayout(n,m);
         displayPanel.setLayout(panelLayout);
     }
-    /****Draw Slices****/
-    private void drawCoronalSlice (int sliceNum){
-        
-    }
-    private void drawSaggitalSlice(int sliceNum){
-        
-    }
-    private void drawAxialSlice   (int sliceNum){
-        
-    }
+   
     /****Draw Mosaics****/
-    private void drawCoronalMosaic (int n, int m, int startSlice, int endSlice){
-        
+    private void drawCoronalMosaic (){
+        BufferedImage img;
+        BufferedImage img2;
+        Color c=new Color(0,0,0,0);
+        int gap=(int)(niiVol.header.dim[2]/(double)(n*m));
+        if(overlayVol==null){
+            for(int i=0;i<n*m;i++){
+                if(gap*i<niiVol.header.dim[2]){
+                     img=niiVol.drawNiftiSlice(i*gap,"coronal",0,colorScale);
+                     createTilePanel(img);
+                }
+            }
+        }else{
+            for(int i=0;i<n*m;i++){
+                if(gap*i<niiVol.header.dim[2]){
+                     img=niiVol.drawNiftiSlice(i*gap,"coronal",0,colorScale);
+                     img2=overlayVol.drawNiftiSlice(i*gap,"coronal",0,colorScaleOverlay);
+                     Graphics g=img.getGraphics();
+                     g.drawImage(img2,0,0,c,null);
+                     createTilePanel(img);
+                }
+            }
+        }
     }
-    private void drawSaggitalMosaic(int n, int m, int startSlice, int endSlice){
-        
+    private void drawSaggitalMosaic(){
+        BufferedImage img;
+        BufferedImage img2;
+        Color c=new Color(0,0,0,0);
+        int gap=(int)(niiVol.header.dim[1]/(double)(n*m));
+        if(overlayVol==null){
+            for(int i=0;i<n*m;i++){
+                if(gap*i<niiVol.header.dim[1]){
+                     img=niiVol.drawNiftiSlice(i*gap,plane,0,colorScale);
+                     createTilePanel(img);
+                }
+            }
+        }else{
+            for(int i=0;i<n*m;i++){
+                if(gap*i<niiVol.header.dim[1]){
+                     img=niiVol.drawNiftiSlice(i*gap,plane,0,colorScale);
+                     img2=overlayVol.drawNiftiSlice(i*gap,plane,0,colorScaleOverlay);
+                     Graphics g=img.getGraphics();
+                     g.drawImage(img2,0,0,c,null);
+                     createTilePanel(img);
+                }
+            }
+        }
     }
-    private void drawAxialMosaic   (int n, int m, int startSlice, int endSlice){
-        
+    private void drawAxialMosaic   (){
+        BufferedImage img;
+        BufferedImage img2;
+        Color c=new Color(0,0,0,0);
+        int gap=(int)(niiVol.header.dim[3]/(double)(n*m));
+        if(overlayVol==null){
+            for(int i=0;i<n*m;i++){
+                if(gap*i<niiVol.header.dim[3]){
+                     img=niiVol.drawNiftiSlice(i*gap,plane,0,colorScale);
+                     createTilePanel(img);
+                }
+            }
+        }else{
+            for(int i=0;i<n*m;i++){
+                if(gap*i<niiVol.header.dim[3]){
+                     img=niiVol.drawNiftiSlice(i*gap,plane,0,colorScale);
+                     img2=overlayVol.drawNiftiSlice(i*gap,plane,0,colorScaleOverlay);
+                     Graphics g=img.getGraphics();
+                     g.drawImage(img2,0,0,c,null);
+                     createTilePanel(img);
+                }
+            }
+        }
     }
     /***Create Tile Panels***/
-    private void createTilePanel(){
+    private void createTilePanel(BufferedImage img){
+        int width=(int)(displayPanel.getWidth()/((double)n));
+        int height=(int)(displayPanel.getHeight()/((double)m));
+        
         displayPanel.setVisible(false);
         javax.swing.JPanel tilePanel = new javax.swing.JPanel();
+        tilePanel.removeAll();
         javax.swing.JLabel leftLabel = new javax.swing.JLabel();
         javax.swing.JLabel topLabel = new javax.swing.JLabel();
         javax.swing.JLabel rightLabel = new javax.swing.JLabel();
@@ -204,53 +329,83 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         javax.swing.JLabel graphLabel = new javax.swing.JLabel();
         
         tilePanel.setBackground(new java.awt.Color(0, 0, 0));
-        tilePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        tilePanel.setPreferredSize(new java.awt.Dimension(150, 158));
-
+        tilePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255,0,0)));
+        tilePanel.setMaximumSize(new java.awt.Dimension(width,height));
+        tilePanel.setMinimumSize(new java.awt.Dimension(width,height));
+        tilePanel.setPreferredSize(new java.awt.Dimension(width,height));
+        
         leftLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        leftLabel.setText("<html> <font size='3' color=\"Lime\"> R</font>");
-
         topLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        topLabel.setText("<html> <font size='3' color=\"Lime\"> R</font>");
-
         rightLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rightLabel.setText("<html> <font size='3' color=\"Lime\"> R</font>");
-
         bottomLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        bottomLabel.setText("<html> <font size='3' color=\"Lime\"> R</font>");
-
+        switch(plane){
+            case "coronal":
+                if(view){
+                    leftLabel.setText("<html> <font size='2' color=\"Lime\">R</font>");
+                    rightLabel.setText("<html> <font size='2' color=\"Lime\">L</font>");
+                }else{
+                    leftLabel.setText("<html> <font size='2' color=\"Lime\">L</font>");
+                    rightLabel.setText("<html> <font size='2' color=\"Lime\">R</font>");
+                }
+                topLabel.setText("<html> <font size='2' color=\"Lime\">S</font>");
+                bottomLabel.setText("<html> <font size='2' color=\"Lime\">I</font>");
+                break;
+            case "saggital":
+                leftLabel.setText("<html> <font size='2' color=\"Lime\">P</font>");
+                rightLabel.setText("<html> <font size='2' color=\"Lime\">A</font>");
+                topLabel.setText("<html> <font size='2' color=\"Lime\">S</font>");
+                bottomLabel.setText("<html> <font size='2' color=\"Lime\">I</font>");
+                break;
+            case "axial":
+                if(view){
+                    leftLabel.setText("<html> <font size='2' color=\"Lime\">R</font>");
+                    rightLabel.setText("<html> <font size='2' color=\"Lime\">L</font>");
+                }else{
+                    leftLabel.setText("<html> <font size='2' color=\"Lime\">L</font>");
+                    rightLabel.setText("<html> <font size='2' color=\"Lime\">R</font>");
+                }
+                topLabel.setText("<html> <font size='2' color=\"Lime\">A</font>");
+                bottomLabel.setText("<html> <font size='2' color=\"Lime\">P</font>");
+                break;
+        }
+        
+        graphLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        graphLabel.setSize(new java.awt.Dimension(width-20,height-36));
+        graphLabel.setPreferredSize(new java.awt.Dimension(width-20,height-36));
+        graphLabel.setMinimumSize(graphLabel.getPreferredSize());
+        graphLabel.setMaximumSize(graphLabel.getPreferredSize());
+        
+        
         javax.swing.GroupLayout tilePanelLayout = new javax.swing.GroupLayout(tilePanel);
         tilePanel.setLayout(tilePanelLayout);
         tilePanelLayout.setHorizontalGroup(
-            tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tilePanelLayout.createSequentialGroup()
-                .addComponent(leftLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tilePanelLayout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(topLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bottomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(60, 60, 60))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tilePanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(graphLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addComponent(rightLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(leftLabel)
+                .addGap(2, 2, 2)
+                .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(graphLabel, javax.swing.GroupLayout.DEFAULT_SIZE, width-20, Short.MAX_VALUE)
+                    .addComponent(topLabel)
+                    .addComponent(bottomLabel))
+                .addGap(2, 2, 2)
+                .addComponent(rightLabel))
         );
         tilePanelLayout.setVerticalGroup(
             tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tilePanelLayout.createSequentialGroup()
-                .addComponent(topLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(topLabel)
                 .addGap(2, 2, 2)
                 .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(leftLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(graphLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rightLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rightLabel)
+                    .addComponent(graphLabel, javax.swing.GroupLayout.DEFAULT_SIZE, height-36, Short.MAX_VALUE)
+                    .addComponent(leftLabel))
                 .addGap(2, 2, 2)
-                .addComponent(bottomLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(bottomLabel))
         );
+        
+        UITools.imageToLabel(img,graphLabel);
         displayPanel.add(tilePanel);
+        
         displayPanel.setVisible(true);
     }
 }
