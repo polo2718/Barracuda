@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 package domain.mathUtils.numericalMethods.functionEvaluation;
-import domain.mathUtils.numericalMethods.functionEvaluation.interfaces.MultiVariableFunction;
 
 /**
- * Provides the method to compute the Incomplete Beta Function beta(x,alpha1, alpha2)
+ * Provides methods to compute the Incomplete Beta Function beta(x,alpha1, alpha2) and
+ * the regularized incomplete beta function
  * <P> This function is approximated through a continued fraction expansion.
  * The incomplete Gamma function is a Multivariable function.
  * @see IncompleteBetaFractions
@@ -22,6 +22,7 @@ public class IncompleteBetaFunction implements MultiVariableFunction{
     private double x;
     private static final IncompleteBetaFractions fraction=new IncompleteBetaFractions();
     private static final BetaFunction betaFunction=new BetaFunction();
+    private static final GammaFunction gammaFunction=new GammaFunction();
     
     /**
      * Returns the value of the incompleteBeta function beta(x,alpha1, alpha2) when computed with a continued fraction approximation
@@ -71,5 +72,12 @@ public class IncompleteBetaFunction implements MultiVariableFunction{
            variables[2]=alpha1;
            return 1-factor/(fraction.value(variables)*alpha2);
         }
+    }
+    
+    public double regularizedValue(double [] variables) throws IllegalArgumentException{
+        double result=value(variables);
+        result*=Math.exp(gammaFunction.logValue(alpha1+alpha2)-
+                (gammaFunction.logValue(alpha1)+gammaFunction.logValue(alpha2)));
+        return result;
     }
 }

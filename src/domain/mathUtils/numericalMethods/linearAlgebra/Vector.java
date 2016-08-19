@@ -90,7 +90,7 @@ public class Vector {
      * Performs a vector addition between this vector (u) and other vector (v) u+v
      * @param v vector to add (v)
      * @return Vector resulting vector (u+v)
-     * @throws IllegalDimensionException
+     * @throws IllegalDimensionException Vectors should have same dimensions to perform addition
      */
     public Vector add(Vector v) throws IllegalDimensionException{
         if(this.dimension()!=v.dimension())

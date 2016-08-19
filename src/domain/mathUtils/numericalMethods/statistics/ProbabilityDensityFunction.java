@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package domain.mathUtils.numericalMethods.statistics;
-import domain.mathUtils.numericalMethods.functionEvaluation.interfaces.OneVariableFunction;
+import domain.mathUtils.numericalMethods.functionEvaluation.OneVariableFunction;
 
 /**
  * This class defines the general methods for a probability density function of a random variable.
@@ -32,8 +32,8 @@ public abstract class ProbabilityDensityFunction implements OneVariableFunction 
      * <p> It is equal to the integral from -Inf to t of the probability distribution function
      * <p> Also called repartition function or acceptance function.
      * <p> A subclass of ProbabilityDensityFunction should override this method.
-     * @param t 
-     * @return 
+     * @param t number
+     * @return Probability of finding t between (-Inf,t]
      */
     public abstract double cumulativeDensityValue(double t);
     

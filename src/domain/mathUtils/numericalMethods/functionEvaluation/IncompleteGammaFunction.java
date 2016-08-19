@@ -5,7 +5,6 @@
  */
 package domain.mathUtils.numericalMethods.functionEvaluation;
 import domain.mathUtils.numericalMethods.functionEvaluation.GammaFunction;
-import domain.mathUtils.numericalMethods.functionEvaluation.interfaces.MultiVariableFunction;
 
 /**
  * Provides the method to compute the Incomplete Gamma Function gamma(x,alpha)

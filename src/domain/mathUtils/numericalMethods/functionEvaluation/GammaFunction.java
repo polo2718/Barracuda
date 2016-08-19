@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package domain.mathUtils.numericalMethods.functionEvaluation;
-import domain.mathUtils.numericalMethods.functionEvaluation.interfaces.OneVariableFunction;
 
 
 /**

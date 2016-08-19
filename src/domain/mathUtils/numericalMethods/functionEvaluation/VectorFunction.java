@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.mathUtils.numericalMethods.functionEvaluation.interfaces;
+package domain.mathUtils.numericalMethods.functionEvaluation;
 
 /**
  * This interface defines a vector function. A vector function is a function whose domain is a set of real numbers (parameters) and

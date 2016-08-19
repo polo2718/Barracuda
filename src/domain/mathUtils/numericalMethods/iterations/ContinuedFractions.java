@@ -5,7 +5,7 @@
  */
 package domain.mathUtils.numericalMethods.iterations;
 import domain.mathUtils.numericalMethods.GenericMathDefinitions;
-import domain.mathUtils.numericalMethods.functionEvaluation.interfaces.OneVariableFunction;
+import domain.mathUtils.numericalMethods.functionEvaluation.OneVariableFunction;
 
 /**
  * This abstract class provides a framework to compute a function defined by a continued fraction.
