@@ -45,6 +45,31 @@ public class StudentDistributionTest {
      */
     @Test
     public void testValue() {
+        System.out.println("\n Student dstribution value test");
+        int dof=15;
+        studentD.setDof(dof);
+        System.out.println("DOF= " +dof);
+        double x=6;
+        double expResult=0.000021970797512769418;
+        double result=studentD.value(x);
+        System.out.println("Exp Result=" +expResult);
+        System.out.println("Result=" +result);
+        assertEquals(expResult, result, 1e-8);
+        System.out.println("Test passed!!");
+        
+        dof=1000;
+        studentD.setDof(dof);
+        x=-31;
+        result=studentD.value(x);
+        expResult=1.643485442151604E-147;
+        assertEquals(expResult, result, 10e-8);
+        
+        dof=3;
+        studentD.setDof(dof);
+        x=3;
+        result=studentD.value(x);
+        expResult=0.02297203730924134;
+        assertEquals(expResult, result, 10e-8);       
         
     }
 
@@ -52,21 +77,90 @@ public class StudentDistributionTest {
      * Test of cumulativeDensityValue method, of class StudentDistribution.
      */
     @Test
-    public void testCumulativeDensityValue() {
-        System.out.println("\nCumulative Density Student distribution Test");
+    public void testCumulativeDistributionValue() {
+        System.out.println("\nCumulative Density Student distribution Test 1");
         //15 degrees of freedom
         int dof=15;
         studentD.setDof(dof);
         System.out.println("DOF= " + dof);
-        double expResult=.025;
-        double t=2.131;
+        double expResult=0.0250212523871212;
+        double t=-2.131;
         System.out.println("Probability of having a random variable <=" +t);
         double result=studentD.cumulativeDensityValue(t);
+        System.out.println("Exp Result="+expResult);
+        System.out.println("Result="+result);
+        assertEquals(expResult, result, 1e-9);
+        System.out.println("Test passed");
+        
+        System.out.println("\nCumulative Density Student distribution Test 2");
+        //15 degrees of freedom
+        dof=15;
+        studentD.setDof(dof);
+        System.out.println("DOF= " + dof);
+        expResult=0.974978747612879;
+        t=2.131;
+        System.out.println("Probability of having a random variable <=" +t);
+        result=studentD.cumulativeDensityValue(t);
         System.out.println("Exp Result="+expResult);
         System.out.println("Result="+result);
         assertEquals(expResult, result, 1e-8);
         System.out.println("Test passed");
         
+        System.out.println("\nCumulative Density Student distribution Test 3");
+        //15 degrees of freedom
+        dof=80;
+        studentD.setDof(dof);
+        System.out.println("DOF= " + dof);
+        expResult=0.899995937394251;
+        t=1.2922;
+        System.out.println("Probability of having a random variable <=" +t);
+        result=studentD.cumulativeDensityValue(t);
+        System.out.println("Exp Result="+expResult);
+        System.out.println("Result="+result);
+        assertEquals(expResult, result, 1e-8);
+        System.out.println("Test passed"); 
+        
+        System.out.println("\nCumulative Density Student distribution Test 4");
+        //15 degrees of freedom
+        dof=80;
+        studentD.setDof(dof);
+        System.out.println("DOF= " + dof);
+        expResult=1-0.899995937394251;
+        t=-1.2922;
+        System.out.println("Probability of having a random variable <=" +t);
+        result=studentD.cumulativeDensityValue(t);
+        System.out.println("Exp Result="+expResult);
+        System.out.println("Result="+result);
+        assertEquals(expResult, result, 1e-8);
+        System.out.println("Test passed");  
+        
+        System.out.println("\nCumulative Density Student distribution Test 5");
+        //15 degrees of freedom
+        dof=1;
+        studentD.setDof(dof);
+        System.out.println("DOF= " + dof);
+        expResult=0.900009618274457;
+        t=3.078;
+        System.out.println("Probability of having a random variable <=" +t);
+        result=studentD.cumulativeDensityValue(t);
+        System.out.println("Exp Result="+expResult);
+        System.out.println("Result="+result);
+        assertEquals(expResult, result, 1e-8);
+        System.out.println("Test passed");
+        
+        System.out.println("\nCumulative Density Student distribution Test 5");
+        //15 degrees of freedom
+        dof=1;
+        studentD.setDof(dof);
+        System.out.println("DOF= " + dof);
+        expResult=1-0.900009618274457;
+        t=-3.078;
+        System.out.println("Probability of having a random variable <=" +t);
+        result=studentD.cumulativeDensityValue(t);
+        System.out.println("Exp Result="+expResult);
+        System.out.println("Result="+result);
+        assertEquals(expResult, result, 1e-8);
+        System.out.println("Test passed");
     }
 
     /**
