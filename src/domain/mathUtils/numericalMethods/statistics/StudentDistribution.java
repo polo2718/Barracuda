@@ -49,42 +49,25 @@ public final class StudentDistribution extends ProbabilityDensityFunction {
 
     @Override
     public double cumulativeDensityValue(double t) {
-        double result;
-        //Parameters for the incomplete beta function
-        double [] parameters= new double [3];
-        double t_2=t*t;
-       
-        if(t<=0){
-            parameters[0]=n/(t_2+n);
-            parameters[1]=n*0.5;
-            parameters[2]=0.5;
-            result=0.5*incompleteBeta.regularizedValue(parameters);
-        }
-        else{
-            parameters[0]=t_2/(t_2+n);
-            parameters[1]=0.5;
-            parameters[2]=0.5*n;
-            result=0.5*(incompleteBeta.regularizedValue(parameters)+1);
-        }
-        return result;
         //Parameters for the incomplete Beta Function
-        /*
-        double [] parameters= new double [3];
-        parameters[0]=n/(n+t*t);
-        parameters[1]= 0.5*n;
-        parameters[2]= 0.5;
-       
-        double result= incompleteBeta.value(parameters);
+        double [] p= new double [3];
+        double t2=t*t;
+        double result;
         if(t>=0){
-            result+=1;
-            result=result/2;
+            p[0]=t2/(t2+n);
+            p[1]=0.5;
+            p[2]=0.5*n;
+            result=incompleteBeta.value(p);
+            result=0.5*(1+result);
         }
         else{
-            result=(1-result)/2;
+            result= incompleteBeta.value(p);
+            p[0]=n/(n+t2);
+            p[1]= 0.5*n;
+            p[2]= 0.5;
+            result=0.5*result;
         }
-     
         return result;
-        */
     }
 
     @Override
