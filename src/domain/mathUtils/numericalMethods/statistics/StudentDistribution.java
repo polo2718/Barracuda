@@ -57,15 +57,13 @@ public final class StudentDistribution extends ProbabilityDensityFunction {
             p[0]=t2/(t2+n);
             p[1]=0.5;
             p[2]=0.5*n;
-            result=incompleteBeta.value(p);
-            result=0.5*(1+result);
+            result=0.5*(1+incompleteBeta.value(p));
         }
         else{
-            result= incompleteBeta.value(p);
             p[0]=n/(n+t2);
             p[1]= 0.5*n;
             p[2]= 0.5;
-            result=0.5*result;
+            result=0.5*incompleteBeta.value(p);;
         }
         return result;
     }
