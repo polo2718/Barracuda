@@ -184,7 +184,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Barracuda View");
         setIconImage(IconGetter.getProjectIcon("synapticom2.png"));
         setMinimumSize(new java.awt.Dimension(600, 650));
@@ -213,6 +213,11 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         coronalLabel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 coronalLabelMouseDragged(evt);
+            }
+        });
+        coronalLabel.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                coronalLabelMouseWheelMoved(evt);
             }
         });
         coronalLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -307,6 +312,11 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 axialLabelMouseDragged(evt);
             }
         });
+        axialLabel.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                axialLabelMouseWheelMoved(evt);
+            }
+        });
         axialLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 axialLabelMouseClicked(evt);
@@ -387,6 +397,11 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         saggitalLabel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 saggitalLabelMouseDragged(evt);
+            }
+        });
+        saggitalLabel.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                saggitalLabelMouseWheelMoved(evt);
             }
         });
         saggitalLabel.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1625,6 +1640,57 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_mosaicViewMenuActionPerformed
+
+    private void coronalLabelMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_coronalLabelMouseWheelMoved
+       int notches = evt.getWheelRotation();
+       if(notches<0){
+           try{
+               coronalSlider.setValue(coronalSlider.getValue()+1);
+           }catch(Exception e){
+               
+           }
+       }else{
+          try{
+               coronalSlider.setValue(coronalSlider.getValue()-1);
+           }catch(Exception e){
+               
+           } 
+       }
+    }//GEN-LAST:event_coronalLabelMouseWheelMoved
+
+    private void saggitalLabelMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_saggitalLabelMouseWheelMoved
+        int notches = evt.getWheelRotation();
+       if(notches<0){
+           try{
+               saggitalSlider.setValue(saggitalSlider.getValue()+1);
+           }catch(Exception e){
+               
+           }
+       }else{
+          try{
+               saggitalSlider.setValue(saggitalSlider.getValue()-1);
+           }catch(Exception e){
+               
+           } 
+       }
+    }//GEN-LAST:event_saggitalLabelMouseWheelMoved
+
+    private void axialLabelMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_axialLabelMouseWheelMoved
+        int notches = evt.getWheelRotation();
+       if(notches<0){
+           try{
+               axialSlider.setValue(axialSlider.getValue()+1);
+           }catch(Exception e){
+               
+           }
+       }else{
+          try{
+               axialSlider.setValue(axialSlider.getValue()-1);
+           }catch(Exception e){
+               
+           } 
+       }
+    }//GEN-LAST:event_axialLabelMouseWheelMoved
                                     
     /**
      * @param args the command line arguments

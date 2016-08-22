@@ -44,6 +44,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     int startSlice;
     int endSlice;
     JFileChooser fc=new JFileChooser();
+    boolean flag=true;
     
     
     /**
@@ -74,9 +75,9 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         fc.setFileFilter(filter);
         fc.addChoosableFileFilter(filter);
         fc.setAcceptAllFileFilterUsed(false);*/
-        
+        flag=false;
          //Timer for resizing event
-        int delay = 100;
+        int delay = 10;
         timer = new Timer( delay, new ActionListener(){
         @Override
         public void actionPerformed( ActionEvent e ){
@@ -119,6 +120,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         axialMosaicViewButton = new javax.swing.JButton();
         settingsButton = new javax.swing.JButton();
         saveImageButton = new javax.swing.JButton();
+        viewSlider = new javax.swing.JSlider();
         displayPanel = new javax.swing.JPanel();
 
         settingsDialog.setTitle("Settings");
@@ -286,6 +288,11 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         setIconImage(IconGetter.getProjectIcon("synapticom2.png"));
         setMinimumSize(new java.awt.Dimension(300, 300));
         setSize(new java.awt.Dimension(800, 600));
+        addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                formMouseWheelMoved(evt);
+            }
+        });
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
@@ -373,6 +380,13 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         });
         mosaicToolbar.add(saveImageButton);
 
+        viewSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                viewSliderStateChanged(evt);
+            }
+        });
+        mosaicToolbar.add(viewSlider);
+
         displayPanel.setBackground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout displayPanelLayout = new javax.swing.GroupLayout(displayPanel);
@@ -402,37 +416,39 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void coronalMosaicViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_coronalMosaicViewButtonActionPerformed
         displayPanel.removeAll();
         //If last one was a different plane
         if(!plane.equals("coronal")){
+            plane="coronal";
             initSettings();
-        }
-        plane="coronal";
+        }      
         drawCoronalMosaic();
     }//GEN-LAST:event_coronalMosaicViewButtonActionPerformed
 
     private void saggitalMosaicViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saggitalMosaicViewButtonActionPerformed
         displayPanel.removeAll();
         if(!plane.equals("saggital")){
+            plane="saggital";
             initSettings();
         }
-        plane="saggital";
         drawSaggitalMosaic();
     }//GEN-LAST:event_saggitalMosaicViewButtonActionPerformed
 
     private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
         //initSettings();
+        startSliceSlider.setValue(startSlice);
         settingsDialog.setVisible(true);
     }//GEN-LAST:event_settingsButtonActionPerformed
 
     private void axialMosaicViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_axialMosaicViewButtonActionPerformed
         if(!plane.equals("axial")){
+            plane="axial";
             initSettings();
         }
-        plane="axial";
         displayPanel.removeAll();
         drawAxialMosaic();
     }//GEN-LAST:event_axialMosaicViewButtonActionPerformed
@@ -483,6 +499,31 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         savePanel();
     }//GEN-LAST:event_saveImageButtonActionPerformed
 
+    private void viewSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_viewSliderStateChanged
+        if(!flag){
+            startSlice=viewSlider.getValue();
+            displayPanel.removeAll();
+            drawMosaics();
+        }
+    }//GEN-LAST:event_viewSliderStateChanged
+
+    private void formMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_formMouseWheelMoved
+       int notches = evt.getWheelRotation();
+       if(notches<0){
+           try{
+               viewSlider.setValue(viewSlider.getValue()+1);
+           }catch(Exception e){
+               
+           }
+       }else{
+          try{
+               viewSlider.setValue(viewSlider.getValue()-1);
+           }catch(Exception e){
+               
+           } 
+       }
+    }//GEN-LAST:event_formMouseWheelMoved
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton axialMosaicViewButton;
@@ -507,6 +548,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     private javax.swing.JDialog settingsDialog;
     private javax.swing.JSlider startSliceSlider;
     private javax.swing.JLabel startSliceText;
+    private javax.swing.JSlider viewSlider;
     // End of variables declaration//GEN-END:variables
     
     private void initMosaic(int n,int m){
@@ -530,7 +572,10 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         startSliceSlider.setMaximum(endSlice-(n*m));
         startSliceSlider.setValue(startSlice);
         startSliceText.setText(Integer.toString(startSlice));
-                
+        flag=true;
+        viewSlider.setValue(startSlice);
+        viewSlider.setMaximum(endSlice-(n*m));
+        flag=false;
         endSliceSlider.setMinimum(startSlice+(n*m));
         endSliceSlider.setMaximum(endSlice);
         endSliceSlider.setValue(endSlice);

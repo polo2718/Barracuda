@@ -76,6 +76,7 @@ public class BarracudaLoader extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void barracudaViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barracudaViewButtonActionPerformed
@@ -97,7 +98,7 @@ public class BarracudaLoader extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
+                if ("Metal".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
