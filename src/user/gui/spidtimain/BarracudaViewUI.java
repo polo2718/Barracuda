@@ -25,10 +25,10 @@ import javax.swing.UIManager;
  * 
  * @author Diego Garibay-Pulido 2016
  */
-public class MainUI extends javax.swing.JFrame {
+public class BarracudaViewUI extends javax.swing.JFrame {
 
     /**
-     * Creates new form MainUI
+     * Creates new form BarracudaViewUI
      */
     DrawableNiftiVolume niiVol; //NIFTI main volume
     DrawableNiftiVolume overlayVol; //NIFTI Overlay volume
@@ -47,7 +47,7 @@ public class MainUI extends javax.swing.JFrame {
     boolean viewState=true;//Boolean flag to indicate radiological or neurological view
     JFileChooser fc = new JFileChooser();
     
-    public MainUI() {
+    public BarracudaViewUI() {
         initComponents();
     }
 
@@ -930,7 +930,7 @@ public class MainUI extends javax.swing.JFrame {
         fc.setFileFilter(filter);
         fc.addChoosableFileFilter(filter);
         fc.setAcceptAllFileFilterUsed(false);
-        int returnVal = fc.showOpenDialog(MainUI.this);
+        int returnVal = fc.showOpenDialog(BarracudaViewUI.this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             String filename = file.getAbsolutePath();
@@ -1524,7 +1524,7 @@ public class MainUI extends javax.swing.JFrame {
 
     private void openOverlayMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openOverlayMenuActionPerformed
         if(niiVol!=null){    
-            int returnVal = fc.showOpenDialog(MainUI.this);
+            int returnVal = fc.showOpenDialog(BarracudaViewUI.this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
                 String filename = file.getAbsolutePath();
@@ -1614,9 +1614,9 @@ public class MainUI extends javax.swing.JFrame {
     private void mosaicViewMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mosaicViewMenuActionPerformed
         if(niiVol!=null){
             if(overlayVol!=null){
-                new MosaicViewFrame(niiVol,overlayVol,viewState,colorScale,colorScaleOverlay).setVisible(true);
+                new BarracudaViewMosaicFrame(niiVol,overlayVol,viewState,colorScale,colorScaleOverlay).setVisible(true);
             }else{
-                new MosaicViewFrame(niiVol,null,viewState,colorScale, null).setVisible(true);
+                new BarracudaViewMosaicFrame(niiVol,null,viewState,colorScale, null).setVisible(true);
             }
         }else{
             errorLabel.setText("Error: Add a volume first");
@@ -1629,13 +1629,13 @@ public class MainUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    /*public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
+        /*try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Metal".equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
@@ -1643,23 +1643,23 @@ public class MainUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BarracudaViewUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BarracudaViewUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BarracudaViewUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BarracudaViewUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainUI().setVisible(true);
+                new BarracudaViewUI().setVisible(true);
             }
         });
-    }
+    }*/
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel axialLabel;
     private javax.swing.JLabel axialLabel1;

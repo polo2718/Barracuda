@@ -7,15 +7,21 @@ package user.gui.spidtimain;
 
 import data.niftilibrary.niftijio.DrawableNiftiVolume;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import javax.swing.JLabel;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.Timer;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import user.gui.tools.*;
 
 /**
@@ -24,7 +30,7 @@ import user.gui.tools.*;
  * <p>
  * Diego Garibay-Pulido 2016</p>
  */
-public class MosaicViewFrame extends javax.swing.JFrame {
+public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     DrawableNiftiVolume niiVol;
     DrawableNiftiVolume overlayVol;
     boolean view;
@@ -37,12 +43,18 @@ public class MosaicViewFrame extends javax.swing.JFrame {
     String colorScaleOverlay;
     int startSlice;
     int endSlice;
+    JFileChooser fc=new JFileChooser();
     
     
     /**
      * Creates new form MosaicViewFrame
+     * @param niiVol 
+     * @param overlayVol
+     * @param view
+     * @param colorScale
+     * @param colorScaleOverlay
      */
-    public MosaicViewFrame(DrawableNiftiVolume niiVol ,DrawableNiftiVolume overlayVol,boolean view,String colorScale,String colorScaleOverlay) {
+    public BarracudaViewMosaicFrame(DrawableNiftiVolume niiVol ,DrawableNiftiVolume overlayVol,boolean view,String colorScale,String colorScaleOverlay) {
         initComponents();
         niiVol.clearDrawRange();
         if(overlayVol!=null){overlayVol.clearDrawRange();}
@@ -56,6 +68,13 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         initMosaic(n,m);
         initSettings();
         drawCoronalMosaic();
+        /*
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "PNG Image (*.png)", "png");
+        fc.setFileFilter(filter);
+        fc.addChoosableFileFilter(filter);
+        fc.setAcceptAllFileFilterUsed(false);*/
+        
          //Timer for resizing event
         int delay = 100;
         timer = new Timer( delay, new ActionListener(){
@@ -99,6 +118,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         saggitalMosaicViewButton = new javax.swing.JButton();
         axialMosaicViewButton = new javax.swing.JButton();
         settingsButton = new javax.swing.JButton();
+        saveImageButton = new javax.swing.JButton();
         displayPanel = new javax.swing.JPanel();
 
         settingsDialog.setTitle("Settings");
@@ -129,6 +149,18 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         jLabel2.setText("End Slice:");
         jLabel2.setToolTipText("");
 
+        mosaicNSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                mosaicNSpinnerStateChanged(evt);
+            }
+        });
+
+        mosaicMSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                mosaicMSpinnerStateChanged(evt);
+            }
+        });
+
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel3.setText("Width:");
 
@@ -136,7 +168,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         jLabel4.setText("Height:");
         jLabel4.setToolTipText("");
 
-        jLabel5.setText("Mosaic Dimensions");
+        jLabel5.setText("Grid Size");
         jLabel5.setToolTipText("");
 
         okButton.setText("Ok");
@@ -251,6 +283,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setIconImage(IconGetter.getProjectIcon("synapticom2.png"));
         setMinimumSize(new java.awt.Dimension(300, 300));
         setSize(new java.awt.Dimension(800, 600));
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -323,6 +356,22 @@ public class MosaicViewFrame extends javax.swing.JFrame {
             }
         });
         mosaicToolbar.add(settingsButton);
+
+        saveImageButton.setIcon(IconGetter.getProjectImageIcon("save_image_icon.png")
+        );
+        saveImageButton.setToolTipText("Save Image");
+        saveImageButton.setFocusable(false);
+        saveImageButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        saveImageButton.setMaximumSize(new java.awt.Dimension(26, 26));
+        saveImageButton.setMinimumSize(new java.awt.Dimension(26, 26));
+        saveImageButton.setPreferredSize(new java.awt.Dimension(26, 26));
+        saveImageButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        saveImageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveImageButtonActionPerformed(evt);
+            }
+        });
+        mosaicToolbar.add(saveImageButton);
 
         displayPanel.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -408,17 +457,31 @@ public class MosaicViewFrame extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         settingsDialog.setVisible(false);
+        startSliceSlider.setMaximum(endSlice-(n*m));
+        endSliceSlider.setMinimum(startSlice+(n*m));
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void startSliceSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_startSliceSliderStateChanged
         startSliceText.setText(Integer.toString(startSliceSlider.getValue()));
-        endSliceSlider.setMinimum(startSlice+(n*m));
+        endSliceSlider.setMinimum(startSliceSlider.getValue()+(n*m));
     }//GEN-LAST:event_startSliceSliderStateChanged
 
     private void endSliceSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_endSliceSliderStateChanged
         endSliceText.setText(Integer.toString(endSliceSlider.getValue()));
-        startSliceSlider.setMaximum(endSlice-(n*m));
+        startSliceSlider.setMaximum(endSliceSlider.getValue()-(n*m));
     }//GEN-LAST:event_endSliceSliderStateChanged
+
+    private void mosaicNSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mosaicNSpinnerStateChanged
+        mosaicMSpinner.setValue(mosaicNSpinner.getValue());
+    }//GEN-LAST:event_mosaicNSpinnerStateChanged
+
+    private void mosaicMSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mosaicMSpinnerStateChanged
+        mosaicNSpinner.setValue(mosaicMSpinner.getValue());
+    }//GEN-LAST:event_mosaicMSpinnerStateChanged
+
+    private void saveImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveImageButtonActionPerformed
+        savePanel();
+    }//GEN-LAST:event_saveImageButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -439,6 +502,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
     private javax.swing.JToolBar mosaicToolbar;
     private javax.swing.JButton okButton;
     private javax.swing.JButton saggitalMosaicViewButton;
+    private javax.swing.JButton saveImageButton;
     private javax.swing.JButton settingsButton;
     private javax.swing.JDialog settingsDialog;
     private javax.swing.JSlider startSliceSlider;
@@ -503,7 +567,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
                 if(val<endSlice){
                      val=startSlice+i*gap;
                      img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
-                     createTilePanel(img);
+                     createTilePanel(img,val);
                 }
             }
         }else{
@@ -514,7 +578,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
                      img2=overlayVol.drawNiftiSlice(val,plane,0,colorScaleOverlay);
                      Graphics g=img.getGraphics();
                      g.drawImage(img2,0,0,c,null);
-                     createTilePanel(img);
+                     createTilePanel(img,val);
                 }
             }
         }
@@ -531,7 +595,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
                 if(val<endSlice){
                      val=startSlice+i*gap;
                      img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
-                     createTilePanel(img);
+                     createTilePanel(img,val);
                 }
             }
         }else{
@@ -542,7 +606,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
                      img2=overlayVol.drawNiftiSlice(val,plane,0,colorScaleOverlay);
                      Graphics g=img.getGraphics();
                      g.drawImage(img2,0,0,c,null);
-                     createTilePanel(img);
+                     createTilePanel(img,val);
                 }
             }
         }
@@ -559,7 +623,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
                 if(val<endSlice){
                      val=startSlice+i*gap;
                      img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
-                     createTilePanel(img);
+                     createTilePanel(img,val);
                 }
             }
         }else{
@@ -570,13 +634,13 @@ public class MosaicViewFrame extends javax.swing.JFrame {
                      img2=overlayVol.drawNiftiSlice(val,plane,0,colorScaleOverlay);
                      Graphics g=img.getGraphics();
                      g.drawImage(img2,0,0,c,null);
-                     createTilePanel(img);
+                     createTilePanel(img,val);
                 }
             }
         }
     }
     /***Create Tile Panels***/
-    private void createTilePanel(BufferedImage img){
+    private void createTilePanel(BufferedImage img,int sliceNum){
         int width=(int)(displayPanel.getWidth()/((double)n));
         int height=(int)(displayPanel.getHeight()/((double)m));
         
@@ -588,12 +652,17 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         javax.swing.JLabel rightLabel = new javax.swing.JLabel();
         javax.swing.JLabel bottomLabel = new javax.swing.JLabel();
         javax.swing.JLabel graphLabel = new javax.swing.JLabel();
+        javax.swing.JLabel sliceLabel = new javax.swing.JLabel();
         
         tilePanel.setBackground(new java.awt.Color(0, 0, 0));
         tilePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255,0,0)));
         tilePanel.setMaximumSize(new java.awt.Dimension(width,height));
         tilePanel.setMinimumSize(new java.awt.Dimension(width,height));
         tilePanel.setPreferredSize(new java.awt.Dimension(width,height));
+        
+        sliceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        String str=Integer.toString(sliceNum);
+        sliceLabel.setText("<html> <font size='3' color=\"Yellow\">"+str+"</font>");
         
         leftLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         topLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -631,8 +700,8 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         }
         
         graphLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        graphLabel.setSize(new java.awt.Dimension(width-20,height-36));
-        graphLabel.setPreferredSize(new java.awt.Dimension(width-20,height-36));
+        graphLabel.setSize(new java.awt.Dimension(width-36,height-36));
+        graphLabel.setPreferredSize(new java.awt.Dimension(width-36,height-36));
         graphLabel.setMinimumSize(graphLabel.getPreferredSize());
         graphLabel.setMaximumSize(graphLabel.getPreferredSize());
         
@@ -645,17 +714,21 @@ public class MosaicViewFrame extends javax.swing.JFrame {
                 .addComponent(leftLabel)
                 .addGap(2, 2, 2)
                 .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(graphLabel, javax.swing.GroupLayout.DEFAULT_SIZE, width-20, Short.MAX_VALUE)
+                    .addComponent(graphLabel, javax.swing.GroupLayout.DEFAULT_SIZE, width-36, Short.MAX_VALUE)
                     .addComponent(topLabel)
                     .addComponent(bottomLabel))
                 .addGap(2, 2, 2)
-                .addComponent(rightLabel))
-        );
+                .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(sliceLabel)
+                    .addComponent(rightLabel))
+        ));
         tilePanelLayout.setVerticalGroup(
             tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tilePanelLayout.createSequentialGroup()
-                .addComponent(topLabel)
-                .addGap(2, 2, 2)
+                .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(topLabel)
+                    .addComponent(sliceLabel)
+                    .addGap(2, 2, 2))
                 .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(rightLabel)
                     .addComponent(graphLabel, javax.swing.GroupLayout.DEFAULT_SIZE, height-36, Short.MAX_VALUE)
@@ -668,5 +741,29 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         displayPanel.add(tilePanel);
         
         displayPanel.setVisible(true);
+    }
+    private void savePanel(){
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnVal = fc.showOpenDialog(BarracudaViewMosaicFrame.this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                String directory = file.getAbsolutePath();
+                Dimension size = displayPanel.getSize();
+                BufferedImage image = new BufferedImage(
+                    size.width, size.height 
+                    , BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g2 = image.createGraphics();
+                displayPanel.paint(g2);
+                try{
+                    SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy_MM_dd_HHmm");//dd/MM/yyyy
+                    Date now = new Date();
+                    String strDate = sdfDate.format(now);
+                    ImageIO.write(image, "png", new File(directory+"\\"+strDate+"_"+plane+"_mosaic.png"));
+                }catch(Exception e){
+                       
+                }
+            } else {
+                returnVal=0;
+            }
     }
 }
