@@ -118,7 +118,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         saggitalMosaicViewButton = new javax.swing.JButton();
         axialMosaicViewButton = new javax.swing.JButton();
         settingsButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        saveImageButton = new javax.swing.JButton();
         displayPanel = new javax.swing.JPanel();
 
         settingsDialog.setTitle("Settings");
@@ -357,21 +357,21 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         });
         mosaicToolbar.add(settingsButton);
 
-        jButton1.setIcon(IconGetter.getProjectImageIcon("save_image_icon.png")
+        saveImageButton.setIcon(IconGetter.getProjectImageIcon("save_image_icon.png")
         );
-        jButton1.setToolTipText("Save Image");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setMaximumSize(new java.awt.Dimension(26, 26));
-        jButton1.setMinimumSize(new java.awt.Dimension(26, 26));
-        jButton1.setPreferredSize(new java.awt.Dimension(26, 26));
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        saveImageButton.setToolTipText("Save Image");
+        saveImageButton.setFocusable(false);
+        saveImageButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        saveImageButton.setMaximumSize(new java.awt.Dimension(26, 26));
+        saveImageButton.setMinimumSize(new java.awt.Dimension(26, 26));
+        saveImageButton.setPreferredSize(new java.awt.Dimension(26, 26));
+        saveImageButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        saveImageButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                saveImageButtonActionPerformed(evt);
             }
         });
-        mosaicToolbar.add(jButton1);
+        mosaicToolbar.add(saveImageButton);
 
         displayPanel.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -479,9 +479,9 @@ public class MosaicViewFrame extends javax.swing.JFrame {
         mosaicNSpinner.setValue(mosaicMSpinner.getValue());
     }//GEN-LAST:event_mosaicMSpinnerStateChanged
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void saveImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveImageButtonActionPerformed
         savePanel();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_saveImageButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -491,7 +491,6 @@ public class MosaicViewFrame extends javax.swing.JFrame {
     private javax.swing.JPanel displayPanel;
     private javax.swing.JSlider endSliceSlider;
     private javax.swing.JLabel endSliceText;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -503,6 +502,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
     private javax.swing.JToolBar mosaicToolbar;
     private javax.swing.JButton okButton;
     private javax.swing.JButton saggitalMosaicViewButton;
+    private javax.swing.JButton saveImageButton;
     private javax.swing.JButton settingsButton;
     private javax.swing.JDialog settingsDialog;
     private javax.swing.JSlider startSliceSlider;

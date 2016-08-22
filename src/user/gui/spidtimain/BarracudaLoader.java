@@ -5,6 +5,8 @@
  */
 package user.gui.spidtimain;
 
+import user.gui.tools.IconGetter;
+
 /**
  *
  * @author
@@ -29,21 +31,60 @@ public class BarracudaLoader extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mainIcon = new javax.swing.JLabel();
+        barracudaViewButton = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(IconGetter.getProjectIcon("synapticom2.png")
+        );
+
+        mainIcon.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        mainIcon.setForeground(new java.awt.Color(0, 102, 153));
+        mainIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        mainIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/synapticom2.png"))); // NOI18N
+
+        barracudaViewButton.setText("Barracuda View");
+        barracudaViewButton.setToolTipText("");
+        barracudaViewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                barracudaViewButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(168, 168, 168)
+                        .addComponent(mainIcon))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(barracudaViewButton)))
+                .addContainerGap(176, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(mainIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(barracudaViewButton)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void barracudaViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barracudaViewButtonActionPerformed
+       java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new BarracudaViewUI().setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_barracudaViewButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -56,7 +97,7 @@ public class BarracudaLoader extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -81,5 +122,7 @@ public class BarracudaLoader extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton barracudaViewButton;
+    private javax.swing.JLabel mainIcon;
     // End of variables declaration//GEN-END:variables
 }
