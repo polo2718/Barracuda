@@ -45,6 +45,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     int endSlice;
     JFileChooser fc=new JFileChooser();
     boolean flag=true;
+    boolean labels=true;
     
     
     /**
@@ -120,6 +121,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         axialMosaicViewButton = new javax.swing.JButton();
         settingsButton = new javax.swing.JButton();
         saveImageButton = new javax.swing.JButton();
+        labelButton = new javax.swing.JToggleButton();
         viewSlider = new javax.swing.JSlider();
         displayPanel = new javax.swing.JPanel();
 
@@ -380,6 +382,19 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         });
         mosaicToolbar.add(saveImageButton);
 
+        labelButton.setSelected(true);
+        labelButton.setText("#");
+        labelButton.setToolTipText("");
+        labelButton.setFocusable(false);
+        labelButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        labelButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        labelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                labelButtonActionPerformed(evt);
+            }
+        });
+        mosaicToolbar.add(labelButton);
+
         viewSlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 viewSliderStateChanged(evt);
@@ -397,7 +412,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         );
         displayPanelLayout.setVerticalGroup(
             displayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+            .addGap(0, 558, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -524,6 +539,12 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
        }
     }//GEN-LAST:event_formMouseWheelMoved
 
+    private void labelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_labelButtonActionPerformed
+        labels=labelButton.isSelected();
+        displayPanel.removeAll();
+        drawMosaics();
+    }//GEN-LAST:event_labelButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton axialMosaicViewButton;
@@ -538,6 +559,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JToggleButton labelButton;
     private javax.swing.JSpinner mosaicMSpinner;
     private javax.swing.JSpinner mosaicNSpinner;
     private javax.swing.JToolBar mosaicToolbar;
@@ -750,37 +772,66 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         graphLabel.setMinimumSize(graphLabel.getPreferredSize());
         graphLabel.setMaximumSize(graphLabel.getPreferredSize());
         
-        
-        javax.swing.GroupLayout tilePanelLayout = new javax.swing.GroupLayout(tilePanel);
-        tilePanel.setLayout(tilePanelLayout);
-        tilePanelLayout.setHorizontalGroup(
-            tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tilePanelLayout.createSequentialGroup()
-                .addComponent(leftLabel)
-                .addGap(2, 2, 2)
-                .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(graphLabel, javax.swing.GroupLayout.DEFAULT_SIZE, width-36, Short.MAX_VALUE)
-                    .addComponent(topLabel)
+        if(labels){
+            javax.swing.GroupLayout tilePanelLayout = new javax.swing.GroupLayout(tilePanel);
+            tilePanel.setLayout(tilePanelLayout);
+            tilePanelLayout.setHorizontalGroup(
+                tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(tilePanelLayout.createSequentialGroup()
+                    .addComponent(leftLabel)
+                    .addGap(2, 2, 2)
+                    .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(graphLabel, javax.swing.GroupLayout.DEFAULT_SIZE, width-36, Short.MAX_VALUE)
+                        .addComponent(topLabel)
+                        .addComponent(bottomLabel))
+                    .addGap(2, 2, 2)
+                    .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(sliceLabel)
+                        .addComponent(rightLabel))
+            ));
+            tilePanelLayout.setVerticalGroup(
+                tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(tilePanelLayout.createSequentialGroup()
+                    .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(topLabel)
+                        .addComponent(sliceLabel)
+                        .addGap(2, 2, 2))
+                    .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(rightLabel)
+                        .addComponent(graphLabel, javax.swing.GroupLayout.DEFAULT_SIZE, height-36, Short.MAX_VALUE)
+                        .addComponent(leftLabel))
+                    .addGap(2, 2, 2)
                     .addComponent(bottomLabel))
-                .addGap(2, 2, 2)
-                .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(sliceLabel)
-                    .addComponent(rightLabel))
-        ));
-        tilePanelLayout.setVerticalGroup(
-            tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tilePanelLayout.createSequentialGroup()
-                .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(topLabel)
-                    .addComponent(sliceLabel)
-                    .addGap(2, 2, 2))
-                .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(rightLabel)
-                    .addComponent(graphLabel, javax.swing.GroupLayout.DEFAULT_SIZE, height-36, Short.MAX_VALUE)
-                    .addComponent(leftLabel))
-                .addGap(2, 2, 2)
-                .addComponent(bottomLabel))
         );
+        }else{
+            javax.swing.GroupLayout tilePanelLayout = new javax.swing.GroupLayout(tilePanel);
+            tilePanel.setLayout(tilePanelLayout);
+            tilePanelLayout.setHorizontalGroup(
+                tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(tilePanelLayout.createSequentialGroup()
+                    .addComponent(leftLabel)
+                    .addGap(2, 2, 2)
+                    .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(graphLabel, javax.swing.GroupLayout.DEFAULT_SIZE, width-36, Short.MAX_VALUE)
+                        .addComponent(topLabel)
+                        .addComponent(bottomLabel))
+                    .addGap(2, 2, 2)
+                        .addComponent(rightLabel)
+            ));
+            tilePanelLayout.setVerticalGroup(
+                tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(tilePanelLayout.createSequentialGroup()
+                    .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(topLabel)
+                        .addGap(2, 2, 2))
+                    .addGroup(tilePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                        .addComponent(rightLabel)
+                        .addComponent(graphLabel, javax.swing.GroupLayout.DEFAULT_SIZE, height-36, Short.MAX_VALUE)
+                        .addComponent(leftLabel))
+                    .addGap(2, 2, 2)
+                    .addComponent(bottomLabel))
+            );
+        }
         
         UITools.imageToLabel(img,graphLabel);
         displayPanel.add(tilePanel);
