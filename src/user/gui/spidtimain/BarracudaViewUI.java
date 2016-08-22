@@ -1614,9 +1614,9 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     private void mosaicViewMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mosaicViewMenuActionPerformed
         if(niiVol!=null){
             if(overlayVol!=null){
-                new MosaicViewFrame(niiVol,overlayVol,viewState,colorScale,colorScaleOverlay).setVisible(true);
+                new BarracudaViewMosaicFrame(niiVol,overlayVol,viewState,colorScale,colorScaleOverlay).setVisible(true);
             }else{
-                new MosaicViewFrame(niiVol,null,viewState,colorScale, null).setVisible(true);
+                new BarracudaViewMosaicFrame(niiVol,null,viewState,colorScale, null).setVisible(true);
             }
         }else{
             errorLabel.setText("Error: Add a volume first");

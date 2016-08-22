@@ -30,7 +30,7 @@ import user.gui.tools.*;
  * <p>
  * Diego Garibay-Pulido 2016</p>
  */
-public class MosaicViewFrame extends javax.swing.JFrame {
+public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     DrawableNiftiVolume niiVol;
     DrawableNiftiVolume overlayVol;
     boolean view;
@@ -54,7 +54,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
      * @param colorScale
      * @param colorScaleOverlay
      */
-    public MosaicViewFrame(DrawableNiftiVolume niiVol ,DrawableNiftiVolume overlayVol,boolean view,String colorScale,String colorScaleOverlay) {
+    public BarracudaViewMosaicFrame(DrawableNiftiVolume niiVol ,DrawableNiftiVolume overlayVol,boolean view,String colorScale,String colorScaleOverlay) {
         initComponents();
         niiVol.clearDrawRange();
         if(overlayVol!=null){overlayVol.clearDrawRange();}
@@ -744,7 +744,7 @@ public class MosaicViewFrame extends javax.swing.JFrame {
     }
     private void savePanel(){
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int returnVal = fc.showOpenDialog(MosaicViewFrame.this);
+        int returnVal = fc.showOpenDialog(BarracudaViewMosaicFrame.this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
                 String directory = file.getAbsolutePath();
