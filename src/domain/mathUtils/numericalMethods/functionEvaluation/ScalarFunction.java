@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.mathUtils.numericalMethods.functionEvaluation.interfaces;
+package domain.mathUtils.numericalMethods.functionEvaluation;
 
 /**
  * This interface defines the most general case of a scalar function

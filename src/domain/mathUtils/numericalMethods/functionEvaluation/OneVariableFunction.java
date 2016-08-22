@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.mathUtils.numericalMethods.functionEvaluation.interfaces;
+package domain.mathUtils.numericalMethods.functionEvaluation;
+
+import domain.mathUtils.numericalMethods.functionEvaluation.MultiVariableFunction;
 
 /**
  * Interface definition for one variable function 
- * A function of one variable is an special case of a Multivariable Function
+ * <p>A function of one variable is an special case of a Multivariable Function
  * @author "Leopoldo Cendejas-Zaragoza, 2016, Illinois Institute of Technology"
  * @see MultiVariableFunction
  */

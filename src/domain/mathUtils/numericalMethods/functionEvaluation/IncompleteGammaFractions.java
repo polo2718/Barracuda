@@ -6,7 +6,6 @@
 package domain.mathUtils.numericalMethods.functionEvaluation;
 import domain.mathUtils.numericalMethods.GenericMathDefinitions;
 //import domain.mathUtils.numericalMethods.functionEvaluation.GammaFunction;
-import domain.mathUtils.numericalMethods.functionEvaluation.interfaces.MultiVariableFunction;
 import domain.mathUtils.numericalMethods.iterations.ContinuedFractions;
 
 /**

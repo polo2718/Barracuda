@@ -5,7 +5,6 @@
  */
 package domain.mathUtils.numericalMethods.functionEvaluation;
 
-import domain.mathUtils.numericalMethods.functionEvaluation.interfaces.OneVariableFunction;
 import java.util.Arrays;
 
 /**
