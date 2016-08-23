@@ -30,8 +30,8 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     /**
      * Creates new form BarracudaViewUI
      */
-    DrawableNiftiVolume niiVol; //NIFTI main volume
-    DrawableNiftiVolume overlayVol; //NIFTI Overlay volume
+    DrawableNiftiVolume niiVol=new DrawableNiftiVolume(); //NIFTI main volume
+    DrawableNiftiVolume overlayVol=new DrawableNiftiVolume(); //NIFTI Overlay volume
     //double[][] R = new double[3][3]; //Rotation matrix for NIFTI #1
     Matrix rotationMtrx; //Rotation matrix for NIFTI #1
     double coronalScale; //Display scale on the coronalLabel
@@ -49,6 +49,12 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     
     public BarracudaViewUI() {
         initComponents();
+        //Set up file chooser
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "NIFTI (*.nii,*.gz)", "nii", "gz");
+        fc.setFileFilter(filter);
+        fc.addChoosableFileFilter(filter);
+        fc.setAcceptAllFileFilterUsed(false);
     }
 
     /**
@@ -939,12 +945,6 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     }//GEN-LAST:event_formComponentResized
     /****Open main volume****/
     private void openVolumeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openVolumeMenuActionPerformed
-        //Set up file chooser
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-        "NIFTI (*.nii,*.gz)", "nii", "gz");
-        fc.setFileFilter(filter);
-        fc.addChoosableFileFilter(filter);
-        fc.setAcceptAllFileFilterUsed(false);
         int returnVal = fc.showOpenDialog(BarracudaViewUI.this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
@@ -963,7 +963,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 axialLabel1.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
                 axialLabel3.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
                 //Read Nifti file and initialize drawable copy
-                niiVol=new DrawableNiftiVolume(NiftiVolume.read(filename));
+                niiVol.initDrawableNiftiVolume(NiftiVolume.read(filename));
                 if(niiVol!=null){
                     volumeSelect.setSelected(true);
                     // Added code so default view would be neurological
@@ -1547,7 +1547,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 try{
                     overlayVol=null;
                     
-                    overlayVol=new DrawableNiftiVolume(NiftiVolume.read(filename));
+                    overlayVol.initDrawableNiftiVolume(NiftiVolume.read(filename));
                     if(overlayVol!=null){
                         if(overlayVol.header.dim[4]<=0){overlayVol.header.dim[4]=1;}
                         if(overlayVol.header.dim[1]==niiVol.header.dim[1] &

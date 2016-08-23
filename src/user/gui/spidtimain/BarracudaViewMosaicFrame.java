@@ -21,7 +21,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.Timer;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import user.gui.tools.*;
 
 /**
@@ -43,6 +42,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     String colorScaleOverlay;
     int startSlice;
     int endSlice;
+    int nMax;
     JFileChooser fc=new JFileChooser();
     boolean flag=true;
     boolean labels=true;
@@ -58,8 +58,6 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
      */
     public BarracudaViewMosaicFrame(DrawableNiftiVolume niiVol ,DrawableNiftiVolume overlayVol,boolean view,String colorScale,String colorScaleOverlay) {
         initComponents();
-        niiVol.clearDrawRange();
-        if(overlayVol!=null){overlayVol.clearDrawRange();}
         this.niiVol=niiVol;
         this.overlayVol=overlayVol;
         this.view=view;
@@ -70,12 +68,6 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         initMosaic(n,m);
         initSettings();
         drawCoronalMosaic();
-        /*
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-        "PNG Image (*.png)", "png");
-        fc.setFileFilter(filter);
-        fc.addChoosableFileFilter(filter);
-        fc.setAcceptAllFileFilterUsed(false);*/
         flag=false;
          //Timer for resizing event
         int delay = 10;
@@ -121,12 +113,12 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         axialMosaicViewButton = new javax.swing.JButton();
         settingsButton = new javax.swing.JButton();
         saveImageButton = new javax.swing.JButton();
+        undoZoomButton = new javax.swing.JButton();
         labelButton = new javax.swing.JToggleButton();
         viewSlider = new javax.swing.JSlider();
         displayPanel = new javax.swing.JPanel();
 
         settingsDialog.setTitle("Settings");
-        settingsDialog.setPreferredSize(new java.awt.Dimension(400, 320));
         settingsDialog.setResizable(false);
         settingsDialog.setSize(new java.awt.Dimension(400, 320));
 
@@ -350,8 +342,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         });
         mosaicToolbar.add(axialMosaicViewButton);
 
-        settingsButton.setIcon(IconGetter.getProjectImageIcon("settings_icon.png")
-        );
+        settingsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/settings_icon.png"))); // NOI18N
         settingsButton.setToolTipText("Settings");
         settingsButton.setFocusable(false);
         settingsButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -366,8 +357,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         });
         mosaicToolbar.add(settingsButton);
 
-        saveImageButton.setIcon(IconGetter.getProjectImageIcon("save_image_icon.png")
-        );
+        saveImageButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/save_image_icon.png"))); // NOI18N
         saveImageButton.setToolTipText("Save Image");
         saveImageButton.setFocusable(false);
         saveImageButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -381,6 +371,22 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
             }
         });
         mosaicToolbar.add(saveImageButton);
+
+        undoZoomButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/undo_zoom_icon.png"))); // NOI18N
+        undoZoomButton.setToolTipText("Restore Zoom");
+        undoZoomButton.setFocusable(false);
+        undoZoomButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        undoZoomButton.setMaximumSize(new java.awt.Dimension(26, 26));
+        undoZoomButton.setMinimumSize(new java.awt.Dimension(26, 26));
+        undoZoomButton.setName(""); // NOI18N
+        undoZoomButton.setPreferredSize(new java.awt.Dimension(26, 26));
+        undoZoomButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        undoZoomButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                undoZoomButtonActionPerformed(evt);
+            }
+        });
+        mosaicToolbar.add(undoZoomButton);
 
         labelButton.setSelected(true);
         labelButton.setText("#");
@@ -479,11 +485,14 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         endSlice=endSliceSlider.getValue();
         n=(int)mosaicNSpinner.getValue();
         m=(int)mosaicMSpinner.getValue();
+        flag=true;
+        viewSlider.setValue(startSlice);
+        viewSlider.setMaximum(nMax-(n*m));
+        flag=false;
         settingsDialog.setVisible(false);
         displayPanel.removeAll();
-        resize=true;
         initMosaic(n,m);
-        timer.start();
+        drawMosaics();
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -493,21 +502,62 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void startSliceSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_startSliceSliderStateChanged
-        startSliceText.setText(Integer.toString(startSliceSlider.getValue()));
-        endSliceSlider.setMinimum(startSliceSlider.getValue()+(n*m));
+        if(!flag){
+            int a=(int)mosaicNSpinner.getValue();
+            int b=(int)mosaicMSpinner.getValue();
+            startSliceText.setText(Integer.toString(startSliceSlider.getValue()));
+            endSliceSlider.setMinimum(startSliceSlider.getValue()+(a*b));
+        }
     }//GEN-LAST:event_startSliceSliderStateChanged
 
     private void endSliceSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_endSliceSliderStateChanged
-        endSliceText.setText(Integer.toString(endSliceSlider.getValue()));
-        startSliceSlider.setMaximum(endSliceSlider.getValue()-(n*m));
+        if(!flag){
+            int a=(int)mosaicNSpinner.getValue();
+            int b=(int)mosaicMSpinner.getValue();
+            endSliceText.setText(Integer.toString(endSliceSlider.getValue()-1));
+            startSliceSlider.setMaximum(endSliceSlider.getValue()-(a*b));
+        }
     }//GEN-LAST:event_endSliceSliderStateChanged
 
     private void mosaicNSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mosaicNSpinnerStateChanged
-        mosaicMSpinner.setValue(mosaicNSpinner.getValue());
+        int a=(int)mosaicNSpinner.getValue();
+        int b=(int)mosaicMSpinner.getValue();
+        mosaicMSpinner.setValue(a);
+        int sliderVal=endSliceSlider.getValue();
+        if((sliderVal-startSliceSlider.getValue()+1)<=(a*b)){
+            endSliceSlider.setValue((a*b)+startSliceSlider.getValue());
+        }
+        if(sliderVal>=nMax){
+            flag=true;
+            startSliceSlider.setMaximum((sliderVal)-(a*b));
+            if(startSliceSlider.getValue()>(nMax-(a*b))){
+                startSliceSlider.setValue(nMax-(a*b));
+            }
+            startSliceText.setText(Integer.toString(startSliceSlider.getValue()));
+            endSliceSlider.setMinimum(nMax-1);
+            flag=false;
+        }
+        
     }//GEN-LAST:event_mosaicNSpinnerStateChanged
 
     private void mosaicMSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mosaicMSpinnerStateChanged
-        mosaicNSpinner.setValue(mosaicMSpinner.getValue());
+        int a=(int)mosaicNSpinner.getValue();
+        int b=(int)mosaicMSpinner.getValue();
+        mosaicNSpinner.setValue(b);
+        int sliderVal=endSliceSlider.getValue();
+        if((sliderVal-startSliceSlider.getValue()+1)<=(a*b)){
+            endSliceSlider.setValue((a*b)+startSliceSlider.getValue());
+        }
+        if(sliderVal>=nMax){
+            flag=true;
+            if(startSliceSlider.getValue()>(nMax-(a*b))){
+                startSliceSlider.setValue(nMax-(a*b));
+            }
+            startSliceSlider.setMaximum((sliderVal)-(a*b));
+            startSliceText.setText(Integer.toString(startSliceSlider.getValue()));
+            endSliceSlider.setMinimum(nMax-1);
+            flag=false;
+        }
     }//GEN-LAST:event_mosaicMSpinnerStateChanged
 
     private void saveImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveImageButtonActionPerformed
@@ -516,9 +566,31 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
 
     private void viewSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_viewSliderStateChanged
         if(!flag){
-            startSlice=viewSlider.getValue();
-            displayPanel.removeAll();
-            drawMosaics();
+                int a=viewSlider.getValue();
+                if(a>startSlice & endSlice<nMax){
+                    endSlice=endSlice+1;
+                    flag=true;
+                    endSliceSlider.setValue(endSlice);
+                    viewSlider.setMaximum(nMax-(n*m));
+                    endSliceText.setText(Integer.toString(endSlice-1));
+                    flag=false;
+                }else if(a<startSlice & (startSlice>0)){
+                    endSlice=endSlice-1;
+                    if(endSlice>nMax){
+                        flag=true;
+                        viewSlider.setMaximum(nMax-(n*m));
+                        flag=false;
+                    }else if(endSlice<=nMax){   
+                        endSliceSlider.setMinimum(a+(n*m));
+                    }
+                    endSliceSlider.setValue(endSlice);
+                    endSliceText.setText(Integer.toString(endSlice-1));
+                }
+                startSlice=viewSlider.getValue();
+                startSliceSlider.setValue(startSlice);
+                startSliceText.setText(Integer.toString(startSlice));
+                displayPanel.removeAll();
+                drawMosaics();
         }
     }//GEN-LAST:event_viewSliderStateChanged
 
@@ -545,6 +617,15 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         drawMosaics();
     }//GEN-LAST:event_labelButtonActionPerformed
 
+    private void undoZoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoZoomButtonActionPerformed
+        niiVol.clearDrawRange();
+        if(overlayVol!=null){
+            overlayVol.clearDrawRange();
+        }
+        displayPanel.removeAll();
+        drawMosaics();
+    }//GEN-LAST:event_undoZoomButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton axialMosaicViewButton;
@@ -570,6 +651,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     private javax.swing.JDialog settingsDialog;
     private javax.swing.JSlider startSliceSlider;
     private javax.swing.JLabel startSliceText;
+    private javax.swing.JButton undoZoomButton;
     private javax.swing.JSlider viewSlider;
     // End of variables declaration//GEN-END:variables
     
@@ -582,16 +664,20 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         startSlice=0;
         switch(plane){
             case "coronal":
-                endSlice=niiVol.header.dim[2];
+                nMax=niiVol.header.dim[2];
+                endSlice=nMax;
                 break;
             case "saggital":
-                endSlice=niiVol.header.dim[1];
+                nMax=niiVol.header.dim[1];
+                endSlice=nMax;
                 break;
             case "axial":
-                endSlice=niiVol.header.dim[3];
+                nMax=niiVol.header.dim[3];
+                endSlice=nMax;
                 break;
         }
         startSliceSlider.setMaximum(endSlice-(n*m));
+        startSliceSlider.setMinimum(0);
         startSliceSlider.setValue(startSlice);
         startSliceText.setText(Integer.toString(startSlice));
         flag=true;
@@ -601,11 +687,11 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         endSliceSlider.setMinimum(startSlice+(n*m));
         endSliceSlider.setMaximum(endSlice);
         endSliceSlider.setValue(endSlice);
-        endSliceText.setText(Integer.toString(endSlice));
+        endSliceText.setText(Integer.toString(endSlice-1));
         
         model = new SpinnerNumberModel(n,2,10,1);
         mosaicNSpinner.setModel(model);
-        model= new SpinnerNumberModel(m,2,10,1);
+        model.setValue(m);//new SpinnerNumberModel(m,2,10,1);
         mosaicMSpinner.setModel(model);
     }
     /****Draw Mosaics****/
@@ -625,7 +711,6 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     private void drawCoronalMosaic (){
         BufferedImage img;
         BufferedImage img2;
-        Color c=new Color(0,0,0,0);
         int range=endSlice-startSlice;
         int val=startSlice;
         int gap=(int)(range/(double)(n*m));
@@ -644,7 +729,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
                      img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
                      img2=overlayVol.drawNiftiSlice(val,plane,0,colorScaleOverlay);
                      Graphics g=img.getGraphics();
-                     g.drawImage(img2,0,0,c,null);
+                     g.drawImage(img2,0,0,new Color(0,0,0,0),null);
                      createTilePanel(img,val);
                 }
             }
@@ -653,7 +738,6 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     private void drawSaggitalMosaic(){
         BufferedImage img;
         BufferedImage img2;
-        Color c=new Color(0,0,0,0);
         int range=endSlice-startSlice;
         int val=startSlice;
         int gap=(int)(range/(double)(n*m));
@@ -672,7 +756,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
                      img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
                      img2=overlayVol.drawNiftiSlice(val,plane,0,colorScaleOverlay);
                      Graphics g=img.getGraphics();
-                     g.drawImage(img2,0,0,c,null);
+                     g.drawImage(img2,0,0,new Color(0,0,0,0),null);
                      createTilePanel(img,val);
                 }
             }
@@ -681,7 +765,6 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     private void drawAxialMosaic   (){
         BufferedImage img;
         BufferedImage img2;
-        Color c=new Color(0,0,0,0);
         int range=endSlice-startSlice;
         int val=startSlice;
         int gap=(int)(range/(double)(n*m));
@@ -700,7 +783,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
                      img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
                      img2=overlayVol.drawNiftiSlice(val,plane,0,colorScaleOverlay);
                      Graphics g=img.getGraphics();
-                     g.drawImage(img2,0,0,c,null);
+                     g.drawImage(img2,0,0,new Color(0,0,0,0),null);
                      createTilePanel(img,val);
                 }
             }
@@ -722,10 +805,10 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         javax.swing.JLabel sliceLabel = new javax.swing.JLabel();
         
         tilePanel.setBackground(new java.awt.Color(0, 0, 0));
-        tilePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255,0,0)));
+        tilePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(150,0,0)));
         tilePanel.setMaximumSize(new java.awt.Dimension(width,height));
-        tilePanel.setMinimumSize(new java.awt.Dimension(width,height));
-        tilePanel.setPreferredSize(new java.awt.Dimension(width,height));
+        tilePanel.setMinimumSize(tilePanel.getMaximumSize());
+        tilePanel.setPreferredSize(tilePanel.getMaximumSize());
         
         sliceLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         String str=Integer.toString(sliceNum);
@@ -768,7 +851,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         
         graphLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         graphLabel.setSize(new java.awt.Dimension(width-36,height-36));
-        graphLabel.setPreferredSize(new java.awt.Dimension(width-36,height-36));
+        graphLabel.setPreferredSize(graphLabel.getSize());
         graphLabel.setMinimumSize(graphLabel.getPreferredSize());
         graphLabel.setMaximumSize(graphLabel.getPreferredSize());
         

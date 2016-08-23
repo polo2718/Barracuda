@@ -35,24 +35,13 @@ public class DrawableNiftiVolume extends NiftiVolume{
      * NiftiVolume</p>
      * @param nii The original NiftiVolume 
      */
-    public DrawableNiftiVolume(NiftiVolume nii) {
-        super(nii.header);
-        this.data=nii.data;
-        getNiftiScale();//Sets scale, orientation & orient
-        clearDrawRange();//Sets to zero the DrawRange;
-        
-        // Get volume maximum if not already embedded in the header
-        if(header.cal_max==0){setMax3D(0);}
-        else{setMax(header.cal_max);}
-        //Get volume minimum if not alread embedded in the header
-        if(header.cal_min==0){setMin3D(0);}
-        else{setMin(header.cal_min);}
-    }
-
+    
     public DrawableNiftiVolume() {
     }
     
-    public void initDrawableNiftiVolume(){
+    public void initDrawableNiftiVolume(NiftiVolume nii){
+        this.header=nii.header;
+        this.data=nii.data;
         getNiftiScale();//Sets scale, orientation & orient
         clearDrawRange();//Sets to zero the DrawRange;
         
