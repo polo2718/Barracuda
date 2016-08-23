@@ -30,8 +30,8 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     /**
      * Creates new form BarracudaViewUI
      */
-    DrawableNiftiVolume niiVol=new DrawableNiftiVolume(); //NIFTI main volume
-    DrawableNiftiVolume overlayVol=new DrawableNiftiVolume(); //NIFTI Overlay volume
+    DrawableNiftiVolume niiVol; //NIFTI main volume
+    DrawableNiftiVolume overlayVol; //NIFTI Overlay volume
     //double[][] R = new double[3][3]; //Rotation matrix for NIFTI #1
     Matrix rotationMtrx; //Rotation matrix for NIFTI #1
     double coronalScale; //Display scale on the coronalLabel
@@ -46,6 +46,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     Color xHairColor=Color.GREEN;
     boolean viewState=true;//Boolean flag to indicate radiological or neurological view
     JFileChooser fc = new JFileChooser();
+    BarracudaViewMosaicFrame mosaicWindow;
     
     public BarracudaViewUI() {
         initComponents();
@@ -190,13 +191,18 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Barracuda View");
         setIconImage(IconGetter.getProjectIcon("synapticom2.png"));
         setMinimumSize(new java.awt.Dimension(600, 650));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
+            }
+        });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -945,6 +951,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     }//GEN-LAST:event_formComponentResized
     /****Open main volume****/
     private void openVolumeMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openVolumeMenuActionPerformed
+        
         int returnVal = fc.showOpenDialog(BarracudaViewUI.this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
@@ -955,6 +962,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 resetGrayScale();
                 niiVol=null;
                 overlayVol=null;
+                System.gc();
                 neuroView.setSelected(true);
                 viewState=true;
                 //Set Orientation Labels
@@ -963,7 +971,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 axialLabel1.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
                 axialLabel3.setText("<html> <font size=4 color=#1aff1a><strong>L</strong><font>");
                 //Read Nifti file and initialize drawable copy
-                niiVol.initDrawableNiftiVolume(NiftiVolume.read(filename));
+                niiVol=new DrawableNiftiVolume(NiftiVolume.read(filename));
                 if(niiVol!=null){
                     volumeSelect.setSelected(true);
                     // Added code so default view would be neurological
@@ -1546,8 +1554,8 @@ public class BarracudaViewUI extends javax.swing.JFrame {
             //Try to read nifti file    
                 try{
                     overlayVol=null;
-                    
-                    overlayVol.initDrawableNiftiVolume(NiftiVolume.read(filename));
+                    System.gc();
+                    overlayVol=new DrawableNiftiVolume(NiftiVolume.read(filename));
                     if(overlayVol!=null){
                         if(overlayVol.header.dim[4]<=0){overlayVol.header.dim[4]=1;}
                         if(overlayVol.header.dim[1]==niiVol.header.dim[1] &
@@ -1629,10 +1637,19 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     private void mosaicViewMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mosaicViewMenuActionPerformed
         if(niiVol!=null){
             if(overlayVol!=null){
-                new BarracudaViewMosaicFrame(niiVol,overlayVol,viewState,colorScale,colorScaleOverlay).setVisible(true);
+                mosaicWindow=new BarracudaViewMosaicFrame(niiVol,overlayVol,viewState,colorScale,colorScaleOverlay);
+                        
             }else{
-                new BarracudaViewMosaicFrame(niiVol,null,viewState,colorScale, null).setVisible(true);
+                mosaicWindow=new BarracudaViewMosaicFrame(niiVol,null,viewState,colorScale, null);
             }
+           mosaicWindow.setVisible(true);
+                        mosaicWindow.addWindowListener(new java.awt.event.WindowAdapter() {
+                            public void windowClosing(java.awt.event.WindowEvent evt) {
+                                mosaicWindow.dispose();
+                                mosaicWindow=null;
+                                System.gc();
+                            }
+                        });
         }else{
             errorLabel.setText("Error: Add a volume first");
             errorDialog.setLocationRelativeTo(null);
@@ -1691,6 +1708,12 @@ public class BarracudaViewUI extends javax.swing.JFrame {
            } 
        }
     }//GEN-LAST:event_axialLabelMouseWheelMoved
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        niiVol=null;
+        overlayVol=null;
+        fc=null;
+    }//GEN-LAST:event_formWindowClosing
                                     
     /**
      * @param args the command line arguments

@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.Timer;
 import user.gui.tools.*;
@@ -278,7 +279,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setIconImage(IconGetter.getProjectIcon("synapticom2.png"));
         setMinimumSize(new java.awt.Dimension(300, 300));
         setSize(new java.awt.Dimension(800, 600));
@@ -290,6 +291,11 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
+            }
+        });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -625,6 +631,12 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         displayPanel.removeAll();
         drawMosaics();
     }//GEN-LAST:event_undoZoomButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        niiVol=null;
+        overlayVol=null;
+        fc=null;
+    }//GEN-LAST:event_formWindowClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
