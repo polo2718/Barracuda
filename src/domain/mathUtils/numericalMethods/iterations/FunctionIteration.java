@@ -17,12 +17,12 @@ public abstract class FunctionIteration extends IterativeProcess {
     /**
      * Computed result
      */
-    private double result=Double.NaN;
+    protected double result=Double.NaN;
     
     /**
      * Function that is necessary to perform the iterative analysis
      */
-    private OneVariableFunction f;
+    protected OneVariableFunction f;
     
     /**
      * Constructor
@@ -30,6 +30,10 @@ public abstract class FunctionIteration extends IterativeProcess {
     public FunctionIteration(){
     }
     
+    /**
+     * Set the function
+     * @param function One variable function definition
+     */
     public void setFunction(OneVariableFunction function){
         f=function;
     }
