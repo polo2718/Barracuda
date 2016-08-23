@@ -94,10 +94,16 @@ public class BisectionFinderTest {
      */
     @Test
     public void bisectionAlgorithm(){
+        System.out.println("Bisection Algorithm Test");
+        System.out.println("Find roots for sin(x) between 0 and 2pi");
         double expResult=Math.PI;
         bisection.evaluate();
         double result=bisection.getResult();
+        System.out.println("Exp result = "+ Math.PI);
+        System.out.println("Result = "+ result);
+        System.out.println(bisection.toString());
         assertEquals(expResult,result, 10e-8);
+        System.out.println("Test Passed");
     }
     
 }

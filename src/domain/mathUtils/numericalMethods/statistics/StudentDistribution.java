@@ -28,11 +28,14 @@ public final class StudentDistribution extends ProbabilityDensityFunction {
      * @throws IllegalArgumentException when the supplied dof is less than one
      */
     public StudentDistribution(int dof) throws IllegalArgumentException{
-        if (dof<1)
-            throw new IllegalArgumentException("A Student's distribution cannot be defined for"
-                    + " DOF<1\n Supplied DOF = " +dof);
-        this.dof=dof;
-        this.n=dof;
+        setDof(dof);
+    }
+    
+    /**
+     * General constructor for defining a StudentDistribution with one DOF
+     */
+    public StudentDistribution(){
+        setDof(1);
     }
     
     @Override
