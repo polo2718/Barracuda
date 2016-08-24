@@ -85,14 +85,14 @@ public class BarracudaLoader extends javax.swing.JFrame {
       // java.awt.EventQueue.invokeLater(new Runnable() {
             //public void run() {
                 b= new BarracudaViewUI();
-                        b.setVisible(true);
-                        b.addWindowListener(new java.awt.event.WindowAdapter() {
-                            public void windowClosing(java.awt.event.WindowEvent evt) {
-                                b.dispose();
-                                b=null;
-                                System.gc();
-                            }
-                        });
+                b.setVisible(true);
+                b.addWindowListener(new java.awt.event.WindowAdapter() {
+                    public void windowClosing(java.awt.event.WindowEvent evt) {
+                        b.dispose();
+                        b=null;
+                        System.gc();
+                    }
+                });
           //  }
        // });
     }//GEN-LAST:event_barracudaViewButtonActionPerformed
