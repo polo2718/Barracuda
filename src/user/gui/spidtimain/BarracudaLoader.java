@@ -15,7 +15,7 @@ import user.gui.tools.IconGetter;
  */
 public class BarracudaLoader extends javax.swing.JFrame {
     
-    BarracudaViewUI b;
+
 
     /**
      * Creates new form BarracudaLoader
@@ -82,19 +82,7 @@ public class BarracudaLoader extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void barracudaViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barracudaViewButtonActionPerformed
-      // java.awt.EventQueue.invokeLater(new Runnable() {
-            //public void run() {
-                b= new BarracudaViewUI();
-                b.setVisible(true);
-                b.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent evt) {
-                        b.dispose();
-                        b=null;
-                        System.gc();
-                    }
-                });
-          //  }
-       // });
+      (new Thread(new ViewerRunnable())).start();
     }//GEN-LAST:event_barracudaViewButtonActionPerformed
 
     /**

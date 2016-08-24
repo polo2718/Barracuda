@@ -7,16 +7,24 @@ package user.gui.spidtimain;
 import data.niftilibrary.niftijio.*;
 import domain.mathUtils.numericalMethods.linearAlgebra.Matrix;
 import domain.mathUtils.numericalMethods.linearAlgebra.Vector;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.File;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JFileChooser;
 import user.gui.tools.*;
 import javax.swing.DefaultBoundedRangeModel;
-import javax.swing.UIManager;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 //import javax.jnlp.*;
 
 /**
@@ -191,7 +199,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Barracuda View");
         setIconImage(IconGetter.getProjectIcon("synapticom2.png"));
         setMinimumSize(new java.awt.Dimension(600, 650));
@@ -201,6 +209,9 @@ public class BarracudaViewUI extends javax.swing.JFrame {
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
@@ -1714,6 +1725,12 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         overlayVol=null;
         fc=null;
     }//GEN-LAST:event_formWindowClosing
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+       niiVol=null;
+       overlayVol=null;
+       fc=null;
+    }//GEN-LAST:event_formWindowClosed
                                     
     /**
      * @param args the command line arguments
@@ -1844,7 +1861,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         img = niiVol.drawNiftiSlice(zVal, "axial",(int)volSpinner.getValue(),colorScale);       
         axialScale=UITools.imageToLabel(img,axialLabel);
     }//Images w/o Crosshairs
-    private void drawNiftiSlice(JSlider slider,JSpinner spinner){
+    private void drawNiftiSlice(javax.swing.JSlider slider,javax.swing.JSpinner spinner){
         if(overlayVol==null){
             if(niiVol!=null){
                  if(crosshairMenu.isSelected()){
@@ -2343,7 +2360,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
             }
         }
     }//When graphs are resized
-    private void mouseAdjustMax(JLabel label){
+    private void mouseAdjustMax(javax.swing.JLabel label){
         Point point=label.getMousePosition();
         if(prevMouse!=null){
             //If new point>prev point decrease max
@@ -2696,7 +2713,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         }
     }
     //Translates Mouse position to image coordinates
-    private int[] getZoomArea(JLabel label,BufferedImage img){
+    private int[] getZoomArea(javax.swing.JLabel label,BufferedImage img){
             int labelWidth=label.getWidth()/2;
             int labelHeight=label.getHeight()/2;
             int iconHeight=img.getHeight()/2;
