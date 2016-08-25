@@ -22,7 +22,6 @@ import javax.swing.JFileChooser;
 import user.gui.tools.*;
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 //import javax.jnlp.*;
@@ -64,6 +63,105 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         fc.setFileFilter(filter);
         fc.addChoosableFileFilter(filter);
         fc.setAcceptAllFileFilterUsed(false);
+    }
+    
+    public BarracudaViewUI(DrawableNiftiVolume niiVol,DrawableNiftiVolume overlayVol) {
+        initComponents();
+        //Set up file chooser
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "NIFTI (*.nii,*.gz)", "nii", "gz");
+        fc.setFileFilter(filter);
+        fc.addChoosableFileFilter(filter);
+        fc.setAcceptAllFileFilterUsed(false);
+        if(niiVol!=null){
+            if(overlayVol!=null){
+                if(overlayVol.orient[0]=='L'){overlayVol.orient[0]='R';}
+                else if(overlayVol.orient[0]=='R'){overlayVol.orient[0]='L';}
+                if(overlayVol.header.dim[4]<=0){overlayVol.header.dim[4]=1;}
+                this.overlayVol=overlayVol;
+            }
+            // Added code so default view would be neurological
+            if(niiVol.orient[0]=='L'){niiVol.orient[0]='R';}
+            else if(niiVol.orient[0]=='R'){niiVol.orient[0]='L';}
+            
+            //Set spinner models
+            if(niiVol.header.dim[4]<=0){niiVol.header.dim[4]=1;}
+            SpinnerNumberModel model = new SpinnerNumberModel(0, 0,niiVol.header.dim[4]-1,1);
+            volSpinner.setModel(model);
+            model = new SpinnerNumberModel(0,0,niiVol.header.dim[1]-1,1);
+            xSpinner.setModel(model);
+            model = new SpinnerNumberModel(0,0,niiVol.header.dim[2]-1,1);
+            ySpinner.setModel(model);
+            model = new SpinnerNumberModel(0,0,niiVol.header.dim[3]-1,1);
+            zSpinner.setModel(model);
+            //Set slider values
+            saggitalSlider.setMaximum(niiVol.header.dim[1]-1);
+            saggitalSlider.setValue((int)(niiVol.header.dim[1]/2));
+            coronalSlider.setMaximum(niiVol.header.dim[2]-1);
+            axialSlider.setMaximum(niiVol.header.dim[3]-1);
+            coronalSlider.setValue((int)(niiVol.header.dim[2]/2));
+            axialSlider.setValue((int)(niiVol.header.dim[3]/2));
+            
+            rotationMtrx=new Matrix(niiVol.header.mat33());
+            
+            this.niiVol=niiVol;
+            //Set Color Bar
+            setColorBar();
+            drawLabelsXHair();
+            setXYZLabels();
+        }
+        
+    }
+    
+    public BarracudaViewUI(String filename) {
+        initComponents();
+        //Set up file chooser
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "NIFTI (*.nii,*.gz)", "nii", "gz");
+        fc.setFileFilter(filter);
+        fc.addChoosableFileFilter(filter);
+        fc.setAcceptAllFileFilterUsed(false);
+        
+        try{niiVol=new DrawableNiftiVolume(NiftiVolume.read(filename));
+        }catch(Exception e){}
+        
+        if(niiVol!=null){
+            if(overlayVol!=null){
+                if(overlayVol.orient[0]=='L'){overlayVol.orient[0]='R';}
+                else if(overlayVol.orient[0]=='R'){overlayVol.orient[0]='L';}
+                if(overlayVol.header.dim[4]<=0){overlayVol.header.dim[4]=1;}
+            }
+            // Added code so default view would be neurological
+            if(niiVol.orient[0]=='L'){niiVol.orient[0]='R';}
+            else if(niiVol.orient[0]=='R'){niiVol.orient[0]='L';}
+            
+            //Set spinner models
+            if(niiVol.header.dim[4]<=0){niiVol.header.dim[4]=1;}
+            SpinnerNumberModel model = new SpinnerNumberModel(0, 0,niiVol.header.dim[4]-1,1);
+            volSpinner.setModel(model);
+            model = new SpinnerNumberModel(0,0,niiVol.header.dim[1]-1,1);
+            xSpinner.setModel(model);
+            model = new SpinnerNumberModel(0,0,niiVol.header.dim[2]-1,1);
+            ySpinner.setModel(model);
+            model = new SpinnerNumberModel(0,0,niiVol.header.dim[3]-1,1);
+            zSpinner.setModel(model);
+            //Set slider values
+            saggitalSlider.setMaximum(niiVol.header.dim[1]-1);
+            saggitalSlider.setValue((int)(niiVol.header.dim[1]/2));
+            coronalSlider.setMaximum(niiVol.header.dim[2]-1);
+            axialSlider.setMaximum(niiVol.header.dim[3]-1);
+            coronalSlider.setValue((int)(niiVol.header.dim[2]/2));
+            axialSlider.setValue((int)(niiVol.header.dim[3]/2));
+            
+            rotationMtrx=new Matrix(niiVol.header.mat33());
+            
+            this.niiVol=niiVol;
+            //Set Color Bar
+            setColorBar();
+            drawLabelsXHair();
+            setXYZLabels();
+        }
+        
     }
 
     /**

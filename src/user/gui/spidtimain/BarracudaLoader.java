@@ -111,7 +111,21 @@ public class BarracudaLoader extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(BarracudaLoader.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        try{
+            String filename=args[0];
+            if(filename!=null){
+                BarracudaViewUI b= new BarracudaViewUI(filename);
+                b.setVisible(true);
+                b.addWindowListener(new java.awt.event.WindowAdapter() {
+                    public void windowClosing(java.awt.event.WindowEvent evt) {
+                        b.dispose();
+                        
+                    }
+                });
+            }
+        }catch(ArrayIndexOutOfBoundsException e){
+            
+        }
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

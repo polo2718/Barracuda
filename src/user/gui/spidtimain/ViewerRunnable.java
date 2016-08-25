@@ -15,8 +15,20 @@ public class ViewerRunnable implements Runnable {
     BarracudaViewUI b;
     public void run(){
         b= new BarracudaViewUI();
-                b.setVisible(true);
-                b.addWindowListener(new java.awt.event.WindowAdapter() {
+        b.setVisible(true);
+        b.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                    b.dispose();
+                    b=null;
+                    Thread.currentThread().interrupt();  
+                }
+            });
+    }
+    
+    public void run(String filename){
+        b= new BarracudaViewUI(filename);
+        b.setVisible(true);
+        b.addWindowListener(new java.awt.event.WindowAdapter() {
                     public void windowClosing(java.awt.event.WindowEvent evt) {
                         b.dispose();
                         b=null;
@@ -25,7 +37,5 @@ public class ViewerRunnable implements Runnable {
                     }
                 });
     }
-    
-    
     
 }
