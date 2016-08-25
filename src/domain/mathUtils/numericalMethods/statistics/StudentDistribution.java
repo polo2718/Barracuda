@@ -51,7 +51,7 @@ public final class StudentDistribution extends ProbabilityDensityFunction {
     }
 
     @Override
-    public double cumulativeDensityValue(double t) {
+    public double cumulativeValue(double t) {
         //Parameters for the incomplete Beta Function
         double [] p= new double [3];
         double t2=t*t;

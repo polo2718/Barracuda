@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 package domain.mathUtils.numericalMethods.statistics;
+import domain.mathUtils.numericalMethods.GenericMathDefinitions;
 import domain.mathUtils.numericalMethods.functionEvaluation.OneVariableFunction;
+import domain.mathUtils.numericalMethods.rootFinding.NewtonFinder;
 
 /**
  * This class defines the general methods for a probability density function of a random variable.
@@ -35,7 +37,7 @@ public abstract class ProbabilityDensityFunction implements OneVariableFunction 
      * @param t number
      * @return Probability of finding t between (-Inf,t]
      */
-    public abstract double cumulativeDensityValue(double t);
+    public abstract double cumulativeValue(double t);
     
     /**
      * Returns the value of the cumulative distribution function of the Probability density function.
@@ -47,8 +49,30 @@ public abstract class ProbabilityDensityFunction implements OneVariableFunction 
      * @param b Upper bound
      * @return Prob(x greater or equal than a AND x smaller or equal than b)
      */
-    public double cumulativeDensityValue(double a, double b){
-        return cumulativeDensityValue(b)-cumulativeDensityValue(a);
+    public double cumulativeValue(double a, double b){
+        return cumulativeValue(b)-cumulativeValue(a);
+    }
+    
+    /**
+     * Returns the value (t) for which the given probability of finding the random variable is in (-Inf, t] 
+     * <p> This method is also known as the inverse cumulative distribution function
+     * <p> The value is computed using Newton's method for finding roots
+     * @param prob probability of finding the random variable in the interval (-Inf, t]
+     * @return value t
+     */
+    public double inverseCumulativeValue(double prob){
+        //define function
+        OneVariableFunction f=new OneVariableFunction() {
+            @Override
+            public double value(double x) throws IllegalArgumentException {
+                return ProbabilityDensityFunction.this.cumulativeValue(x)-prob;
+            }
+        };
+        //Perform newton algorithm
+        NewtonFinder newton= new NewtonFinder(f, this, average());
+        newton.setDesiredPrecision(GenericMathDefinitions.defaultNumericalPrecision());
+        newton.evaluate();
+        return newton.getResult();
     }
     
     /**

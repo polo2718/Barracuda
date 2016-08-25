@@ -74,7 +74,7 @@ public class StudentDistributionTest {
     }
 
     /**
-     * Test of cumulativeDensityValue method, of class StudentDistribution.
+     * Test of cumulativeValue method, of class StudentDistribution.
      */
     @Test
     public void testCumulativeDistributionValue() {
@@ -86,7 +86,7 @@ public class StudentDistributionTest {
         double expResult=0.0250212523871212;
         double t=-2.131;
         System.out.println("Probability of having a random variable <=" +t);
-        double result=studentD.cumulativeDensityValue(t);
+        double result=studentD.cumulativeValue(t);
         System.out.println("Exp Result="+expResult);
         System.out.println("Result="+result);
         assertEquals(expResult, result, 1e-9);
@@ -100,7 +100,7 @@ public class StudentDistributionTest {
         expResult=0.974978747612879;
         t=2.131;
         System.out.println("Probability of having a random variable <=" +t);
-        result=studentD.cumulativeDensityValue(t);
+        result=studentD.cumulativeValue(t);
         System.out.println("Exp Result="+expResult);
         System.out.println("Result="+result);
         assertEquals(expResult, result, 1e-8);
@@ -114,7 +114,7 @@ public class StudentDistributionTest {
         expResult=0.899995937394251;
         t=1.2922;
         System.out.println("Probability of having a random variable <=" +t);
-        result=studentD.cumulativeDensityValue(t);
+        result=studentD.cumulativeValue(t);
         System.out.println("Exp Result="+expResult);
         System.out.println("Result="+result);
         assertEquals(expResult, result, 1e-8);
@@ -128,7 +128,7 @@ public class StudentDistributionTest {
         expResult=1-0.899995937394251;
         t=-1.2922;
         System.out.println("Probability of having a random variable <=" +t);
-        result=studentD.cumulativeDensityValue(t);
+        result=studentD.cumulativeValue(t);
         System.out.println("Exp Result="+expResult);
         System.out.println("Result="+result);
         assertEquals(expResult, result, 1e-8);
@@ -142,7 +142,7 @@ public class StudentDistributionTest {
         expResult=0.900009618274457;
         t=3.078;
         System.out.println("Probability of having a random variable <=" +t);
-        result=studentD.cumulativeDensityValue(t);
+        result=studentD.cumulativeValue(t);
         System.out.println("Exp Result="+expResult);
         System.out.println("Result="+result);
         assertEquals(expResult, result, 1e-8);
@@ -156,7 +156,7 @@ public class StudentDistributionTest {
         expResult=1-0.900009618274457;
         t=-3.078;
         System.out.println("Probability of having a random variable <=" +t);
-        result=studentD.cumulativeDensityValue(t);
+        result=studentD.cumulativeValue(t);
         System.out.println("Exp Result="+expResult);
         System.out.println("Result="+result);
         assertEquals(expResult, result, 1e-8);
@@ -222,4 +222,20 @@ public class StudentDistributionTest {
         assertEquals(1, studentD.getDof());
     }
     
+    @Test
+    public void testInverseCumulativeValue(){
+        System.out.println("\nInverse Cumulative distribution Test 1");
+        int dof=15;
+        studentD.setDof(dof);
+        System.out.println("DOF= " + dof);
+        double expResult=-2.13099999539;
+        double prob=0.0250212523871212;
+        //double prob=0.0250212523871212;
+        System.out.println("Cumulative probability value=" +prob);
+        double result=studentD.inverseCumulativeValue(prob);
+        System.out.println("Exp Result="+expResult);
+        System.out.println("Result="+result);
+        assertEquals(expResult, result, 1e-9);
+        System.out.println("Test passed");    
+    }
 }
