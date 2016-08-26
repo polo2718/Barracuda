@@ -33,7 +33,7 @@ public class DrawableNiftiVolume extends NiftiVolume{
      * <p>This constructor takes a NiftiVolume object to create the
      * DrawableNiftiVolume with the same header and data as the original
      * NiftiVolume</p>
-     * @param nii The original NiftiVolume 
+     * 
      */
     
     public DrawableNiftiVolume() {
@@ -303,9 +303,9 @@ public class DrawableNiftiVolume extends NiftiVolume{
     /**
      * 
      * @param rotationMtrx Matrix object containing the rotation matrix
-     * @param xVal
-     * @param yVal
-     * @param zVal
+     * @param xVal xValue
+     * @param yVal yValue
+     * @param zVal xValue
      * @return Vector containing the x, y, and z coordinates
      * @author Diego Garibay, Leopoldo Cendejas
      */

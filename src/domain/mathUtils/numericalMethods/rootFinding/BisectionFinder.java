@@ -11,8 +11,7 @@ import domain.mathUtils.numericalMethods.iterations.IterativeProcess;
 /**
  * This class defines the methods that are necessary to find  the roots of a function using the bisection method. 
  * The bisection algorithm uses the Iterative Process framework to find the roots.
- * @author "Leopoldo Cendejas-Zaragoza, Illinois Institute of Technology & RUSH
- * University, 2016"
+ * @author Leopoldo Cendejas-Zaragoza, Illinois Institute of Technology and RUSH 2016
  * @see FunctionIteration
  * @see IterativeProcess
  */

@@ -51,11 +51,11 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     
     /**
      * Creates new form MosaicViewFrame
-     * @param niiVol 
-     * @param overlayVol
-     * @param view
-     * @param colorScale
-     * @param colorScaleOverlay
+     * @param niiVol NiftiVolume
+     * @param overlayVol Overlay Volume
+     * @param view Neurological or Radiological View
+     * @param colorScale Nifti Volume colorscale
+     * @param colorScaleOverlay Overlay Volume colorscale
      */
     public BarracudaViewMosaicFrame(DrawableNiftiVolume niiVol ,DrawableNiftiVolume overlayVol,boolean view,String colorScale,String colorScaleOverlay) {
         initComponents();
