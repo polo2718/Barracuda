@@ -182,7 +182,7 @@ public class StatisticalMomentTest {
         }
         double expResult = 1.701439989134833;
         double result = instance.skewness();
-        assertEquals(expResult, result, 0.000000000000001);
+        assertEquals(expResult, result, 10e-8);
         // TODO review the generated test code and remove the default call to fail.
         System.out.println ("Expected ="+expResult+" Result="+result);
     }
