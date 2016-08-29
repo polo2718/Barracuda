@@ -18,6 +18,7 @@ public class StatisticalMoment{
     public static final boolean BIAS_CORRECTED=true;
     public static final boolean UNCORRECTED=false;
     protected double moments[];
+    
     boolean biasCorrect=true;
     
      /**
@@ -220,11 +221,14 @@ public class StatisticalMoment{
         if(moments[0]<2)
             return Double.NaN;
         double temp=moments[2]*moments[0];
-        return temp/(moments[0]-1);
+        if(biasCorrect)
+            return temp/(moments[0]-1);
+        else
+            return temp/moments[0];
     }
     
     /**
-     * Static method to get the non-normalized variance from an array of values
+     * Static method to get the bias corrected sample variance from an array of values
      * @param x The array of values
      * @return The variance
      */
@@ -238,6 +242,25 @@ public class StatisticalMoment{
             double temp=momentsTemp[2]*momentsTemp[0];
             return temp/(momentsTemp[0]-1);
     }
+    /**
+     * Static method variation to give the non-bias corrected variance
+     * @param x The array of values
+     * @param flag Boolean to indicate bias correction
+     * @return The variance
+     */
+    public static double variance(double x[], boolean flag){
+        double momentsTemp[]={0,0,0};
+            for(int i=0;i<x.length;i++){
+                if(!Double.isNaN(x[i])){
+                    momentsTemp=accumulateVariance(x[i],momentsTemp);
+                }
+            }
+            double temp=momentsTemp[2]*momentsTemp[0];
+            if(flag)
+                return temp/(momentsTemp[0]-1);
+            else 
+                return temp/momentsTemp[0];
+    }
     public static double variance(double x[][]){
         double momentsTemp[]={0,0,0};
             for (double[] x1 : x) {
@@ -249,6 +272,21 @@ public class StatisticalMoment{
             }
             double temp=momentsTemp[2]*momentsTemp[0];
             return temp/(momentsTemp[0]-1);
+    }
+    public static double variance(double x[][], boolean flag){
+        double momentsTemp[]={0,0,0};
+            for (double[] x1 : x) {
+                for (int j = 0; j<x[0].length; j++) {
+                    if (!Double.isNaN(x1[j])) {
+                        momentsTemp = accumulateVariance(x1[j], momentsTemp);
+                    }
+                }
+            }
+            double temp=momentsTemp[2]*momentsTemp[0];
+            if(flag)
+                return temp/(momentsTemp[0]-1);
+            else 
+                return temp/momentsTemp[0];
     }
     
     /**
@@ -488,5 +526,11 @@ public class StatisticalMoment{
             throw new IllegalArgumentException("Check input array. At least 5 values are necessary to compute kurtosis");
         }
     }
-    
+    /**
+     * Setter method that changes the bias behavior of the object
+     * @param flag options StatisticalMoment.BIAS_CORRECTED or StatisticalMoment.UNCORRECTED
+     */
+    public void setBias(boolean flag){
+        biasCorrect=flag;
+    }
 }
