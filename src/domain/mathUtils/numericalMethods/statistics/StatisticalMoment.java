@@ -8,7 +8,7 @@ package domain.mathUtils.numericalMethods.statistics;
 /**
  * <p> This class calculates the statistical moments for a data array. Kurtosis and Skewness are
  * calculated using the bias-corrected formulas by default. 
- * See changeBiasFormula(boolean flag) for changing the formula to the non-bias corrected one
+ * See setBias() to change to change between bias corrected and not corrected formulas.
  * </p>
  * @author<p>Diego Garibay-Pulido 2016</p>
  * Adapted from Didier H. Besset (2002) Object-Oriented Implementation of Numerical Methods. Morgan Kauffman Publishers
@@ -17,12 +17,13 @@ package domain.mathUtils.numericalMethods.statistics;
 public class StatisticalMoment{
     public static final boolean BIAS_CORRECTED=true;
     public static final boolean UNCORRECTED=false;
-    protected double moments[];
     
+    private double moments[];
     boolean biasCorrect=true;
     
      /**
-      * Creates a Statistical Moment object that computes the statistical moments
+      * <p>Creates a Statistical Moment object that computes the statistical moments.
+      * The default value gives bias corrected moments. To change the bias, use setBias() method.</p>
       */   
     public StatisticalMoment() {
             moments=new double[5];

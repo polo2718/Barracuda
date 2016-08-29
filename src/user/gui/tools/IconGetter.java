@@ -11,7 +11,8 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 
 /**
- *
+ * Class that reads an image file from the image package and returns an Image 
+ * or the ImageIcon
  * @author
  * <p>
  * Diego Garibay-Pulido 2016</p>

@@ -8,7 +8,7 @@ package user.gui.spidtimain;
 import user.gui.tools.IconGetter;
 
 /**
- *
+ *Barracuda loader is intended to be the main launcher frame for other UI's
  * @author
  * <p>
  * Diego Garibay-Pulido 2016</p>

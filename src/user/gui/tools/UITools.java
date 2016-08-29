@@ -18,6 +18,12 @@ import javax.swing.JLabel;
  * @author Diego Garibay-Pulido 2016
  */
 public abstract class UITools {
+    public static final String COLORMAP_GREY="grayscale";
+    public static final String COLORMAP_HOT="hot";
+    public static final String COLORMAP_HOT_INVERTED="hot_invert";
+    public static final String COLORMAP_WINTER="winter";
+    public static final String COLORMAP_WINTER_INVERTED="winter_invert";
+    public static final String COLORMAP_RAINBOW="rainbow";
     /**
      * <p>Receives a buffered image and resizes it to adjust it to the JLabel in 
      * which the image will be placed and shows it on the JLabel</p>
@@ -64,7 +70,6 @@ public abstract class UITools {
         }
         return s;
     }
-    
     public static double imageToLabel(Image img,JLabel label){
         double s;
         if(img!=null){
@@ -108,7 +113,16 @@ public abstract class UITools {
         }
         return s;
     }
-    
+    /**
+     * <p>Converts a double value to a corresponding RGB value given a dynamic range:
+     * Inverted colormaps will make values more than max transparent while regular colormaps
+     * will assign transparent colors to values smaller than the min
+     * @param val value to be converted to RGB
+     * @param max Dynamic range max value
+     * @param min Dynamic range min value
+     * @param colormap String that indicates the color maps, see class fields
+     * @return A Color Object indicating the color corresponding to the value
+     */
     public static Color doubleToRGB(double val,double max,double min,String colormap){
         int temp,mod;
         Color rgb;

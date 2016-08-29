@@ -37,24 +37,27 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     /**
      * Creates new form BarracudaViewUI
      */
-    DrawableNiftiVolume niiVol; //NIFTI main volume
-    DrawableNiftiVolume overlayVol; //NIFTI Overlay volume
+    private DrawableNiftiVolume niiVol; //NIFTI main volume
+    private DrawableNiftiVolume overlayVol; //NIFTI Overlay volume
     //double[][] R = new double[3][3]; //Rotation matrix for NIFTI #1
-    Matrix rotationMtrx; //Rotation matrix for NIFTI #1
-    double coronalScale; //Display scale on the coronalLabel
-    double saggitalScale;//Display scale on the saggitalLabel
-    double axialScale; //Display scale on the axialLabel
-    Point prevMouse;//Previous Mouse position for the contrast adjustment
-    Point zoomStartPoint;//Zoom area initial point
-    Point zoomEndPoint;//Zoom area end point
-    Point panPoint;
-    String colorScale;//Display colorscale (Main volume)
-    String colorScaleOverlay="hot";//Overlay colorscale
-    Color xHairColor=Color.GREEN;
-    boolean viewState=true;//Boolean flag to indicate radiological or neurological view
-    JFileChooser fc = new JFileChooser();
-    BarracudaViewMosaicFrame mosaicWindow;
+    private Matrix rotationMtrx; //Rotation matrix for NIFTI #1
+    private double coronalScale; //Display scale on the coronalLabel
+    private double saggitalScale;//Display scale on the saggitalLabel
+    private double axialScale; //Display scale on the axialLabel
+    private Point prevMouse;//Previous Mouse position for the contrast adjustment
+    private Point zoomStartPoint;//Zoom area initial point
+    private Point zoomEndPoint;//Zoom area end point
+    private Point panPoint;
+    private String colorScale;//Display colorscale (Main volume)
+    private String colorScaleOverlay="hot";//Overlay colorscale
+    private Color xHairColor=Color.GREEN;
+    private boolean viewState=true;//Boolean flag to indicate radiological or neurological view
+    private JFileChooser fc = new JFileChooser();
+    private BarracudaViewMosaicFrame mosaicWindow;
     
+    /**
+     * Creates a viewer object
+     */
     public BarracudaViewUI() {
         initComponents();
         //Set up file chooser
@@ -64,7 +67,11 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         fc.addChoosableFileFilter(filter);
         fc.setAcceptAllFileFilterUsed(false);
     }
-    
+    /**
+     * Creates an object with two volumes, the main viewing volume and the overlay volume
+     * @param niiVol The nifti main volume
+     * @param overlayVol The nifti overlay volume
+     */
     public BarracudaViewUI(DrawableNiftiVolume niiVol,DrawableNiftiVolume overlayVol) {
         initComponents();
         //Set up file chooser
@@ -112,7 +119,10 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         }
         
     }
-    
+    /**
+     * Opens a nifti file and displays it in a new viewer instance
+     * @param filename NIFTI file full path. Must be a valid filename
+     */
     public BarracudaViewUI(String filename) {
         initComponents();
         //Set up file chooser
@@ -121,16 +131,11 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         fc.setFileFilter(filter);
         fc.addChoosableFileFilter(filter);
         fc.setAcceptAllFileFilterUsed(false);
+        niiVol=null;
         
         try{niiVol=new DrawableNiftiVolume(NiftiVolume.read(filename));
         }catch(Exception e){}
-        
         if(niiVol!=null){
-            if(overlayVol!=null){
-                if(overlayVol.orient[0]=='L'){overlayVol.orient[0]='R';}
-                else if(overlayVol.orient[0]=='R'){overlayVol.orient[0]='L';}
-                if(overlayVol.header.dim[4]<=0){overlayVol.header.dim[4]=1;}
-            }
             // Added code so default view would be neurological
             if(niiVol.orient[0]=='L'){niiVol.orient[0]='R';}
             else if(niiVol.orient[0]=='R'){niiVol.orient[0]='L';}
@@ -154,8 +159,6 @@ public class BarracudaViewUI extends javax.swing.JFrame {
             axialSlider.setValue((int)(niiVol.header.dim[3]/2));
             
             rotationMtrx=new Matrix(niiVol.header.mat33());
-            
-            this.niiVol=niiVol;
             //Set Color Bar
             setColorBar();
             drawLabelsXHair();

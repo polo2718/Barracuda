@@ -6,10 +6,8 @@
 package user.gui.spidtimain;
 
 /**
- *
- * @author
- * <p>
- * Diego Garibay-Pulido 2016</p>
+ * Runnable to launch barracuda viewer in new thread
+ * @author Diego Garibay-Pulido 2016
  */
 public class ViewerRunnable implements Runnable {
     BarracudaViewUI b;
@@ -25,7 +23,7 @@ public class ViewerRunnable implements Runnable {
             });
     }
     
-    public void run(String filename){
+    private void run(String filename){
         b= new BarracudaViewUI(filename);
         b.setVisible(true);
         b.addWindowListener(new java.awt.event.WindowAdapter() {
