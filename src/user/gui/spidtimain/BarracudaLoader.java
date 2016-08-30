@@ -111,27 +111,32 @@ public class BarracudaLoader extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(BarracudaLoader.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        /* Create and display the form */
+         final BarracudaLoader a= new BarracudaLoader();
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
+            }
+        });
+        
         try{
             String filename=args[0];
             if(filename!=null){
+                a.setCursor(BarracudaLoader.WAIT_CURSOR);
                 BarracudaViewUI b= new BarracudaViewUI(filename);
                 b.setVisible(true);
                 b.addWindowListener(new java.awt.event.WindowAdapter() {
                     public void windowClosing(java.awt.event.WindowEvent evt) {
                         b.dispose();
-                        
+                        a.setVisible(true);
                     }
                 });
+                a.setCursor(BarracudaLoader.DEFAULT_CURSOR);
+                a.setVisible(false);
             }
         }catch(ArrayIndexOutOfBoundsException e){
             
-        }
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BarracudaLoader().setVisible(true);
-            }
-        });
+        } 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

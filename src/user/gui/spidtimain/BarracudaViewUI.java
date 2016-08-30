@@ -132,7 +132,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         fc.addChoosableFileFilter(filter);
         fc.setAcceptAllFileFilterUsed(false);
         niiVol=null;
-        
+        colorScale="greyscale";
         try{niiVol=new DrawableNiftiVolume(NiftiVolume.read(filename));
         }catch(Exception e){}
         if(niiVol!=null){
