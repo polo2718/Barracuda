@@ -82,7 +82,7 @@ public class BarracudaLoader extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void barracudaViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barracudaViewButtonActionPerformed
-      (new Thread(new ViewerRunnable())).start();
+        launchViewer(this);
     }//GEN-LAST:event_barracudaViewButtonActionPerformed
 
     /**
@@ -112,7 +112,7 @@ public class BarracudaLoader extends javax.swing.JFrame {
         }
         //</editor-fold>
         /* Create and display the form */
-         final BarracudaLoader a= new BarracudaLoader();
+        BarracudaLoader a= new BarracudaLoader();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 a.setVisible(true);
@@ -122,17 +122,23 @@ public class BarracudaLoader extends javax.swing.JFrame {
         try{
             String filename=args[0];
             if(filename!=null){
-                a.setCursor(BarracudaLoader.WAIT_CURSOR);
-                BarracudaViewUI b= new BarracudaViewUI(filename);
-                b.setVisible(true);
-                b.addWindowListener(new java.awt.event.WindowAdapter() {
-                    public void windowClosing(java.awt.event.WindowEvent evt) {
-                        b.dispose();
-                        a.setVisible(true);
+                (new Thread(new Runnable() {
+                    public void run() {
+                        a.setCursor(BarracudaLoader.WAIT_CURSOR);
+                        BarracudaViewUI b= new BarracudaViewUI(filename);
+                        b.setVisible(true);
+                        b.addWindowListener(new java.awt.event.WindowAdapter() {
+                            public void windowClosing(java.awt.event.WindowEvent evt) {
+                                b.dispose();
+                                Thread.currentThread().interrupt(); 
+                                a.setVisible(true);
+                            }
+                        });
+                        a.setCursor(BarracudaLoader.DEFAULT_CURSOR);
+                        a.setVisible(false);
                     }
-                });
-                a.setCursor(BarracudaLoader.DEFAULT_CURSOR);
-                a.setVisible(false);
+                })).start();
+                
             }
         }catch(ArrayIndexOutOfBoundsException e){
             
@@ -143,4 +149,9 @@ public class BarracudaLoader extends javax.swing.JFrame {
     private javax.swing.JButton barracudaViewButton;
     private javax.swing.JLabel mainIcon;
     // End of variables declaration//GEN-END:variables
+    private static void launchViewer(BarracudaLoader a){
+        (new Thread(new ViewerRunnable(a))).start();
+    }
+    
+    
 }
