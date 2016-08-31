@@ -31,22 +31,22 @@ import user.gui.tools.*;
  * Diego Garibay-Pulido 2016</p>
  */
 public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
-    DrawableNiftiVolume niiVol;
-    DrawableNiftiVolume overlayVol;
-    boolean view;
-    int n;
-    int m;
-    String plane="coronal";
-    boolean resize=false;
-    Timer timer;
-    String colorScale;
-    String colorScaleOverlay;
-    int startSlice;
-    int endSlice;
-    int nMax;
-    JFileChooser fc=new JFileChooser();
-    boolean flag=true;
-    boolean labels=true;
+    private DrawableNiftiVolume niiVol;
+    private DrawableNiftiVolume overlayVol;
+    private final boolean view;
+    private int n;
+    private int m;
+    private String plane="coronal";
+    private boolean resize=false;
+    private final Timer timer;
+    private final String colorScale;
+    private final String colorScaleOverlay;
+    private int startSlice;
+    private int endSlice;
+    private int nMax;
+    private JFileChooser fc=new JFileChooser();
+    private boolean flag=true;
+    private boolean labels=true;
     
     
     /**

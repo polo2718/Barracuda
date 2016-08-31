@@ -11,8 +11,8 @@ package user.gui.spidtimain;
  */
 public class ViewerRunnable implements Runnable{
     private BarracudaViewUI b;
-    final BarracudaLoader a;
-    final String filename;
+    private final BarracudaLoader a;
+    private final String filename;
     
     public ViewerRunnable(BarracudaLoader a){
         this.a=a;
@@ -24,6 +24,7 @@ public class ViewerRunnable implements Runnable{
         this.filename=filename;
     }
     
+    @Override
     public void run(){
         a.setVisible(false);
         if(filename==null)
@@ -33,6 +34,7 @@ public class ViewerRunnable implements Runnable{
         
         b.setVisible(true);
         b.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
             public void windowClosing(java.awt.event.WindowEvent evt) {
                     b.dispose();
                     b=null;

@@ -14,8 +14,6 @@ import user.gui.tools.IconGetter;
  * Diego Garibay-Pulido 2016</p>
  */
 public class BarracudaLoader extends javax.swing.JFrame {
-    
-
 
     /**
      * Creates new form BarracudaLoader
@@ -113,30 +111,27 @@ public class BarracudaLoader extends javax.swing.JFrame {
         //</editor-fold>
         /* Create and display the form */
         BarracudaLoader a= new BarracudaLoader();
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                a.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            a.setVisible(true);
         });
         
         try{
             String filename=args[0];
             if(filename!=null){
-                (new Thread(new Runnable() {
-                    public void run() {
-                        a.setCursor(BarracudaLoader.WAIT_CURSOR);
-                        BarracudaViewUI b= new BarracudaViewUI(filename);
-                        b.setVisible(true);
-                        b.addWindowListener(new java.awt.event.WindowAdapter() {
-                            public void windowClosing(java.awt.event.WindowEvent evt) {
-                                b.dispose();
-                                Thread.currentThread().interrupt(); 
-                                a.setVisible(true);
-                            }
-                        });
-                        a.setCursor(BarracudaLoader.DEFAULT_CURSOR);
-                        a.setVisible(false);
-                    }
+                (new Thread(() -> {
+                    a.setCursor(BarracudaLoader.WAIT_CURSOR);
+                    BarracudaViewUI b= new BarracudaViewUI(filename);
+                    b.setVisible(true);
+                    b.addWindowListener(new java.awt.event.WindowAdapter() {
+                        @Override
+                        public void windowClosing(java.awt.event.WindowEvent evt) {
+                            b.dispose();
+                            Thread.currentThread().interrupt();
+                            a.setVisible(true);
+                        }
+                    });
+                    a.setCursor(BarracudaLoader.DEFAULT_CURSOR);
+                    a.setVisible(false);
                 })).start();
                 
             }
