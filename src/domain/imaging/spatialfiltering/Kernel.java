@@ -91,5 +91,18 @@ public class Kernel {
         return b;
     }
     
+    public double checkConsistency(){
+        double sum=0;
+        for (double[] element : elements) {
+            for (int j = 0; j<elements[0].length; j++) {
+                sum += element[j];
+            }
+        }
+        if(sum!=1) //In order to keep intensity, kernel element sum must be equal to 1
+            System.out.println("Kernel sum is not equal to 1. \n "
+                    + "Global intensity changes are expected if"
+                    + " the kernel is used on a linear spatial filter");
+        return sum;
+    }
 
 }
