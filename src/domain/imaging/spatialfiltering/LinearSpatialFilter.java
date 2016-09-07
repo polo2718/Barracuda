@@ -20,81 +20,48 @@ public class LinearSpatialFilter implements SpatialFilter {
     
     @Override
     public double[][] filter(double[][] array,Kernel w){
-        double[][] paddedArray= w.padArray(array);
-        double[][] resultingArray=new double[array.length][array[0].length];
-        
-        int a=w.getA();
-        int b=w.getB();
+        Kernel x=new Kernel(w.getElements());
         if(flag){//Convolution
+            x.rotateKernel180();
+        }
+        double[][] paddedArray= x.padArray(array);
+        double[][] resultingArray=new double[array.length][array[0].length];
+        int a=x.getA();
+        int b=x.getB();
+        if(x.getParity()){//ODD Kernel
             for(int i=a;i<paddedArray.length-a;i++){
                 for(int j=b;j<paddedArray[0].length-b;j++){
                     for(int s=-1*a;s<=a;s++){
                         for(int t=-1*b;t<=b;t++){
-                            resultingArray[i-a][j-b]+=paddedArray[i-s][j-t]*w.getElement(s+a,t+b);
+                            resultingArray[i-a][j-b]+=paddedArray[i+s][j+t]*x.getElement(s+a,t+b);    
                         }
-                    }
-                    
+                    }     
                 }
             }
         }
-        else{//Correlation
-             for(int i=a;i<paddedArray.length-a;i++){
+        else{ //Even Kernel: 
+            int m=x.getM()-1;
+            int n=x.getN()-1;
+            for(int i=a;i<paddedArray.length-a;i++){
                 for(int j=b;j<paddedArray[0].length-b;j++){
-                    for(int s=-1*a;s<=a;s++){
-                        for(int t=-1*b;t<=b;t++){
-                            resultingArray[i-a][j-b]+=paddedArray[i+s][j+t]*w.getElement(s+a,t+b);
+                    for(int s=-1*m;s<=0;s++){
+                        for(int t=-1*n;t<=0;t++){
+                            resultingArray[i-a][j-b]+=paddedArray[i+s][j+t]*x.getElement(s+m,t+n);    
                         }
-                    }
-                    
+                    }     
                 }
             }
         }
-        
         return resultingArray;
+    }
+    
+    @Override
+    public double[][] doubleFilter(double[][] a,double[][] b,Kernel w){
+        throw new UnsupportedOperationException("Not supported for linear filters.");
     }
     
     public void changeFilterOperation(boolean flag){
         this.flag=flag;
     }
     
-    public static void main(String args[]){
-        double[][] array1= {{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},
-                       {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},};
-        double [][] h={{1,1,1},
-                       {1,1,1},
-                       {1,1,1}
-        };
-        Kernel w=new Kernel(h);
-        System.out.println("Convolution \n");
-        LinearSpatialFilter filter= new LinearSpatialFilter(CONVOLUTION);
-        double[][] resultingArray=filter.filter(array1, w);
-        for(int i=0;i<resultingArray.length;i++){
-            for(int j=0;j<resultingArray[0].length;j++){
-                System.out.printf(" %2.2f",resultingArray[i][j]/9.0);
-            }
-            System.out.println("");
-        }
-        System.out.println("Correlation \n");
-        filter.changeFilterOperation(CORRELATION);
-        resultingArray=filter.filter(array1, w);
-        for(int i=0;i<resultingArray.length;i++){
-            for(int j=0;j<resultingArray[0].length;j++){
-                System.out.printf(" %2.2f",resultingArray[i][j]/9.0);
-            }
-            System.out.println("");
-        }
-    }
 }

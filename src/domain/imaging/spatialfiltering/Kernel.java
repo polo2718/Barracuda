@@ -11,35 +11,50 @@ package domain.imaging.spatialfiltering;
  */
 public class Kernel {
     private double[][] elements; 
-    private int a;
-    private int b;
+    private int m,n,a,b;
+    private boolean parity;
+    public static final boolean ODD_KERNEL=true;
+    public static final boolean EVEN_KERNEL=false;
     
     public Kernel(double [][] elements) throws IllegalArgumentException{
-        if((elements.length%2)==1 & (elements[0].length%2)==1){
+        m=elements.length;
+        n=elements[0].length;
+        if(n==m){
             this.elements=elements;
-            a=(elements.length-1)/2;
-            b=(elements[0].length-1)/2;
-        }
-        else{
-            this.elements=null;
-            throw new IllegalArgumentException("Kernel is not yet defined for even dimensions");
+
+            if((elements.length%2)==1 & (elements[0].length%2)==1){
+                a=(m-1)/2;
+                b=(n-1)/2;
+                parity=ODD_KERNEL;
+            }
+            else{
+                a=(m/2);
+                b=(n/2);
+                parity=EVEN_KERNEL;
+            }
+        } else{
+            throw new IllegalArgumentException("Kernel must have equal dimensions");
         }
             
     }
-    public Kernel(double val,int m,int n) throws IllegalArgumentException{
-        if((n%2)==1&(m%2)==1){
-            elements =new double[m][n];
-            for(int i=0;i<m;i++){
-                for(int j=0;j<n;j++){
-                    elements[i][j]=val;
-                }
+    public Kernel(double val,int m) throws IllegalArgumentException{
+        elements =new double[m][m];
+        for(int i=0;i<m;i++){
+            for(int j=0;j<m;j++){
+                elements[i][j]=val;
             }
+        }
+        this.n=m;
+        this.m=m;
+        if((n%2)==1&(m%2)==1){
             a=(m-1)/2;
             b=(n-1)/2;
+            parity=ODD_KERNEL;
         }
         else{
-            this.elements=null;
-            throw new IllegalArgumentException("Kernel is not yet defined for even dimensions");
+            a=m/2;
+            b=n/2;
+            parity=EVEN_KERNEL;
         }
     }
     
@@ -66,6 +81,29 @@ public class Kernel {
         return resultingArray;
     }
     
+    public double[][] padNaNArray(double [][] array){
+        double[][] resultingArray;
+        if(elements!=null){
+            int m=array.length;
+            int n=array[0].length;
+            resultingArray= new double[m+2*a][n+2*b];
+            for(int i=0;i<resultingArray.length;i++){
+                for(int j=0;j<resultingArray[0].length;j++){
+                    if((i>=a & j>=b) & (i<(m+a) & j<(n+b)))
+                        resultingArray[i][j]=array[i-a][j-b];
+                    else
+                        resultingArray[i][j]=Double.NaN;
+                }
+            }
+        }else{
+            resultingArray=null;
+        }
+        return resultingArray;
+    }
+    
+    public double[][] getElements(){
+        return elements;
+    }
     public double getElement(int x,int y){
         return elements[x][y];
     }
@@ -78,10 +116,10 @@ public class Kernel {
     }
     
     public int getM(){
-        return 2*a+1;
+        return m;
     }
     public int getN(){
-        return 2*b+1;
+        return n;
     }
 
     public int getA(){
@@ -103,6 +141,29 @@ public class Kernel {
                     + "Global intensity changes are expected if"
                     + " the kernel is used on a linear spatial filter");
         return sum;
+    }
+    
+    public boolean getParity(){
+        return parity;
+    }
+    
+    public void rotateKernel90() {
+        int n=elements.length;
+        int m=elements[0].length;
+        double[][] ret = new double[n][m];
+
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < m; ++j) {
+                ret[i][j] = elements[n-j-1][i];
+            }
+        }
+
+        elements=ret;
+    }
+    
+    public void rotateKernel180(){
+        rotateKernel90();
+        rotateKernel90();
     }
 
 }

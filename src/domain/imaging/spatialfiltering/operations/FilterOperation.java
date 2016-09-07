@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package domain.imaging.spatialfiltering;
+package domain.imaging.spatialfiltering.operations;
 
 /**
  *
  * @author Diego Garibay-Pulido 2016
  */
-public interface SpatialFilter {
-    public abstract double[][] filter(double[][] img, Kernel w);
-    public abstract double[][] doubleFilter(double[][] a,double[][] b,Kernel w);
+public interface FilterOperation {
+    
+    public abstract double operate(double[][] array);
+    public abstract double operate(double[][] array1,double [][] array2);
 }
