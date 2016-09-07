@@ -10,7 +10,9 @@ package domain.imaging.spatialfiltering;
  * @author Diego Garibay-Pulido 2016
  */
 public interface SpatialFilter {
-    public abstract double[][] filter(double[][] img, Kernel w);
+    public abstract double[][] filter(double[][] array, Kernel w);
     public abstract double[][] filter(double [][] array,Kernel w,double [][] mask);
+    public abstract double[][] doubleFilter(double[][] array1, double[][] array2, Kernel w);
+    public abstract double[][] doubleFilter(double[][] array1, double[][] array2, Kernel w,double[][] mask);
     
 }

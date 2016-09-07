@@ -97,7 +97,7 @@ public class NonLinearSpatialFilter implements SpatialFilter{
         }
         return resultingArray;
     }
-    
+    @Override
     public double[][] doubleFilter(double[][] array1, double[][] array2, Kernel w) {
         double[][] resultingArray;
         if(array1.length==array2.length & array1[0].length==array2[0].length){
@@ -143,7 +143,7 @@ public class NonLinearSpatialFilter implements SpatialFilter{
         }
         return resultingArray;
     }
-    
+    @Override
     public double[][] doubleFilter(double[][] array1, double[][] array2, Kernel w,double [][] mask)  {
         double[][] resultingArray;
         if(array1.length==array2.length & array1[0].length==array2[0].length){

@@ -103,4 +103,14 @@ public class LinearSpatialFilter implements SpatialFilter {
         this.flag=flag;
     }
 
+    @Override
+    public double[][] doubleFilter(double[][] array1, double[][] array2, Kernel w) {
+        throw new UnsupportedOperationException("Not supported for Linear Filters."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public double[][] doubleFilter(double[][] array1, double[][] array2, Kernel w, double[][] mask) {
+        throw new UnsupportedOperationException("Not supported for Linear Filters."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

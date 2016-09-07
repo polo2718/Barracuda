@@ -41,6 +41,21 @@ public class NonLinearSpatialFilterTest {
                        {0,0,0,0,0,0,0,0,0,0,0},
                        {0,0,0,0,0,0,0,0,0,0,0}
         };
+        
+        double[][] expResult= {
+                       {0,0,0,0,0,0,0,0,0,0,0},
+                       {0,0,0,0,0,0,0,0,0,0,0},
+                       {0,0,0,0,0,0,0,0,0,0,0},
+                       {0,0,0,0,0,0,0,0,0,0,0},
+                       {0,0,0,0,1.0/9,1.0/9,1.0/9,0,0,0,0},
+                       {0,0,0,0,1.0/9,1.0/9,1.0/9,0,0,0,0},
+                       {0,0,0,0,1.0/9,1.0/9,1.0/9,0,0,0,0},
+                       {0,0,0,0,0,0,0,0,0,0,0},
+                       {0,0,0,0,0,0,0,0,0,0,0},
+                       {0,0,0,0,0,0,0,0,0,0,0},
+                       {0,0,0,0,0,0,0,0,0,0,0}
+        };
+        
         double [][] h={{1,2,3},
                        {4,5,6},
                        {7,8,9}
@@ -49,9 +64,10 @@ public class NonLinearSpatialFilterTest {
         MeanOperation operation=new MeanOperation();//Define the filter operation
         NonLinearSpatialFilter filter= new NonLinearSpatialFilter(operation);
         double[][] resultingArray=filter.filter(array1, w);
-        for (double[] resultingArray1 : resultingArray) {
+        for (int i = 0; i<resultingArray.length; i++) {
             for (int j = 0; j<resultingArray[0].length; j++) {
-                System.out.printf(" %.3f", resultingArray1[j]);
+                assertEquals(expResult[i][j],resultingArray[i][j],10e-8);
+                System.out.printf(" %.3f", resultingArray[i][j]);
             }
             System.out.println("");
         }

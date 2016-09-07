@@ -29,7 +29,7 @@ public class MeanOperation implements NonLinearFilterOperation {
 
     @Override
     public double operate(double[][] array1, double[][] array2) {
-        throw new UnsupportedOperationException("Not supported.");
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }
