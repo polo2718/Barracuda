@@ -11,7 +11,7 @@ import domain.mathUtils.numericalMethods.statistics.StatisticalMoment;
  *
  * @author Diego Garibay-Pulido 2016
  */
-public class MeanOperation implements FilterOperation {
+public class MeanOperation implements NonLinearFilterOperation {
 
     public MeanOperation(){
         

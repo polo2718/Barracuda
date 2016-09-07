@@ -18,7 +18,7 @@ public class StatisticalMoment{
     public static final boolean BIAS_CORRECTED=true;
     public static final boolean UNCORRECTED=false;
     
-    private double moments[];
+    protected double moments[];
     boolean biasCorrect=true;
     
      /**
@@ -45,7 +45,7 @@ public class StatisticalMoment{
     /**
      * Resets the statistical moment object to zero, must be done before performing new calculations
      */
-    public void reset(){
+    public final void reset(){
         for(int i=0;i<moments.length;i++){
             moments[i]=0;
         }

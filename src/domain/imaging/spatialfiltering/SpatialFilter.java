@@ -11,5 +11,6 @@ package domain.imaging.spatialfiltering;
  */
 public interface SpatialFilter {
     public abstract double[][] filter(double[][] img, Kernel w);
-    public abstract double[][] doubleFilter(double[][] a,double[][] b,Kernel w);
+    public abstract double[][] filter(double [][] array,Kernel w,double [][] mask);
+    
 }

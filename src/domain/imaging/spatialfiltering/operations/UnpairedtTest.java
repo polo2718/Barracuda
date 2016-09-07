@@ -11,11 +11,10 @@ import domain.mathUtils.numericalMethods.statistics.*;
  *
  * @author Diego Garibay-Pulido 2016
  */
-public class TwoSampleStudentOperation implements FilterOperation{
+public class UnpairedtTest implements NonLinearFilterOperation{
     private StudentDistribution distribution;
     
-    
-    public TwoSampleStudentOperation(){
+    public UnpairedtTest(){
         distribution= new StudentDistribution();
     }
     @Override
@@ -32,10 +31,10 @@ public class TwoSampleStudentOperation implements FilterOperation{
      */
     @Override
     public double operate(double[][] array1, double[][] array2) {
-        double result;
-        if(array1.length==array2.length & array1[0].length==array2[0].length){
-            StatisticalMoment moment1=new StatisticalMoment();
-            StatisticalMoment moment2=new StatisticalMoment();
+        double p_value;
+        if(array1.length==array2.length & array1[0].length==array2[0].length){//Check dimensions
+            StatisticalMoment moment1=new StatisticalMoment();//Create statistical moment object
+            StatisticalMoment moment2=new StatisticalMoment();//Create statistical moment object
             for(int i=0;i<array1.length;i++){
                 for(int j=0;j<array1[0].length;j++){
                     moment1.accumulate(array1[i][j]);
@@ -46,7 +45,7 @@ public class TwoSampleStudentOperation implements FilterOperation{
             int n2= (int) moment2.getCentralMoment(0);
             int dof=n1+n2-2;
             if(dof<1){
-                result=Double.NaN; //If the test cannot be performed return NaN
+                p_value=Double.NaN; //If the test cannot be performed return NaN
             }else{
                 double mx=moment1.mean()-moment2.mean();
                 
@@ -58,12 +57,12 @@ public class TwoSampleStudentOperation implements FilterOperation{
                         // When Variance is zero the distribution aproximates a delta
                         // Since s=0 and M=0 then the null hypothesis is always true
                         // therefore the p value is always 1
-                        result=1;
+                        p_value=1;
                     }else{
                         if(mx>0){
-                            result=1;
+                            p_value=1;
                         }else{
-                            result=0;
+                            p_value=0;
                         }
                         // If Variance is zero and mean is different than zero
                         // there is a uniform difference between two arrays. Thus
@@ -72,13 +71,13 @@ public class TwoSampleStudentOperation implements FilterOperation{
                 }else{
                     double t=mx/Math.sqrt(sx*(1.0/n1+1.0/n2));//
                     distribution.setDof(dof);
-                    result=distribution.cumulativeValue(t);
+                    p_value=distribution.cumulativeValue(t);
                 }      
             }
         }else{
             throw new IllegalArgumentException("Array dimension mismatch");
         }
-        return result;
+        return p_value;
     }
     
 }

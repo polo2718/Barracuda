@@ -9,7 +9,7 @@ package domain.imaging.spatialfiltering.operations;
  *
  * @author Diego Garibay-Pulido 2016
  */
-public interface FilterOperation {
+public interface NonLinearFilterOperation {
     
     public abstract double operate(double[][] array);
     public abstract double operate(double[][] array1,double [][] array2);
