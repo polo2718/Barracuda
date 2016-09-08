@@ -13,7 +13,10 @@ public class LinearSpatialFilter implements SpatialFilter {
     public static final boolean CONVOLUTION = true;
     public static final boolean CORRELATION = false;
     private boolean flag;
-    
+    /**
+     * Creates a linear spatial filter object that performs either convolution or correlation according to the flag used
+     * @param flag See class fields to create the object
+     */
     public LinearSpatialFilter(boolean flag){
         this.flag=flag;
     }
@@ -98,19 +101,12 @@ public class LinearSpatialFilter implements SpatialFilter {
         }
         return resultingArray;
     }
-    
+    /**
+     * Changes the type of operation performed by the filter
+     * @param flag The flag that indicates the operation
+     */
     public void changeFilterOperation(boolean flag){
         this.flag=flag;
-    }
-
-    @Override
-    public double[][] doubleFilter(double[][] array1, double[][] array2, Kernel w) {
-        throw new UnsupportedOperationException("Not supported for Linear Filters."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public double[][] doubleFilter(double[][] array1, double[][] array2, Kernel w, double[][] mask) {
-        throw new UnsupportedOperationException("Not supported for Linear Filters."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

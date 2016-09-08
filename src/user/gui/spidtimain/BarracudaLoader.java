@@ -5,6 +5,16 @@
  */
 package user.gui.spidtimain;
 
+import data.niftilibrary.niftijio.DrawableNiftiVolume;
+import data.niftilibrary.niftijio.FourDimensionalArray;
+import data.niftilibrary.niftijio.NiftiVolume;
+import domain.imaging.spatialfiltering.Kernel;
+import domain.imaging.spatialfiltering.NiftiNonLinearSpatialFilter;
+import domain.imaging.spatialfiltering.operations.UnpairedtTest;
+import java.awt.Cursor;
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import user.gui.tools.IconGetter;
 
 /**
@@ -14,12 +24,13 @@ import user.gui.tools.IconGetter;
  * Diego Garibay-Pulido 2016</p>
  */
 public class BarracudaLoader extends javax.swing.JFrame {
-
+JFileChooser fc;
     /**
      * Creates new form BarracudaLoader
      */
     public BarracudaLoader() {
         initComponents();
+        
     }
 
     /**
@@ -31,8 +42,35 @@ public class BarracudaLoader extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
+        jButton1 = new javax.swing.JButton();
         mainIcon = new javax.swing.JLabel();
         barracudaViewButton = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+
+        jButton1.setText("Perform T-Test");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addContainerGap(268, Short.MAX_VALUE))
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addContainerGap(262, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setIconImage(IconGetter.getProjectIcon("synapticom2.png")
@@ -51,6 +89,13 @@ public class BarracudaLoader extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("pspiDTI");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -62,7 +107,9 @@ public class BarracudaLoader extends javax.swing.JFrame {
                         .addComponent(mainIcon))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(barracudaViewButton)))
+                        .addComponent(barracudaViewButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2)))
                 .addContainerGap(176, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -71,7 +118,9 @@ public class BarracudaLoader extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addComponent(mainIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(barracudaViewButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(barracudaViewButton)
+                    .addComponent(jButton2))
                 .addContainerGap())
         );
 
@@ -82,6 +131,81 @@ public class BarracudaLoader extends javax.swing.JFrame {
     private void barracudaViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barracudaViewButtonActionPerformed
         launchViewer(this);
     }//GEN-LAST:event_barracudaViewButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        DrawableNiftiVolume niiVol1=null;
+        DrawableNiftiVolume niiVol2=null;
+        DrawableNiftiVolume mask=null;
+        int returnVal = fc.showOpenDialog(jDialog1);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            String filename = file.getAbsolutePath();
+            try{
+                niiVol1= new DrawableNiftiVolume(NiftiVolume.read(filename));
+            }catch(Exception e){
+                
+            }
+        }
+        else {
+            returnVal=0;
+        }
+        
+        returnVal = fc.showOpenDialog(jDialog1);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            String filename = file.getAbsolutePath();
+            try{
+                niiVol2= new DrawableNiftiVolume(NiftiVolume.read(filename));
+            }catch(Exception e){
+                
+            }
+        }
+        else {
+            returnVal=0;
+        }
+        
+        returnVal = fc.showOpenDialog(jDialog1);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            String filename = file.getAbsolutePath();
+            try{
+                mask= new DrawableNiftiVolume(NiftiVolume.read(filename));
+            }catch(Exception e){
+                
+            }
+        }
+        else {
+            returnVal=0;
+        }
+        if(niiVol1!=null & niiVol2!=null & mask!=null){
+            UnpairedtTest operation = new UnpairedtTest();
+            NiftiNonLinearSpatialFilter spatialFilter = new NiftiNonLinearSpatialFilter(operation);
+            int[] dims ={0};
+            Kernel w = new Kernel(1,3);
+            FourDimensionalArray result= spatialFilter.doubleFilter(niiVol1.data, niiVol2.data, w, mask.data, dims);
+            NiftiVolume resultingVol= new NiftiVolume();
+            resultingVol.header=niiVol1.header;
+            resultingVol.data=result;
+            try{
+                resultingVol.write("C:\\Users\\Synapticom\\Desktop\\p_vals.nii.gz");
+            }
+            catch(Exception e){
+                System.out.println("Not able to write");
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        fc= new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+        "NIFTI (*.nii,*.gz)", "nii", "gz");
+        fc.setFileFilter(filter);
+        fc.addChoosableFileFilter(filter);
+        fc.setAcceptAllFileFilterUsed(false);
+        jDialog1.setVisible(true);
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -119,7 +243,7 @@ public class BarracudaLoader extends javax.swing.JFrame {
             String filename=args[0];
             if(filename!=null){
                 (new Thread(() -> {
-                    a.setCursor(BarracudaLoader.WAIT_CURSOR);
+                    a.setCursor(new Cursor(Cursor.WAIT_CURSOR));
                     BarracudaViewUI b= new BarracudaViewUI(filename);
                     b.setVisible(true);
                     b.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -130,7 +254,7 @@ public class BarracudaLoader extends javax.swing.JFrame {
                             a.setVisible(true);
                         }
                     });
-                    a.setCursor(BarracudaLoader.DEFAULT_CURSOR);
+                    a.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                     a.setVisible(false);
                 })).start();
                 
@@ -142,6 +266,9 @@ public class BarracudaLoader extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton barracudaViewButton;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel mainIcon;
     // End of variables declaration//GEN-END:variables
     private static void launchViewer(BarracudaLoader a){

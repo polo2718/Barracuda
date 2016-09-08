@@ -107,7 +107,6 @@ public class FourDimensionalArray {
      return data3D;   
     }
     
-    
     public void set3DArray(double [][][] array){
         if((nx == array.length) & ( ny == array[0].length)& (nz == array[0][0].length))
         {   
@@ -120,6 +119,41 @@ public class FourDimensionalArray {
         }
         else{
             System.err.println("Error: Array must be the same size as the original image");
+        }
+    }
+    
+    /**
+     * Gets a two-dimensional slice in the axial plane, for processing purposes
+     * @param dimension Fourth dimension number
+     * @param sliceNum slice number
+     * @return The 2D axial slice
+     */
+    public double[][] getSlice(int dimension, int sliceNum){
+        int idx;
+        double [][] slice = new double[nx][ny];
+        for (int i = 0; i < nx; i++){
+            for (int j = 0; j < ny; j++){
+                idx=dimension*(nx*ny*nz)+sliceNum*(nx*ny)+j*nx+i;
+                slice[i][j]= data[idx];
+            }
+        }
+        return slice;
+    }
+    /**
+     * Sets the data on a two-dimensional slice in the axial plane, for processing purposes
+     * @param slice A 2D array of the same dimensions as the slice
+     * @param dimension The dimension
+     * @param sliceNum The slice number
+     */
+    public void setSlice(double [][] slice, int dimension, int sliceNum){
+        if(slice.length==nx & slice[0].length==ny){
+        int idx;
+            for (int i = 0; i < nx; i++){
+                for (int j = 0; j < ny; j++){
+                    idx=dimension*(nx*ny*nz)+sliceNum*(nx*ny)+j*nx+i;
+                    data[idx]=slice[i][j];
+                }
+            }
         }
     }
     

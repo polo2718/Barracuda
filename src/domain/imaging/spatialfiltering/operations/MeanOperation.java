@@ -5,6 +5,7 @@
  */
 package domain.imaging.spatialfiltering.operations;
 
+import data.niftilibrary.niftijio.FourDimensionalArray;
 import domain.mathUtils.numericalMethods.statistics.StatisticalMoment;
 
 /**

@@ -6,7 +6,9 @@
 package domain.imaging.spatialfiltering;
 
 /**
- *
+ * Class to be used with Spatial Filters, defines the filtering kernel, if 
+ * a non-linear filter is used, the kernel only defines the size of the neighborhood
+ * without taking into account the values inside the kernel
  * @author Diego Garibay-Pulido 2016
  */
 public class Kernel {
@@ -15,7 +17,11 @@ public class Kernel {
     private boolean parity;
     public static final boolean ODD_KERNEL=true;
     public static final boolean EVEN_KERNEL=false;
-    
+    /**
+     * Creates a kernel with the elements of the array
+     * @param elements Elements of the kernel
+     * @throws IllegalArgumentException For the moment, only symmetric arrays are supported 
+     */
     public Kernel(double [][] elements) throws IllegalArgumentException{
         m=elements.length;
         n=elements[0].length;
@@ -37,7 +43,12 @@ public class Kernel {
         }
             
     }
-    public Kernel(double val,int m) throws IllegalArgumentException{
+    /**
+     * Creates a symmetric m x m kernel with all its elements with values val
+     * @param val Value to be assigned to all elements
+     * @param m Size of the kernel
+     */
+    public Kernel(double val,int m){
         elements =new double[m][m];
         for(int i=0;i<m;i++){
             for(int j=0;j<m;j++){
@@ -80,7 +91,11 @@ public class Kernel {
         }
         return resultingArray;
     }
-    
+    /**
+     * Method to pad with NaNs an array depending on the kernel size
+     * @param array A double 2D array
+     * @return The zero-padded double 2D array
+     */
     public double[][] padNaNArray(double [][] array){
         double[][] resultingArray;
         if(elements!=null){
@@ -100,35 +115,59 @@ public class Kernel {
         }
         return resultingArray;
     }
-    
+    /**
+     * Returns a 2D array with the elements of the kernel
+     * @return All the elements of the kernel
+     */
     public double[][] getElements(){
         return elements;
     }
+    /**
+     * Gets an individual element of the kernel
+     * @param x x coordinate
+     * @param y y coordinate
+     * @return double value containing the corresponding element
+     */
     public double getElement(int x,int y){
         return elements[x][y];
     }
-    
+    /**
+     * Sets an element of the kernel
+     * @param val Value to be assigned
+     * @param m x coordinate
+     * @param n y coordinate
+     * @throws IllegalArgumentException if coordinates are not in kernel
+     */
     public void setElement(double val, int m, int n) throws IllegalArgumentException{
         if(elements!=null)
             elements[m][n]=val;
         else
             throw new IllegalArgumentException("Define the elements first");
     }
-    
+    /**
+     * Returns the size of the kernel
+     * @return 
+     */
     public int getM(){
         return m;
     }
     public int getN(){
         return n;
     }
-
+    /**
+     * Return the numbers used for padding
+     * @return 
+     */
     public int getA(){
         return a;
     }
     public int getB(){
         return b;
     }
-    
+    /**
+     * Checks whether a kernels elements are equal to 1 to maintain global intensity
+     * @return The sum of all kernel elements
+     */
     public double checkConsistency(){
         double sum=0;
         for (double[] element : elements) {
@@ -142,11 +181,16 @@ public class Kernel {
                     + " the kernel is used on a linear spatial filter");
         return sum;
     }
-    
+    /**
+     * Returns whether the kernel is even or odd
+     * @return boolean containing the kernel parity, see class field for details
+     */
     public boolean getParity(){
         return parity;
     }
-    
+    /**
+     * Rotates the elements of the kernel by 90 degrees
+     */
     public void rotateKernel90() {
         int n=elements.length;
         int m=elements[0].length;
@@ -160,7 +204,9 @@ public class Kernel {
 
         elements=ret;
     }
-    
+    /**
+     * Rotates the elements of the kernel by 180 degrees
+     */
     public void rotateKernel180(){
         rotateKernel90();
         rotateKernel90();

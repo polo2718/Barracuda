@@ -12,10 +12,10 @@ import domain.mathUtils.numericalMethods.statistics.*;
  * @author Diego Garibay-Pulido 2016
  */
 public class UnpairedtTest implements NonLinearFilterOperation{
-    private StudentDistribution distribution;
+    private static StudentDistribution distribution=new StudentDistribution();;
     
     public UnpairedtTest(){
-        distribution= new StudentDistribution();
+        
     }
     @Override
     public double operate(double[][] array) {

@@ -7,12 +7,16 @@ package domain.imaging.spatialfiltering;
 
 import domain.imaging.spatialfiltering.operations.*;
 /**
- *
+ * Class that performs a non-linear spatial filtering by correlating the kernel 
+ * with an array and performing the operation defined when instantiating the object
  * @author Diego Garibay-Pulido 2016
  */
-public class NonLinearSpatialFilter implements SpatialFilter{
+public class NonLinearSpatialFilter implements SpatialFilter, DoubleSpatialFilter{
     private final NonLinearFilterOperation operation;
-    
+    /**
+     * The constructor defines the type of operation to be performed on the neighborhood.
+     * @param operation See NonLinearFilterOperation for details
+     */
     public NonLinearSpatialFilter(NonLinearFilterOperation operation){
         this.operation=operation;
     }
