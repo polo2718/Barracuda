@@ -24,10 +24,6 @@ import user.gui.tools.IconGetter;
  * Diego Garibay-Pulido 2016</p>
  */
 public class BarracudaLoader extends javax.swing.JFrame {
-private JFileChooser fc=null;
-private DrawableNiftiVolume niiVol1=null;
-private DrawableNiftiVolume niiVol2=null;
-private DrawableNiftiVolume mask=null;
 
     /**
      * Creates new form BarracudaLoader
@@ -46,122 +42,9 @@ private DrawableNiftiVolume mask=null;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pspiDTIDialog = new javax.swing.JDialog();
-        tTestButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        ictalTextPane = new javax.swing.JTextPane();
-        openIctalFileButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        baselineTextPane = new javax.swing.JTextPane();
-        openBaselineFileButton = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        maskTextPane = new javax.swing.JTextPane();
-        openMaskFileButton = new javax.swing.JButton();
         mainIcon = new javax.swing.JLabel();
         barracudaViewButton = new javax.swing.JButton();
         pspiDTIDialogButton = new javax.swing.JButton();
-
-        pspiDTIDialog.setSize(new java.awt.Dimension(457, 247));
-
-        tTestButton.setText("Perform T-Test");
-        tTestButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tTestButtonActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Post-ictal File:");
-
-        ictalTextPane.setEditable(false);
-        jScrollPane1.setViewportView(ictalTextPane);
-
-        openIctalFileButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/open_icon.png"))); // NOI18N
-        openIctalFileButton.setToolTipText("");
-        openIctalFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openIctalFileButtonActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("Baseline File:");
-
-        baselineTextPane.setEditable(false);
-        jScrollPane2.setViewportView(baselineTextPane);
-
-        openBaselineFileButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/open_icon.png"))); // NOI18N
-        openBaselineFileButton.setToolTipText("");
-        openBaselineFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openBaselineFileButtonActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("WM mask File:");
-        jLabel3.setToolTipText("");
-
-        maskTextPane.setEditable(false);
-        jScrollPane3.setViewportView(maskTextPane);
-
-        openMaskFileButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/open_icon.png"))); // NOI18N
-        openMaskFileButton.setToolTipText("");
-        openMaskFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openMaskFileButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pspiDTIDialogLayout = new javax.swing.GroupLayout(pspiDTIDialog.getContentPane());
-        pspiDTIDialog.getContentPane().setLayout(pspiDTIDialogLayout);
-        pspiDTIDialogLayout.setHorizontalGroup(
-            pspiDTIDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pspiDTIDialogLayout.createSequentialGroup()
-                .addGroup(pspiDTIDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pspiDTIDialogLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(pspiDTIDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pspiDTIDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pspiDTIDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(openIctalFileButton)
-                            .addComponent(openBaselineFileButton)
-                            .addComponent(openMaskFileButton)))
-                    .addGroup(pspiDTIDialogLayout.createSequentialGroup()
-                        .addGap(157, 157, 157)
-                        .addComponent(tTestButton)))
-                .addContainerGap(70, Short.MAX_VALUE))
-        );
-        pspiDTIDialogLayout.setVerticalGroup(
-            pspiDTIDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pspiDTIDialogLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(pspiDTIDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(openIctalFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pspiDTIDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2)
-                    .addComponent(openBaselineFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 27, Short.MAX_VALUE)
-                .addGroup(pspiDTIDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(openMaskFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addComponent(tTestButton)
-                .addContainerGap())
-        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setIconImage(IconGetter.getProjectIcon("synapticom2.png")
@@ -223,93 +106,11 @@ private DrawableNiftiVolume mask=null;
         launchViewer(this);
     }//GEN-LAST:event_barracudaViewButtonActionPerformed
 
-    private void tTestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tTestButtonActionPerformed
-        if(niiVol1!=null & niiVol2!=null & mask!=null){
-            pspiDTIDialogButton.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-            UnpairedtTest operation = new UnpairedtTest();
-            NiftiNonLinearSpatialFilter spatialFilter = new NiftiNonLinearSpatialFilter(operation);
-            int[] dims ={0};
-            Kernel w = new Kernel(1,3);
-            FourDimensionalArray result= spatialFilter.doubleFilter(niiVol1.data, niiVol2.data, w, mask.data, dims);
-            NiftiVolume resultingVol= new NiftiVolume();
-            resultingVol.header=niiVol1.header;
-            resultingVol.data=result;
-            try{
-                resultingVol.write("C:\\Users\\Synapticom\\Desktop\\p_vals.nii.gz");
-            }
-            catch(Exception e){
-                System.out.println("Not able to write");
-            }
-            pspiDTIDialogButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        }
-    }//GEN-LAST:event_tTestButtonActionPerformed
-
     private void pspiDTIDialogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pspiDTIDialogButtonActionPerformed
-        this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        if(fc==null){
-            fc= new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-            "NIFTI (*.nii,*.gz)", "nii", "gz");
-            fc.setFileFilter(filter);
-            fc.addChoosableFileFilter(filter);
-            fc.setAcceptAllFileFilterUsed(false);
-        }
-        pspiDTIDialog.setLocationRelativeTo(null);
-        pspiDTIDialog.setVisible(true);
-        
+        this.setCursor(new Cursor(Cursor.WAIT_CURSOR));  
+        (new Thread(new pspiDTIRunnable(this))).start();     
         this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_pspiDTIDialogButtonActionPerformed
-
-    private void openIctalFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openIctalFileButtonActionPerformed
-        int returnVal= fc.showDialog(pspiDTIDialog,"Open ictal file...");
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            String filename = file.getAbsolutePath();
-            try{
-                niiVol1= new DrawableNiftiVolume(NiftiVolume.read(filename));
-                ictalTextPane.setText(filename);
-            }catch(Exception e){
-                
-            }
-        }
-        else {
-            returnVal=0;
-        }
-    }//GEN-LAST:event_openIctalFileButtonActionPerformed
-
-    private void openBaselineFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBaselineFileButtonActionPerformed
-        int returnVal= fc.showDialog(pspiDTIDialog,"Open Baseline file...");
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            String filename = file.getAbsolutePath();
-            try{
-                niiVol2= new DrawableNiftiVolume(NiftiVolume.read(filename));
-                baselineTextPane.setText(filename);
-            }catch(Exception e){
-                
-            }
-        }
-        else {
-            returnVal=0;
-        }
-    }//GEN-LAST:event_openBaselineFileButtonActionPerformed
-
-    private void openMaskFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMaskFileButtonActionPerformed
-        int returnVal= fc.showDialog(pspiDTIDialog,"Open WM mask file...");
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
-            String filename = file.getAbsolutePath();
-            try{
-                mask= new DrawableNiftiVolume(NiftiVolume.read(filename));
-                maskTextPane.setText(filename);
-            }catch(Exception e){
-                
-            }
-        }
-        else {
-            returnVal=0;
-        }
-    }//GEN-LAST:event_openMaskFileButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -370,22 +171,8 @@ private DrawableNiftiVolume mask=null;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton barracudaViewButton;
-    private javax.swing.JTextPane baselineTextPane;
-    private javax.swing.JTextPane ictalTextPane;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel mainIcon;
-    private javax.swing.JTextPane maskTextPane;
-    private javax.swing.JButton openBaselineFileButton;
-    private javax.swing.JButton openIctalFileButton;
-    private javax.swing.JButton openMaskFileButton;
-    private javax.swing.JDialog pspiDTIDialog;
     private javax.swing.JButton pspiDTIDialogButton;
-    private javax.swing.JButton tTestButton;
     // End of variables declaration//GEN-END:variables
     private static void launchViewer(BarracudaLoader a){
         (new Thread(new ViewerRunnable(a))).start();

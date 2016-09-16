@@ -8,35 +8,25 @@ package user.gui.spidtimain;
 import java.awt.Cursor;
 
 /**
- * Runnable to launch barracuda viewer in new thread
+ *
  * @author Diego Garibay-Pulido 2016
  */
-public class ViewerRunnable implements Runnable{
-    private BarracudaViewUI b;
+public class pspiDTIRunnable implements Runnable {
+    private BarracudaPspiDTIUI b;
     private final BarracudaLoader a;
-    private final String filename;
     
-    public ViewerRunnable(BarracudaLoader a){
+    public pspiDTIRunnable(BarracudaLoader a){
         this.a=a;
-        filename=null;
-    }
-    
-    public ViewerRunnable(BarracudaLoader a,String filename){
-        this.a=a;
-        this.filename=filename;
     }
     
     @Override
-    public void run(){
+    public void run() {
+        
         a.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        
-        if(filename==null)
-            b= new BarracudaViewUI();
-        else
-            b= new BarracudaViewUI(filename);
-        
+        b= new BarracudaPspiDTIUI();
         b.setVisible(true);
         a.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        
         b.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -48,6 +38,5 @@ public class ViewerRunnable implements Runnable{
             });
         a.setVisible(false);
     }
-    
     
 }
