@@ -24,7 +24,7 @@ import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.ImageIcon;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
-//import javax.jnlp.*;
+
 
 /**
  *  <p>This is the main class for the pspiDTI UI it includes the menus and

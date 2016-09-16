@@ -61,7 +61,7 @@ public class NiftiNonLinearSpatialFilter {
      * @param dims Vector with the dimensions (4th dimensions) in which to perform the filtering
      * @return The result of the operation
      */
-    public FourDimensionalArray doubleFilter(FourDimensionalArray array1, FourDimensionalArray array2, Kernel w, FourDimensionalArray mask, int[] dims){
+    public FourDimensionalArray doubleFilter(FourDimensionalArray array1, FourDimensionalArray array2, Kernel w, FourDimensionalArray mask, int[] dims) throws IllegalArgumentException{
         if(array1.sizeX()==array2.sizeX() &
            array1.sizeY()==array2.sizeY() &
            array1.sizeZ()==array2.sizeZ() &
