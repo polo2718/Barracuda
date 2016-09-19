@@ -24,6 +24,7 @@ import user.gui.tools.IconGetter;
 public class BarracudaPspiDTIUI extends javax.swing.JFrame {
 private JFileChooser fc;
 private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask;
+private String workingDirectory=null;
     /**
      * Creates new form BarracudaPspiDTIUI
      */
@@ -50,7 +51,7 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
     private void initComponents() {
 
         errorDialog = new javax.swing.JDialog();
-        jLabel5 = new javax.swing.JLabel();
+        errorTitleLabel = new javax.swing.JLabel();
         errorLabel = new javax.swing.JLabel();
         tabManager = new javax.swing.JTabbedPane();
         fileTab = new javax.swing.JPanel();
@@ -66,6 +67,10 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
         jScrollPane2 = new javax.swing.JScrollPane();
         baselineTextPane = new javax.swing.JTextPane();
         openMaskFileButton = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        directoryTextPane = new javax.swing.JTextPane();
+        openWorkingDirectoryButton = new javax.swing.JButton();
         analysisTab = new javax.swing.JPanel();
         tTestButton = new javax.swing.JButton();
 
@@ -74,7 +79,7 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
         errorDialog.setModal(true);
         errorDialog.setSize(new java.awt.Dimension(280, 120));
 
-        jLabel5.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+        errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
 
         errorLabel.setText("Error Message");
 
@@ -84,7 +89,7 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
             errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(errorDialogLayout.createSequentialGroup()
                 .addGap(105, 105, 105)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(errorTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(119, Short.MAX_VALUE))
             .addGroup(errorDialogLayout.createSequentialGroup()
                 .addContainerGap()
@@ -95,7 +100,7 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
             errorDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(errorDialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(errorTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
                 .addContainerGap())
@@ -145,6 +150,20 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
             }
         });
 
+        jLabel4.setText("Working Directory:");
+        jLabel4.setToolTipText("");
+
+        directoryTextPane.setEditable(false);
+        jScrollPane4.setViewportView(directoryTextPane);
+
+        openWorkingDirectoryButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/open_icon.png"))); // NOI18N
+        openWorkingDirectoryButton.setToolTipText("");
+        openWorkingDirectoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openWorkingDirectoryButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout fileTabLayout = new javax.swing.GroupLayout(fileTab);
         fileTab.setLayout(fileTabLayout);
         fileTabLayout.setHorizontalGroup(
@@ -152,16 +171,19 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
             .addGroup(fileTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel4)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(openWorkingDirectoryButton)
                     .addComponent(openIctalFileButton)
                     .addComponent(openBaselineFileButton)
                     .addComponent(openMaskFileButton))
@@ -170,7 +192,12 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
         fileTabLayout.setVerticalGroup(
             fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fileTabLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(17, 17, 17)
+                .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(openWorkingDirectoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -185,7 +212,7 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(openMaskFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(148, 148, 148))
+                .addGap(88, 88, 88))
         );
 
         tabManager.addTab("File input", fileTab);
@@ -251,7 +278,7 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
         else {
             returnVal=0;
         }
-        if(ictalFA!=null & baselineFA!=null){
+        if(ictalFA!=null & baselineFA!=null & workingDirectory!=null){
             tabManager.setEnabledAt(1, true);
         }
     }//GEN-LAST:event_openIctalFileButtonActionPerformed
@@ -271,7 +298,7 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
         else {
             returnVal=0;
         }
-        if(ictalFA!=null & baselineFA!=null){
+        if(ictalFA!=null & baselineFA!=null & workingDirectory!=null){
             tabManager.setEnabledAt(1, true);
         }
     }//GEN-LAST:event_openBaselineFileButtonActionPerformed
@@ -295,7 +322,6 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
     }//GEN-LAST:event_openMaskFileButtonActionPerformed
 
     private void tTestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tTestButtonActionPerformed
-        
         if(ictalFA!=null & baselineFA!=null){
             this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             UnpairedtTest operation = new UnpairedtTest();
@@ -312,7 +338,7 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
             resultingVol.header=ictalFA.header;
             resultingVol.data=result;
             try{
-                resultingVol.write("C:\\Users\\Synapticom\\Desktop\\p_vals.nii.gz");
+                resultingVol.write(workingDirectory+"pspiDTI_output\\FA_Pvals.nii.gz");
             }
             catch(Exception e){
                 System.out.println("Not able to write");
@@ -321,29 +347,74 @@ private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask
         }
     }//GEN-LAST:event_tTestButtonActionPerformed
 
+    private void openWorkingDirectoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openWorkingDirectoryButtonActionPerformed
+        configureFileChooser(false);
+        
+        int returnVal= fc.showDialog(this,"Select Working Directory...");
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            workingDirectory = file.getAbsolutePath()+"\\";
+            directoryTextPane.setText(workingDirectory);
+            fc.setCurrentDirectory(file);
+            String outputFolder= workingDirectory+"pspiDTI_output";
+            File output=new File(outputFolder);
+            if(!output.exists()){
+                if(output.mkdir()){
+                    
+                }else{
+                    errorLabel.setText("Warning: Output Directory could not be created");
+                    errorDialog.setVisible(true);
+                }
+            }else{
+                errorLabel.setText("Warning: Output Directory already exists");
+                errorDialog.setLocationRelativeTo(null);
+                errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Warning!!!!</font></strong>");
+                errorDialog.setVisible(true);
+            }
+        }
+        else {
+            returnVal=0;
+        }
+        
+        configureFileChooser(true);
+        if(ictalFA!=null & baselineFA!=null & workingDirectory!=null){
+            tabManager.setEnabledAt(1, true);
+        }
+    }//GEN-LAST:event_openWorkingDirectoryButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel analysisTab;
     private javax.swing.JTextPane baselineTextPane;
+    private javax.swing.JTextPane directoryTextPane;
     private javax.swing.JDialog errorDialog;
     private javax.swing.JLabel errorLabel;
+    private javax.swing.JLabel errorTitleLabel;
     private javax.swing.JPanel fileTab;
     private javax.swing.JTextPane ictalTextPane;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextPane maskTextPane;
     private javax.swing.JButton openBaselineFileButton;
     private javax.swing.JButton openIctalFileButton;
     private javax.swing.JButton openMaskFileButton;
+    private javax.swing.JButton openWorkingDirectoryButton;
     private javax.swing.JButton tTestButton;
     private javax.swing.JTabbedPane tabManager;
     // End of variables declaration//GEN-END:variables
     
     
-    
+    private void configureFileChooser(boolean flag){
+        if(flag){// Flag =true configures for nifti files
+            fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        }else{// Flag = false configures for directory choosing
+            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        }
+    }
 }

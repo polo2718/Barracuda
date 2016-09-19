@@ -5,16 +5,7 @@
  */
 package user.gui.spidtimain;
 
-import data.niftilibrary.niftijio.DrawableNiftiVolume;
-import data.niftilibrary.niftijio.FourDimensionalArray;
-import data.niftilibrary.niftijio.NiftiVolume;
-import domain.imaging.spatialfiltering.Kernel;
-import domain.imaging.spatialfiltering.NiftiNonLinearSpatialFilter;
-import domain.imaging.spatialfiltering.operations.UnpairedtTest;
 import java.awt.Cursor;
-import java.io.File;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import user.gui.tools.IconGetter;
 
 /**
