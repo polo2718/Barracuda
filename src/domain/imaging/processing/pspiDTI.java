@@ -126,8 +126,6 @@ public class pspiDTI {
         int x=mask.sizeX();
         int y=mask.sizeY();
         int z=mask.sizeZ();
-        HTMLDocument doc = (HTMLDocument)console.getDocument();
-        HTMLEditorKit editorKit = (HTMLEditorKit)console.getEditorKit();
         
         FourDimensionalArray result= new FourDimensionalArray(x,y,z,1);
         double temp;
@@ -151,9 +149,8 @@ public class pspiDTI {
             }
             resultingVol.header=ictalFA.header;
             resultingVol.data=result;
-            String str="<br>Writing FA files...";
-            try{editorKit.insertHTML(doc, doc.getLength(), str, 0, 0, null);}
-            catch(Exception e){}
+            String str=console.getText()+"Writing FA decrease...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_decrease.nii.gz");
             }catch(Exception e){}
@@ -162,38 +159,52 @@ public class pspiDTI {
             double std=moments.std();
             threshold=mean-std;
             resultingVol.data=cleanSubtract(result,threshold,FA,1);
+            str=console.getText()+"Writing FA: 1std...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_1std_decrease.nii.gz");
             }catch(Exception e){}
             //Two standard deviations
             threshold=mean-2*std;
             resultingVol.data=cleanSubtract(result,threshold,FA,1);
+            str=console.getText()+"Writing FA: 2std...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_2std_decrease.nii.gz");
             }catch(Exception e){}
             //Three standard deviations
             threshold=mean-3*std;
             resultingVol.data=cleanSubtract(result,threshold,FA,1);
+            str=console.getText()+"Writing FA: 3std...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_3std_decrease.nii.gz");
             }catch(Exception e){}
             // 0.05 FA threshold
             resultingVol.data=cleanSubtract(result,-1,FA,0.05);
+            str=console.getText()+"Writing FA: 0.05...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_0.05t_decrease.nii.gz");
             }catch(Exception e){}
             // 0.1 FA threshold
             resultingVol.data=cleanSubtract(result,-1,FA,0.1);
+            str=console.getText()+"Writing FA: 0.1...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_0.10t_decrease.nii.gz");
             }catch(Exception e){}
             // 0.15 FA threshold
             resultingVol.data=cleanSubtract(result,-1,FA,0.15);
+            str=console.getText()+"Writing FA: 0.15...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_0.15t_decrease.nii.gz");
             }catch(Exception e){}
             // 0.20 FA threshold
             resultingVol.data=cleanSubtract(result,-1,FA,0.2);
+            str=console.getText()+"Writing FA: 0.2...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_0.20t_decrease.nii.gz");
             }catch(Exception e){}
@@ -214,9 +225,8 @@ public class pspiDTI {
             }
             resultingVol.header=ictalTR.header;
             resultingVol.data=result;
-            String str="<br>Writing Trace files...";
-            try{editorKit.insertHTML(doc, doc.getLength(), str, 0, 0, null);}
-            catch(Exception e){}
+            String str=console.getText()+"Writing Trace increase...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_increase.nii.gz");
             }catch(Exception e){}
@@ -225,39 +235,53 @@ public class pspiDTI {
             double std=moments.std();
             threshold=mean+std;
             resultingVol.data=cleanSubtract(result,threshold,TR,1);
+            str=console.getText()+"Writing Trace: 1std...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_1std_increase.nii.gz");
             }catch(Exception e){}
             //Two standard deviations
             threshold=mean+2*std;
             resultingVol.data=cleanSubtract(result,threshold,TR,1);
+            str=console.getText()+"Writing Trace: 2std...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_2std_increase.nii.gz");
             }catch(Exception e){}
             //Three standard deviations
             threshold=mean+3*std;
             resultingVol.data=cleanSubtract(result,threshold,TR,1);
+            str=console.getText()+"Writing Trace: 3std...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_3std_increase.nii.gz");
             }catch(Exception e){}
             
             // 0.05 TR threshold
             resultingVol.data=cleanSubtract(result,1,TR,0.05);
+            str=console.getText()+"Writing Trace: 0.05...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_0.05t_increase.nii.gz");
             }catch(Exception e){}
             // 0.1 TR threshold
             resultingVol.data=cleanSubtract(result,1,TR,0.1);
+            str=console.getText()+"Writing Trace: 0.1...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_0.10t_increase.nii.gz");
             }catch(Exception e){}
             // 0.15 TR threshold
             resultingVol.data=cleanSubtract(result,1,TR,0.15);
+            str=console.getText()+"Writing Trace: 0.15...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_0.15t_increase.nii.gz");
             }catch(Exception e){}
             // 0.20 TR threshold
             resultingVol.data=cleanSubtract(result,1,TR,0.2);
+            str=console.getText()+"Writing Trace: 0.2...\n";
+            console.setText(str);
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_0.20t_increase.nii.gz");
             }catch(Exception e){}
@@ -308,39 +332,38 @@ public class pspiDTI {
         FourDimensionalArray temp1;
         FourDimensionalArray temp2;
         
-        String str;
-        console.setContentType("text/html");
-        HTMLDocument doc = (HTMLDocument)console.getDocument();
-        HTMLEditorKit editorKit = (HTMLEditorKit)console.getEditorKit();
-        str="<br>Performing FA t-test...";
-        try{editorKit.insertHTML(doc, doc.getLength(), str, 0, 0, null);}
-        catch(Exception e){}
         
+        append("Performing FA t-test...\n");
         temp1=oneTailedT_Test(LEFT_TAIL,pspiDTI.FA);
-        str="<br>Cleaning FA p-values...";
-        try{editorKit.insertHTML(doc, doc.getLength(), str, 0, 0, null);}
-        catch(Exception e){}
+        
+        append("Cleaning FA p-values...\n");
+        console.setText(str);
         temp2=cleanPvalues(temp1,pspiDTI.FA);
-        str="<br>Performing FA subtraction...";
-        try{editorKit.insertHTML(doc, doc.getLength(), str, 0, 0, null);}
-        catch(Exception e){}
+        
+        str=console.getText()+"Performing FA subtraction...\n";
+        console.setText(str);
         subtract(temp2,pspiDTI.FA);
         
-        str="<br>Performing Trace t-test...";
-        try{editorKit.insertHTML(doc, doc.getLength(), str, 0, 0, null);}
-        catch(Exception e){}
+        str=console.getText()+"Performing Trace t-test...\n";
+        console.setText(str);
         temp1=oneTailedT_Test(RIGHT_TAIL,pspiDTI.TR);
-        str="<br>Cleaning Trace p-values...";
-        try{editorKit.insertHTML(doc, doc.getLength(), str, 0, 0, null);}
-        catch(Exception e){}
+        
+        str=console.getText()+"Cleaning Trace p-values...\n";
+        console.setText(str);
         temp2=cleanPvalues(temp1,pspiDTI.TR);
-        str="<br>Performing Trace subtraction...";
-        try{editorKit.insertHTML(doc, doc.getLength(), str, 0, 0, null);}
-        catch(Exception e){}
+        
+        str=console.getText()+"Performing Trace subtraction...\n";
+        console.setText(str);
         subtract(temp2,pspiDTI.TR);
-        str="<br>Done!!...";
-        try{editorKit.insertHTML(doc, doc.getLength(), str, 0, 0, null);}
-        catch(Exception e){}
+        
+        str=console.getText()+"Done!!...\n";
+        console.setText(str);
         
     }
+   
+   private void append(String str){
+       str=console.getText()+str;
+       console.setText(str);
+       console.setCaretPosition(str.length());
+   }
 }
