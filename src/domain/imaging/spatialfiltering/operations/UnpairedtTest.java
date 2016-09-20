@@ -13,10 +13,15 @@ import domain.mathUtils.numericalMethods.statistics.*;
  */
 public class UnpairedtTest implements NonLinearFilterOperation{
     private static StudentDistribution distribution=new StudentDistribution();;
-    
+    public static final boolean LEFT_TAIL=true;
+    public static final boolean RIGHT_TAIL=false;
+    private boolean tail;
     public UnpairedtTest(){
-        
     }
+    public UnpairedtTest(boolean flag){
+        this.tail=flag;
+    }
+    
     @Override
     public double operate(double[][] array) {
         throw new UnsupportedOperationException(
@@ -72,7 +77,10 @@ public class UnpairedtTest implements NonLinearFilterOperation{
                     double t=mx/Math.sqrt(sx*(1.0/n1+1.0/n2));//
                     distribution.setDof(dof);
                     p_value=distribution.cumulativeValue(t);
-                }      
+                }
+                if(!tail){ //If tail equals right tail
+                        p_value=1-p_value;
+                }
             }
         }else{
             throw new IllegalArgumentException("Array dimension mismatch");
@@ -80,4 +88,7 @@ public class UnpairedtTest implements NonLinearFilterOperation{
         return p_value;
     }
     
+    public void setTail(boolean flag){
+        tail=flag;
+    }
 }

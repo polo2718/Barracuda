@@ -8,6 +8,8 @@ package user.gui.spidtimain;
 import data.niftilibrary.niftijio.DrawableNiftiVolume;
 import data.niftilibrary.niftijio.FourDimensionalArray;
 import data.niftilibrary.niftijio.NiftiVolume;
+import domain.imaging.processing.PspiImagingRunnable;
+import domain.imaging.processing.pspiDTI;
 import domain.imaging.spatialfiltering.Kernel;
 import domain.imaging.spatialfiltering.NiftiNonLinearSpatialFilter;
 import domain.imaging.spatialfiltering.operations.UnpairedtTest;
@@ -25,6 +27,11 @@ public class BarracudaPspiDTIUI extends javax.swing.JFrame {
 private JFileChooser fc;
 private DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask;
 private String workingDirectory=null;
+private String patientInitials;
+private double alpha; //alpha is the confidence level
+private double faThreshold=Double.NaN;
+private double trThreshold=Double.NaN;
+
     /**
      * Creates new form BarracudaPspiDTIUI
      */
@@ -38,7 +45,9 @@ private String workingDirectory=null;
         fc.addChoosableFileFilter(filter);
         fc.setAcceptAllFileFilterUsed(false);
         this.setLocationRelativeTo(null);
-        tabManager.setEnabledAt(1, false); // Analysis Tab, only enabled when at least all the files are input
+        tabManager.setEnabledAt(1, false); //Files tab, only enabled when patientInitials are defined
+        tabManager.setEnabledAt(2, false); // Analysis Tab, only enabled when at least all the files are input
+        alpha = 0.05;
     }
 
     /**
@@ -54,6 +63,15 @@ private String workingDirectory=null;
         errorTitleLabel = new javax.swing.JLabel();
         errorLabel = new javax.swing.JLabel();
         tabManager = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        patientInfoText = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        alphaText = new javax.swing.JTextField();
+        faThresh = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        trThresh = new javax.swing.JComboBox<>();
         fileTab = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         openIctalFileButton = new javax.swing.JButton();
@@ -71,8 +89,18 @@ private String workingDirectory=null;
         jScrollPane4 = new javax.swing.JScrollPane();
         directoryTextPane = new javax.swing.JTextPane();
         openWorkingDirectoryButton = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        ictalTraceTextPane = new javax.swing.JTextPane();
+        openIctalTRButton = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        baselineTraceTextPane = new javax.swing.JTextPane();
+        openBaselineTRButton = new javax.swing.JButton();
         analysisTab = new javax.swing.JPanel();
-        tTestButton = new javax.swing.JButton();
+        calculateButton = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        consolePane = new javax.swing.JTextPane();
 
         errorDialog.setTitle("Error!!!");
         errorDialog.setIconImage(IconGetter.getProjectIcon("error_icon.png"));
@@ -109,6 +137,106 @@ private String workingDirectory=null;
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tabManager.setVerifyInputWhenFocusTarget(false);
+
+        jLabel7.setText("Patient Initials: ");
+        jLabel7.setToolTipText("");
+
+        patientInfoText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        patientInfoText.setToolTipText("");
+        patientInfoText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                patientInfoTextFocusLost(evt);
+            }
+        });
+        patientInfoText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                patientInfoTextActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("FA Threshold:");
+        jLabel8.setToolTipText("");
+
+        alphaText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        alphaText.setText("0.05");
+        alphaText.setToolTipText("");
+        alphaText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                alphaTextFocusLost(evt);
+            }
+        });
+        alphaText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alphaTextActionPerformed(evt);
+            }
+        });
+
+        faThresh.setEditable(true);
+        faThresh.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        faThresh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0.05", "0.10", "0.15", "0.20" }));
+        faThresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                faThreshActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setText("Confidence level (alpha):");
+        jLabel9.setToolTipText("");
+
+        jLabel10.setText("Trace Threshold:");
+        jLabel10.setToolTipText("");
+
+        trThresh.setEditable(true);
+        trThresh.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        trThresh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0.05", "0.10", "0.15", "0.20" }));
+        trThresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                trThreshActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
+                    .addComponent(trThresh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(alphaText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(patientInfoText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(faThresh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(647, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel7)
+                    .addComponent(patientInfoText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel9)
+                    .addComponent(alphaText, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(faThresh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(trThresh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addContainerGap(143, Short.MAX_VALUE))
+        );
+
+        tabManager.addTab("Settings", jPanel1);
 
         jLabel2.setText("Baseline FA File:");
 
@@ -164,65 +292,131 @@ private String workingDirectory=null;
             }
         });
 
+        jLabel5.setText("Post-ictal TR File:");
+
+        ictalTraceTextPane.setEditable(false);
+        jScrollPane5.setViewportView(ictalTraceTextPane);
+
+        openIctalTRButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/open_icon.png"))); // NOI18N
+        openIctalTRButton.setToolTipText("");
+        openIctalTRButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openIctalTRButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Baseline TR File:");
+        jLabel6.setToolTipText("");
+
+        baselineTraceTextPane.setEditable(false);
+        jScrollPane6.setViewportView(baselineTraceTextPane);
+
+        openBaselineTRButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/open_icon.png"))); // NOI18N
+        openBaselineTRButton.setToolTipText("");
+        openBaselineTRButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openBaselineTRButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout fileTabLayout = new javax.swing.GroupLayout(fileTab);
         fileTab.setLayout(fileTabLayout);
         fileTabLayout.setHorizontalGroup(
             fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fileTabLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(openWorkingDirectoryButton)
-                    .addComponent(openIctalFileButton)
-                    .addComponent(openBaselineFileButton)
-                    .addComponent(openMaskFileButton))
-                .addContainerGap(342, Short.MAX_VALUE))
+                .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(fileTabLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(openIctalFileButton)
+                            .addComponent(openBaselineFileButton)
+                            .addComponent(openMaskFileButton))
+                        .addGap(46, 46, 46)
+                        .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(openIctalTRButton)
+                            .addComponent(openBaselineTRButton)))
+                    .addGroup(fileTabLayout.createSequentialGroup()
+                        .addGap(206, 206, 206)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(openWorkingDirectoryButton)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         fileTabLayout.setVerticalGroup(
             fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fileTabLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap()
                 .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(openWorkingDirectoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(openIctalFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2)
-                    .addComponent(openBaselineFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(openMaskFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(88, 88, 88))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(openWorkingDirectoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(fileTabLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(openIctalFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(openBaselineFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2))
+                        .addGap(21, 21, 21)
+                        .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(openMaskFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(fileTabLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(openIctalTRButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(fileTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(openBaselineTRButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(258, 258, 258))
         );
 
         tabManager.addTab("File input", fileTab);
 
-        tTestButton.setText("Perform T-Test");
-        tTestButton.addActionListener(new java.awt.event.ActionListener() {
+        calculateButton.setText(" Calculate pspiDTI");
+        calculateButton.setToolTipText("");
+        calculateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tTestButtonActionPerformed(evt);
+                calculateButtonActionPerformed(evt);
             }
         });
+
+        jScrollPane7.setBorder(new javax.swing.border.LineBorder(java.awt.SystemColor.activeCaption, 1, true));
+
+        consolePane.setEditable(false);
+        consolePane.setBorder(null);
+        consolePane.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        jScrollPane7.setViewportView(consolePane);
 
         javax.swing.GroupLayout analysisTabLayout = new javax.swing.GroupLayout(analysisTab);
         analysisTab.setLayout(analysisTabLayout);
@@ -230,15 +424,21 @@ private String workingDirectory=null;
             analysisTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(analysisTabLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tTestButton)
-                .addContainerGap(611, Short.MAX_VALUE))
+                .addGroup(analysisTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane7)
+                    .addGroup(analysisTabLayout.createSequentialGroup()
+                        .addComponent(calculateButton)
+                        .addGap(0, 704, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         analysisTabLayout.setVerticalGroup(
             analysisTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(analysisTabLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tTestButton)
-                .addContainerGap(267, Short.MAX_VALUE))
+                .addComponent(calculateButton)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         tabManager.addTab("Analysis", analysisTab);
@@ -249,15 +449,15 @@ private String workingDirectory=null;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tabManager)
-                .addContainerGap())
+                .addComponent(tabManager, javax.swing.GroupLayout.PREFERRED_SIZE, 868, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tabManager, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addComponent(tabManager, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -278,8 +478,10 @@ private String workingDirectory=null;
         else {
             returnVal=0;
         }
-        if(ictalFA!=null & baselineFA!=null & workingDirectory!=null){
-            tabManager.setEnabledAt(1, true);
+        if(workingDirectory!=null){
+            if((ictalFA!=null & baselineFA!=null)|(ictalTR!=null & baselineTR!=null)){
+                tabManager.setEnabledAt(2, true);
+            }
         }
     }//GEN-LAST:event_openIctalFileButtonActionPerformed
 
@@ -298,8 +500,10 @@ private String workingDirectory=null;
         else {
             returnVal=0;
         }
-        if(ictalFA!=null & baselineFA!=null & workingDirectory!=null){
-            tabManager.setEnabledAt(1, true);
+        if(workingDirectory!=null){
+            if((ictalFA!=null & baselineFA!=null)|(ictalTR!=null & baselineTR!=null)){
+                tabManager.setEnabledAt(2, true);
+            }
         }
     }//GEN-LAST:event_openBaselineFileButtonActionPerformed
 
@@ -318,34 +522,13 @@ private String workingDirectory=null;
         else {
             returnVal=0;
         }
+        if(workingDirectory!=null){
+            if((ictalFA!=null & baselineFA!=null)|(ictalTR!=null & baselineTR!=null)){
+                tabManager.setEnabledAt(2, true);
+            }
+        }
         
     }//GEN-LAST:event_openMaskFileButtonActionPerformed
-
-    private void tTestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tTestButtonActionPerformed
-        if(ictalFA!=null & baselineFA!=null){
-            this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-            UnpairedtTest operation = new UnpairedtTest();
-            NiftiNonLinearSpatialFilter spatialFilter = new NiftiNonLinearSpatialFilter(operation);
-            int[] dims ={0};
-            Kernel w = new Kernel(1,3);
-            FourDimensionalArray result;
-            if(binaryMask!=null){
-                result= spatialFilter.doubleFilter(ictalFA.data, baselineFA.data, w, binaryMask.data, dims);
-            }else{
-                result= spatialFilter.doubleFilter(ictalFA.data, baselineFA.data, w, dims);
-            }
-            NiftiVolume resultingVol= new NiftiVolume();
-            resultingVol.header=ictalFA.header;
-            resultingVol.data=result;
-            try{
-                resultingVol.write(workingDirectory+"pspiDTI_output\\FA_Pvals.nii.gz");
-            }
-            catch(Exception e){
-                System.out.println("Not able to write");
-            }
-            this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        }
-    }//GEN-LAST:event_tTestButtonActionPerformed
 
     private void openWorkingDirectoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openWorkingDirectoryButtonActionPerformed
         configureFileChooser(false);
@@ -356,7 +539,7 @@ private String workingDirectory=null;
             workingDirectory = file.getAbsolutePath()+"\\";
             directoryTextPane.setText(workingDirectory);
             fc.setCurrentDirectory(file);
-            String outputFolder= workingDirectory+"pspiDTI_output";
+            String outputFolder= workingDirectory+patientInitials+"_pspiDTI_output";
             File output=new File(outputFolder);
             if(!output.exists()){
                 if(output.mkdir()){
@@ -377,36 +560,175 @@ private String workingDirectory=null;
         }
         
         configureFileChooser(true);
-        if(ictalFA!=null & baselineFA!=null & workingDirectory!=null){
-            tabManager.setEnabledAt(1, true);
+        if(workingDirectory!=null){
+            if((ictalFA!=null & baselineFA!=null)|(ictalTR!=null & baselineTR!=null)){
+                tabManager.setEnabledAt(2, true);
+            }
         }
     }//GEN-LAST:event_openWorkingDirectoryButtonActionPerformed
 
+    private void openIctalTRButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openIctalTRButtonActionPerformed
+        int returnVal= fc.showDialog(this,"Open ictal Trace file...");
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            String filename = file.getAbsolutePath();
+            try{
+                ictalTR= new DrawableNiftiVolume(NiftiVolume.read(filename));
+                ictalTraceTextPane.setText(filename);
+            }catch(Exception e){
+
+            }
+        }
+        else {
+            returnVal=0;
+        }
+        if(workingDirectory!=null){
+            if((ictalFA!=null & baselineFA!=null)|(ictalTR!=null & baselineTR!=null)){
+                tabManager.setEnabledAt(2, true);
+            }
+        }
+    }//GEN-LAST:event_openIctalTRButtonActionPerformed
+
+    private void openBaselineTRButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBaselineTRButtonActionPerformed
+        int returnVal= fc.showDialog(this,"Open ictal Trace file...");
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            String filename = file.getAbsolutePath();
+            try{
+                baselineTR= new DrawableNiftiVolume(NiftiVolume.read(filename));
+                baselineTraceTextPane.setText(filename);
+            }catch(Exception e){
+
+            }
+        }
+        else {
+            returnVal=0;
+        }
+        if(workingDirectory!=null){
+            if((ictalFA!=null & baselineFA!=null)|(ictalTR!=null & baselineTR!=null)){
+                tabManager.setEnabledAt(2, true);
+            }
+        }
+    }//GEN-LAST:event_openBaselineTRButtonActionPerformed
+
+    private void patientInfoTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientInfoTextActionPerformed
+        if(patientInitials==null){
+            patientInitials=new String();
+            tabManager.setEnabledAt(1, true);
+        }
+        patientInitials= patientInfoText.getText().toUpperCase();
+        patientInfoText.setText(patientInitials);
+    }//GEN-LAST:event_patientInfoTextActionPerformed
+
+    private void alphaTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alphaTextActionPerformed
+        if(patientInitials==null){
+            patientInitials=new String();
+        }
+        patientInitials= patientInfoText.getText().toUpperCase();
+        if(!patientInitials.equals("")){
+            patientInfoText.setText(patientInitials);
+            tabManager.setEnabledAt(1, true);
+        }
+    }//GEN-LAST:event_alphaTextActionPerformed
+
+    private void alphaTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_alphaTextFocusLost
+        String text=alphaText.getText();
+        alpha=Double.parseDouble(text);
+        if(alpha>1 | alpha<0){
+            alpha=0.05;
+            alphaText.setText(Double.toString(alpha));
+        }
+    }//GEN-LAST:event_alphaTextFocusLost
+
+    private void patientInfoTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_patientInfoTextFocusLost
+        if(patientInitials==null){
+            patientInitials=new String();
+        }
+        patientInitials= patientInfoText.getText().toUpperCase();
+        if(!patientInitials.equals("")){
+            patientInfoText.setText(patientInitials);
+            tabManager.setEnabledAt(1, true);
+        }
+    }//GEN-LAST:event_patientInfoTextFocusLost
+
+    private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
+        /*this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        pspiDTI p= new pspiDTI(ictalFA,baselineFA,
+                   ictalTR,baselineTR,
+                   binaryMask, workingDirectory,
+                   patientInitials,alpha,consolePane);
+        p.calculate();
+        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));*/
+        (new Thread(new PspiImagingRunnable(ictalFA,baselineFA,ictalTR,baselineTR,
+                   binaryMask,workingDirectory,patientInitials,alpha,consolePane,this))).start();
+    }//GEN-LAST:event_calculateButtonActionPerformed
+
+    private void faThreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_faThreshActionPerformed
+        String selection=(String)faThresh.getSelectedItem();
+        double numericSelection=Double.parseDouble(selection);
+        if(numericSelection<0 | numericSelection>1){
+            faThresh.setSelectedIndex(0);
+            faThreshold=Double.NaN;
+        }else{
+            faThreshold=numericSelection;
+        }
+    }//GEN-LAST:event_faThreshActionPerformed
+
+    private void trThreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trThreshActionPerformed
+        String selection=(String)faThresh.getSelectedItem();
+        double numericSelection=Double.parseDouble(selection);
+        if(numericSelection<0 | numericSelection>1){
+            trThresh.setSelectedIndex(0);
+            trThreshold=Double.NaN;
+        }else{
+            trThreshold=numericSelection;
+        }
+    }//GEN-LAST:event_trThreshActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField alphaText;
     private javax.swing.JPanel analysisTab;
     private javax.swing.JTextPane baselineTextPane;
+    private javax.swing.JTextPane baselineTraceTextPane;
+    private javax.swing.JButton calculateButton;
+    private javax.swing.JTextPane consolePane;
     private javax.swing.JTextPane directoryTextPane;
     private javax.swing.JDialog errorDialog;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel errorTitleLabel;
+    private javax.swing.JComboBox<String> faThresh;
     private javax.swing.JPanel fileTab;
     private javax.swing.JTextPane ictalTextPane;
+    private javax.swing.JTextPane ictalTraceTextPane;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTextPane maskTextPane;
     private javax.swing.JButton openBaselineFileButton;
+    private javax.swing.JButton openBaselineTRButton;
     private javax.swing.JButton openIctalFileButton;
+    private javax.swing.JButton openIctalTRButton;
     private javax.swing.JButton openMaskFileButton;
     private javax.swing.JButton openWorkingDirectoryButton;
-    private javax.swing.JButton tTestButton;
+    private javax.swing.JTextField patientInfoText;
     private javax.swing.JTabbedPane tabManager;
+    private javax.swing.JComboBox<String> trThresh;
     // End of variables declaration//GEN-END:variables
     
     

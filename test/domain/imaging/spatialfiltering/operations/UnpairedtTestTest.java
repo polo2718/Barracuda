@@ -90,7 +90,7 @@ public class UnpairedtTestTest {
         
         System.out.println("Unpaired t-Test filter\n Result:");
 
-        UnpairedtTest operation = new UnpairedtTest();
+        UnpairedtTest operation = new UnpairedtTest(false);
         NonLinearSpatialFilter fil= new NonLinearSpatialFilter(operation);
         double[][] result = fil.doubleFilter(a, b,w);
         
