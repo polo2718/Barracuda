@@ -336,8 +336,8 @@
               </Group>
               <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="saggitalPanel" pref="286" max="32767" attributes="0"/>
-                  <Component id="infoPanel" max="32767" attributes="0"/>
+                  <Component id="saggitalPanel" pref="282" max="32767" attributes="0"/>
+                  <Component id="infoPanel" pref="282" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
           </Group>
@@ -391,9 +391,9 @@
                   <Component id="coronalLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="coronalSlider" alignment="2" max="32767" attributes="0"/>
-                      <Component id="coronalLabel2" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
                       <Component id="coronalLabel" alignment="2" max="32767" attributes="0"/>
+                      <Component id="coronalLabel2" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
+                      <Component id="coronalSlider" alignment="2" pref="256" max="32767" attributes="0"/>
                       <Component id="coronalLabel4" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
@@ -411,7 +411,7 @@
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Component id="coronalLabel3" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="coronalLabel" alignment="2" pref="256" max="32767" attributes="0"/>
+                      <Component id="coronalLabel" alignment="2" max="32767" attributes="0"/>
                       <Component id="coronalLabel1" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
@@ -440,7 +440,7 @@
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor Por defecto"/>
+              <Color id="Default Cursor"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10, 10]"/>
@@ -493,7 +493,7 @@
             <Property name="snapToTicks" type="boolean" value="true"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor Por defecto"/>
+              <Color id="Default Cursor"/>
             </Property>
             <Property name="extent" type="int" value="1"/>
             <Property name="focusCycleRoot" type="boolean" value="true"/>
@@ -533,13 +533,13 @@
                   <Component id="axialLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="axialSlider" alignment="2" max="32767" attributes="0"/>
                       <Component id="axialLabel2" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
                       <Group type="102" alignment="2" attributes="0">
                           <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
-                          <Component id="axialLabel" pref="256" max="32767" attributes="0"/>
+                          <Component id="axialLabel" max="32767" attributes="0"/>
                       </Group>
                       <Component id="axialLabel4" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
-                      <Component id="axialSlider" alignment="2" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="axialLabel3" min="-2" max="-2" attributes="0"/>
@@ -583,7 +583,7 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor Por defecto"/>
+              <Color id="Default Cursor"/>
             </Property>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -667,13 +667,11 @@
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="saggitalLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="2" attributes="0">
-                          <Component id="saggitalSlider" alignment="2" max="32767" attributes="0"/>
-                          <Component id="saggitalLabel4" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
-                          <Component id="saggitalLabel5" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="saggitalLabel" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="saggitalSlider" alignment="2" pref="0" max="32767" attributes="0"/>
+                      <Component id="saggitalLabel4" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
+                      <Component id="saggitalLabel" alignment="2" max="32767" attributes="0"/>
+                      <Component id="saggitalLabel5" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="saggitalLabel3" min="-2" pref="15" max="-2" attributes="0"/>
@@ -683,14 +681,14 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="2" attributes="0">
-                  <Component id="saggitalSlider" min="-2" max="-2" attributes="0"/>
+                  <Component id="saggitalSlider" min="-2" pref="26" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Component id="saggitalLabel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="saggitalLabel3" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="saggitalLabel" alignment="2" min="-2" pref="256" max="-2" attributes="0"/>
                       <Component id="saggitalLabel2" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="saggitalLabel" alignment="2" pref="254" max="32767" attributes="0"/>
+                      <Component id="saggitalLabel3" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="saggitalLabel5" min="-2" max="-2" attributes="0"/>
@@ -707,7 +705,7 @@
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor Por defecto"/>
+              <Color id="Default Cursor"/>
             </Property>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -770,7 +768,7 @@
             <Property name="snapToTicks" type="boolean" value="true"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Cursor Por defecto"/>
+              <Color id="Default Cursor"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[10, 5]"/>
@@ -779,6 +777,9 @@
               <Connection code=" getSliderModel()" type="code"/>
             </Property>
             <Property name="name" type="java.lang.String" value="" noResource="true"/>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[256, 26]"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="saggitalSliderStateChanged"/>
@@ -916,7 +917,7 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="115" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>

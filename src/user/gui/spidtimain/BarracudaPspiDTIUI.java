@@ -48,6 +48,7 @@ private double trThreshold=Double.NaN;
         tabManager.setEnabledAt(1, false); //Files tab, only enabled when patientInitials are defined
         tabManager.setEnabledAt(2, false); // Analysis Tab, only enabled when at least all the files are input
         alpha = 0.05;
+        errorDialog.setLocationRelativeTo(null);
     }
 
     /**
@@ -63,7 +64,7 @@ private double trThreshold=Double.NaN;
         errorTitleLabel = new javax.swing.JLabel();
         errorLabel = new javax.swing.JLabel();
         tabManager = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        settingsPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         patientInfoText = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -101,6 +102,10 @@ private double trThreshold=Double.NaN;
         calculateButton = new javax.swing.JButton();
         jScrollPane7 = new javax.swing.JScrollPane();
         consolePane = new javax.swing.JTextPane();
+        clearConsoleButton = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        optionsMenu = new javax.swing.JMenu();
+        newAnalysisButton = new javax.swing.JMenuItem();
 
         errorDialog.setTitle("Error!!!");
         errorDialog.setIconImage(IconGetter.getProjectIcon("error_icon.png"));
@@ -135,6 +140,7 @@ private double trThreshold=Double.NaN;
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setIconImage(IconGetter.getProjectIcon("synapticom2.png"));
 
         tabManager.setVerifyInputWhenFocusTarget(false);
 
@@ -173,7 +179,7 @@ private double trThreshold=Double.NaN;
 
         faThresh.setEditable(true);
         faThresh.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        faThresh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0.05", "0.10", "0.15", "0.20" }));
+        faThresh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "0.05", "0.10", "0.15", "0.20" }));
         faThresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 faThreshActionPerformed(evt);
@@ -188,55 +194,55 @@ private double trThreshold=Double.NaN;
 
         trThresh.setEditable(true);
         trThresh.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        trThresh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0.05", "0.10", "0.15", "0.20" }));
+        trThresh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "0.05", "0.10", "0.15", "0.20" }));
         trThresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 trThreshActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout settingsPanelLayout = new javax.swing.GroupLayout(settingsPanel);
+        settingsPanel.setLayout(settingsPanelLayout);
+        settingsPanelLayout.setHorizontalGroup(
+            settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(settingsPanelLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
-                    .addComponent(trThresh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(alphaText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(patientInfoText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(faThresh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(647, Short.MAX_VALUE))
+                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
+                    .addComponent(trThresh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(alphaText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(patientInfoText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(faThresh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(628, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        settingsPanelLayout.setVerticalGroup(
+            settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(settingsPanelLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel7)
                     .addComponent(patientInfoText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel9)
                     .addComponent(alphaText, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(faThresh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(trThresh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
                 .addContainerGap(143, Short.MAX_VALUE))
         );
 
-        tabManager.addTab("Settings", jPanel1);
+        tabManager.addTab("Settings", settingsPanel);
 
         jLabel2.setText("Baseline FA File:");
 
@@ -418,6 +424,13 @@ private double trThreshold=Double.NaN;
         consolePane.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jScrollPane7.setViewportView(consolePane);
 
+        clearConsoleButton.setText("Clear");
+        clearConsoleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearConsoleButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout analysisTabLayout = new javax.swing.GroupLayout(analysisTab);
         analysisTab.setLayout(analysisTabLayout);
         analysisTabLayout.setHorizontalGroup(
@@ -428,20 +441,39 @@ private double trThreshold=Double.NaN;
                     .addComponent(jScrollPane7)
                     .addGroup(analysisTabLayout.createSequentialGroup()
                         .addComponent(calculateButton)
-                        .addGap(0, 704, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 640, Short.MAX_VALUE)
+                        .addComponent(clearConsoleButton)))
                 .addContainerGap())
         );
         analysisTabLayout.setVerticalGroup(
             analysisTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(analysisTabLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(calculateButton)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(analysisTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(analysisTabLayout.createSequentialGroup()
+                        .addComponent(calculateButton)
+                        .addGap(15, 15, 15))
+                    .addComponent(clearConsoleButton, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabManager.addTab("Analysis", analysisTab);
+
+        optionsMenu.setText("Options");
+
+        newAnalysisButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        newAnalysisButton.setText("New Analysis");
+        newAnalysisButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newAnalysisButtonActionPerformed(evt);
+            }
+        });
+        optionsMenu.add(newAnalysisButton);
+
+        jMenuBar1.add(optionsMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -483,6 +515,54 @@ private double trThreshold=Double.NaN;
                 tabManager.setEnabledAt(2, true);
             }
         }
+        //Check dimensions & orientation with baseline
+        if(baselineFA!=null ){
+            for(int i=1;i<5;i++){
+                if(ictalFA.header.dim[i]!=baselineFA.header.dim[i]){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Baseline & ictal FA dimensions don't agree");
+                    ictalFA=null;
+                    tabManager.setEnabledAt(2,false);
+                    ictalTextPane.setText("");
+                    errorDialog.setVisible(true);
+                    break;
+                }
+            }
+            if(ictalFA!=null){
+                if(!ictalFA.header.orientation().equals(baselineFA.header.orientation())){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Baseline & ictal FA orientations don't agree");
+                    ictalFA=null;
+                    tabManager.setEnabledAt(2,false);
+                    ictalTextPane.setText("");
+                    errorDialog.setVisible(true);
+                }
+            }
+        }
+        //Check dimensions & orientation with mask
+        if(binaryMask!=null ){
+            for(int i=1;i<5;i++){
+                if(ictalFA.header.dim[i]!=binaryMask.header.dim[i]){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Mask & ictal FA dimensions don't agree");
+                    ictalFA=null;
+                    tabManager.setEnabledAt(2,false);
+                    ictalTextPane.setText("");
+                    errorDialog.setVisible(true);
+                    break;
+                }
+            }
+            if(ictalFA!=null){
+                if(!ictalFA.header.orientation().equals(binaryMask.header.orientation())){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Mask & ictal FA orientations don't agree");
+                    ictalFA=null;
+                    tabManager.setEnabledAt(2,false);
+                    ictalTextPane.setText("");
+                    errorDialog.setVisible(true);
+                }
+            }
+        }
     }//GEN-LAST:event_openIctalFileButtonActionPerformed
 
     private void openBaselineFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBaselineFileButtonActionPerformed
@@ -503,6 +583,54 @@ private double trThreshold=Double.NaN;
         if(workingDirectory!=null){
             if((ictalFA!=null & baselineFA!=null)|(ictalTR!=null & baselineTR!=null)){
                 tabManager.setEnabledAt(2, true);
+            }
+        }
+        //Check dimensions & orientation with ictal
+        if(ictalFA!=null ){
+            for(int i=1;i<5;i++){
+                if(ictalFA.header.dim[i]!=baselineFA.header.dim[i]){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Baseline & ictal FA dimensions don't agree");
+                    baselineFA=null;
+                    tabManager.setEnabledAt(2,false);
+                    baselineTextPane.setText("");
+                    errorDialog.setVisible(true);
+                    break;
+                }
+            }
+            if(baselineFA!=null){
+                if(!ictalFA.header.orientation().equals(baselineFA.header.orientation())){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Baseline & ictal FA orientations don't agree");
+                    baselineFA=null;
+                    tabManager.setEnabledAt(2,false);
+                    baselineTextPane.setText("");
+                    errorDialog.setVisible(true);
+                }
+            }
+        }
+        //Check dimensions & orientation with mask
+        if(binaryMask!=null ){
+            for(int i=1;i<5;i++){
+                if(baselineFA.header.dim[i]!=binaryMask.header.dim[i]){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Mask & baseline FA dimensions don't agree");
+                    baselineFA=null;
+                    tabManager.setEnabledAt(2,false);
+                    baselineTextPane.setText("");
+                    errorDialog.setVisible(true);
+                    break;
+                }
+            }
+            if(baselineFA!=null){
+                if(!baselineFA.header.orientation().equals(binaryMask.header.orientation())){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Mask & baseline FA orientations don't agree");
+                    baselineFA=null;
+                    tabManager.setEnabledAt(2,false);
+                    baselineTextPane.setText("");
+                    errorDialog.setVisible(true);
+                }
             }
         }
     }//GEN-LAST:event_openBaselineFileButtonActionPerformed
@@ -527,7 +655,54 @@ private double trThreshold=Double.NaN;
                 tabManager.setEnabledAt(2, true);
             }
         }
-        
+        //Check baseline TR
+        if(baselineTR!=null ){
+            for(int i=1;i<5;i++){
+                if(baselineTR.header.dim[i]!=binaryMask.header.dim[i]){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Mask & baseline TR dimensions don't agree");
+                    binaryMask=null;
+                    tabManager.setEnabledAt(2,false);
+                    maskTextPane.setText("");
+                    errorDialog.setVisible(true);
+                    break;
+                }
+            }
+            if(binaryMask!=null){
+                if(!baselineTR.header.orientation().equals(binaryMask.header.orientation())){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Mask & baseline TR orientations don't agree");
+                    binaryMask=null;
+                    tabManager.setEnabledAt(2,false);
+                    maskTextPane.setText("");
+                    errorDialog.setVisible(true);
+                }
+            }
+        }
+        //Check baseline FA
+        if(baselineFA!=null ){
+            for(int i=1;i<5;i++){
+                if(baselineFA.header.dim[i]!=binaryMask.header.dim[i]){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Mask & baseline FA dimensions don't agree");
+                    binaryMask=null;
+                    tabManager.setEnabledAt(2,false);
+                    maskTextPane.setText("");
+                    errorDialog.setVisible(true);
+                    break;
+                }
+            }
+            if(binaryMask!=null){
+                if(!baselineFA.header.orientation().equals(binaryMask.header.orientation())){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Mask & baseline FA orientations don't agree");
+                    binaryMask=null;
+                    tabManager.setEnabledAt(2,false);
+                    maskTextPane.setText("");
+                    errorDialog.setVisible(true);
+                }
+            }
+        }
     }//GEN-LAST:event_openMaskFileButtonActionPerformed
 
     private void openWorkingDirectoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openWorkingDirectoryButtonActionPerformed
@@ -587,10 +762,58 @@ private double trThreshold=Double.NaN;
                 tabManager.setEnabledAt(2, true);
             }
         }
+        //Check dimensions & orientation with baseline
+        if(baselineTR!=null ){
+            for(int i=1;i<5;i++){
+                if(ictalTR.header.dim[i]!=baselineTR.header.dim[i]){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Baseline & ictal TR dimensions don't agree");
+                    ictalTR=null;
+                    tabManager.setEnabledAt(2,false);
+                    ictalTraceTextPane.setText("");
+                    errorDialog.setVisible(true);
+                    break;
+                }
+            }
+            if(ictalTR!=null){
+                if(!ictalTR.header.orientation().equals(baselineTR.header.orientation())){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Baseline & ictal TR orientations don't agree");
+                    ictalTR=null;
+                    tabManager.setEnabledAt(2,false);
+                    ictalTraceTextPane.setText("");
+                    errorDialog.setVisible(true);
+                }
+            }
+        }
+        //Check dimensions & orientation with mask
+        if(binaryMask!=null ){
+            for(int i=1;i<5;i++){
+                if(ictalTR.header.dim[i]!=binaryMask.header.dim[i]){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Mask & ictal TR dimensions don't agree");
+                    ictalTR=null;
+                    tabManager.setEnabledAt(2,false);
+                    ictalTraceTextPane.setText("");
+                    errorDialog.setVisible(true);
+                    break;
+                }
+            }
+            if(ictalTR!=null){
+                if(!ictalTR.header.orientation().equals(binaryMask.header.orientation())){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Mask & ictal TR orientations don't agree");
+                    ictalTR=null;
+                    tabManager.setEnabledAt(2,false);
+                    ictalTraceTextPane.setText("");
+                    errorDialog.setVisible(true);
+                }
+            }
+        }
     }//GEN-LAST:event_openIctalTRButtonActionPerformed
 
     private void openBaselineTRButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBaselineTRButtonActionPerformed
-        int returnVal= fc.showDialog(this,"Open ictal Trace file...");
+        int returnVal= fc.showDialog(this,"Open baseline Trace file...");
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             String filename = file.getAbsolutePath();
@@ -607,6 +830,54 @@ private double trThreshold=Double.NaN;
         if(workingDirectory!=null){
             if((ictalFA!=null & baselineFA!=null)|(ictalTR!=null & baselineTR!=null)){
                 tabManager.setEnabledAt(2, true);
+            }
+        }
+        //Check dimensions & orientation with ictal
+        if(ictalTR!=null ){
+            for(int i=1;i<5;i++){
+                if(ictalTR.header.dim[i]!=baselineTR.header.dim[i]){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Baseline & ictal TR dimensions don't agree");
+                    errorDialog.setVisible(true);
+                    baselineTR=null;
+                    tabManager.setEnabledAt(2,false);
+                    baselineTraceTextPane.setText("");
+                    break;
+                }
+            }
+            if(baselineTR!=null){
+                if(!ictalTR.header.orientation().equals(baselineTR.header.orientation())){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Baseline & ictal TR orientations don't agree");
+                    baselineTR=null;
+                    tabManager.setEnabledAt(2,false);
+                    baselineTraceTextPane.setText("");
+                    errorDialog.setVisible(true);
+                }
+            }
+        }
+        //Check dimensions & orientation with mask
+        if(binaryMask!=null ){
+            for(int i=1;i<5;i++){
+                if(baselineTR.header.dim[i]!=binaryMask.header.dim[i]){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Mask & baseline TR dimensions don't agree");
+                    baselineTR=null;
+                    tabManager.setEnabledAt(2,false);
+                    baselineTraceTextPane.setText("");
+                    errorDialog.setVisible(true);
+                    break;
+                }
+            }
+            if(baselineTR!=null){
+                if(!baselineTR.header.orientation().equals(binaryMask.header.orientation())){
+                    errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Error!!!!</font></strong>");
+                    errorLabel.setText("Mask & baseline TR orientations don't agree");
+                    baselineTR=null;
+                    tabManager.setEnabledAt(2,false);
+                    baselineTraceTextPane.setText("");
+                    errorDialog.setVisible(true);
+                }
             }
         }
     }//GEN-LAST:event_openBaselineTRButtonActionPerformed
@@ -652,20 +923,19 @@ private double trThreshold=Double.NaN;
     }//GEN-LAST:event_patientInfoTextFocusLost
 
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
-        /*this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        pspiDTI p= new pspiDTI(ictalFA,baselineFA,
-                   ictalTR,baselineTR,
-                   binaryMask, workingDirectory,
-                   patientInitials,alpha,consolePane);
-        p.calculate();
-        this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));*/
+        double[] thresholds={faThreshold,trThreshold};
         (new Thread(new PspiImagingRunnable(ictalFA,baselineFA,ictalTR,baselineTR,
-                   binaryMask,workingDirectory,patientInitials,alpha,consolePane,this))).start();
+                   binaryMask,workingDirectory,patientInitials,alpha,consolePane,this,thresholds))).start();
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     private void faThreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_faThreshActionPerformed
         String selection=(String)faThresh.getSelectedItem();
-        double numericSelection=Double.parseDouble(selection);
+        double numericSelection;
+        try{
+            numericSelection=Double.parseDouble(selection);
+        }catch(Exception e){
+            numericSelection=2;
+        }
         if(numericSelection<0 | numericSelection>1){
             faThresh.setSelectedIndex(0);
             faThreshold=Double.NaN;
@@ -676,7 +946,12 @@ private double trThreshold=Double.NaN;
 
     private void trThreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_trThreshActionPerformed
         String selection=(String)faThresh.getSelectedItem();
-        double numericSelection=Double.parseDouble(selection);
+        double numericSelection;
+        try{
+            numericSelection=Double.parseDouble(selection);
+        }catch(Exception e){
+            numericSelection=2;
+        }
         if(numericSelection<0 | numericSelection>1){
             trThresh.setSelectedIndex(0);
             trThreshold=Double.NaN;
@@ -685,6 +960,36 @@ private double trThreshold=Double.NaN;
         }
     }//GEN-LAST:event_trThreshActionPerformed
 
+    private void newAnalysisButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newAnalysisButtonActionPerformed
+        ictalFA=null;
+        ictalTextPane.setText("");
+        baselineFA=null;
+        baselineTextPane.setText("");
+        ictalTR=null;
+        ictalTraceTextPane.setText("");
+        baselineTR=null;
+        baselineTraceTextPane.setText("");
+        binaryMask=null;
+        maskTextPane.setText("");
+        workingDirectory=null;
+        directoryTextPane.setText("");
+        patientInitials=null;
+        patientInfoText.setText("");
+        tabManager.setSelectedIndex(0);
+        tabManager.setEnabledAt(1,false);
+        tabManager.setEnabledAt(2,false);
+        consolePane.setText("");
+        faThreshold=Double.NaN;
+        faThresh.setSelectedIndex(0);
+        trThreshold=Double.NaN;
+        trThresh.setSelectedIndex(0);
+
+    }//GEN-LAST:event_newAnalysisButtonActionPerformed
+
+    private void clearConsoleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearConsoleButtonActionPerformed
+        consolePane.setText("");
+    }//GEN-LAST:event_clearConsoleButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField alphaText;
@@ -692,6 +997,7 @@ private double trThreshold=Double.NaN;
     private javax.swing.JTextPane baselineTextPane;
     private javax.swing.JTextPane baselineTraceTextPane;
     private javax.swing.JButton calculateButton;
+    private javax.swing.JButton clearConsoleButton;
     private javax.swing.JTextPane consolePane;
     private javax.swing.JTextPane directoryTextPane;
     private javax.swing.JDialog errorDialog;
@@ -711,7 +1017,7 @@ private double trThreshold=Double.NaN;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -720,13 +1026,16 @@ private double trThreshold=Double.NaN;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTextPane maskTextPane;
+    private javax.swing.JMenuItem newAnalysisButton;
     private javax.swing.JButton openBaselineFileButton;
     private javax.swing.JButton openBaselineTRButton;
     private javax.swing.JButton openIctalFileButton;
     private javax.swing.JButton openIctalTRButton;
     private javax.swing.JButton openMaskFileButton;
     private javax.swing.JButton openWorkingDirectoryButton;
+    private javax.swing.JMenu optionsMenu;
     private javax.swing.JTextField patientInfoText;
+    private javax.swing.JPanel settingsPanel;
     private javax.swing.JTabbedPane tabManager;
     private javax.swing.JComboBox<String> trThresh;
     // End of variables declaration//GEN-END:variables
