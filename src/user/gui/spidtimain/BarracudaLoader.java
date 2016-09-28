@@ -38,13 +38,13 @@ public class BarracudaLoader extends javax.swing.JFrame {
         pspiDTIDialogButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setIconImage(IconGetter.getProjectIcon("synapticom2.png")
+        setIconImage(IconGetter.getProjectIcon("brain128.png")
         );
 
         mainIcon.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         mainIcon.setForeground(new java.awt.Color(0, 102, 153));
         mainIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        mainIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/synapticom2.png"))); // NOI18N
+        mainIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Capture.png"))); // NOI18N
 
         barracudaViewButton.setText("Barracuda View");
         barracudaViewButton.setToolTipText("");
@@ -68,21 +68,21 @@ public class BarracudaLoader extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(168, 168, 168)
-                        .addComponent(mainIcon))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(barracudaViewButton)
                         .addGap(18, 18, 18)
-                        .addComponent(pspiDTIDialogButton)))
-                .addContainerGap(176, Short.MAX_VALUE))
+                        .addComponent(pspiDTIDialogButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(116, 116, 116)
+                        .addComponent(mainIcon)))
+                .addGap(116, 116, 116))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addContainerGap()
                 .addComponent(mainIcon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(barracudaViewButton)
                     .addComponent(pspiDTIDialogButton))

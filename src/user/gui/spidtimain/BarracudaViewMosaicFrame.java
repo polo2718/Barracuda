@@ -280,7 +280,7 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setIconImage(IconGetter.getProjectIcon("synapticom2.png"));
+        setIconImage(IconGetter.getProjectIcon("brain128.png"));
         setMinimumSize(new java.awt.Dimension(300, 300));
         setSize(new java.awt.Dimension(800, 600));
         addMouseWheelListener(new java.awt.event.MouseWheelListener() {

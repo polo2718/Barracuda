@@ -63,6 +63,7 @@ private double trThreshold=Double.NaN;
         errorDialog = new javax.swing.JDialog();
         errorTitleLabel = new javax.swing.JLabel();
         errorLabel = new javax.swing.JLabel();
+        statisticalCorrectionGroup = new javax.swing.ButtonGroup();
         tabManager = new javax.swing.JTabbedPane();
         settingsPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -73,6 +74,8 @@ private double trThreshold=Double.NaN;
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         trThresh = new javax.swing.JComboBox<>();
+        uncorrectedOption = new javax.swing.JRadioButton();
+        correctedOption = new javax.swing.JRadioButton();
         fileTab = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         openIctalFileButton = new javax.swing.JButton();
@@ -139,8 +142,11 @@ private double trThreshold=Double.NaN;
                 .addContainerGap())
         );
 
+        statisticalCorrectionGroup.add(uncorrectedOption);
+        statisticalCorrectionGroup.add(correctedOption);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setIconImage(IconGetter.getProjectIcon("synapticom2.png"));
+        setIconImage(IconGetter.getProjectIcon("brain128.png"));
 
         tabManager.setVerifyInputWhenFocusTarget(false);
 
@@ -201,6 +207,12 @@ private double trThreshold=Double.NaN;
             }
         });
 
+        uncorrectedOption.setSelected(true);
+        uncorrectedOption.setText("Un-corrected ");
+        uncorrectedOption.setToolTipText("");
+
+        correctedOption.setText("Corrected");
+
         javax.swing.GroupLayout settingsPanelLayout = new javax.swing.GroupLayout(settingsPanel);
         settingsPanel.setLayout(settingsPanelLayout);
         settingsPanelLayout.setHorizontalGroup(
@@ -208,16 +220,23 @@ private double trThreshold=Double.NaN;
             .addGroup(settingsPanelLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
-                    .addComponent(trThresh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(alphaText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(patientInfoText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(faThresh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(settingsPanelLayout.createSequentialGroup()
+                        .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER, false)
+                            .addComponent(trThresh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(alphaText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(patientInfoText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(faThresh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(settingsPanelLayout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(correctedOption)
+                            .addComponent(uncorrectedOption))))
                 .addContainerGap(628, Short.MAX_VALUE))
         );
         settingsPanelLayout.setVerticalGroup(
@@ -239,7 +258,11 @@ private double trThreshold=Double.NaN;
                 .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(trThresh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addContainerGap(143, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addComponent(uncorrectedOption)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(correctedOption)
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         tabManager.addTab("Settings", settingsPanel);
@@ -999,6 +1022,7 @@ private double trThreshold=Double.NaN;
     private javax.swing.JButton calculateButton;
     private javax.swing.JButton clearConsoleButton;
     private javax.swing.JTextPane consolePane;
+    private javax.swing.JRadioButton correctedOption;
     private javax.swing.JTextPane directoryTextPane;
     private javax.swing.JDialog errorDialog;
     private javax.swing.JLabel errorLabel;
@@ -1036,8 +1060,10 @@ private double trThreshold=Double.NaN;
     private javax.swing.JMenu optionsMenu;
     private javax.swing.JTextField patientInfoText;
     private javax.swing.JPanel settingsPanel;
+    private javax.swing.ButtonGroup statisticalCorrectionGroup;
     private javax.swing.JTabbedPane tabManager;
     private javax.swing.JComboBox<String> trThresh;
+    private javax.swing.JRadioButton uncorrectedOption;
     // End of variables declaration//GEN-END:variables
     
     
