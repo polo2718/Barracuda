@@ -1860,7 +1860,11 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 drawLabelsXHair();
             }
         }else{
-            drawAllSlices();
+            if(overlayVol==null){
+                drawAllSlices();
+            }else{
+                drawAllSlicesOverlay();
+            }
         }
     }//GEN-LAST:event_xhairButtonActionPerformed
                                     
