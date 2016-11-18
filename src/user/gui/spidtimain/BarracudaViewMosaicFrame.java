@@ -724,20 +724,20 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         BufferedImage img;
         BufferedImage img2;
         int range=endSlice-startSlice;
-        int val=startSlice;
+        int val=endSlice;
         int gap=(int)(range/(double)(n*m));
         if(overlayVol==null){
-            for(int i=0;i<n*m;i++){
-                if(val<endSlice){
-                     val=startSlice+i*gap;
+            for(int i=1;i<n*m+1;i++){
+                if(val>startSlice){
+                     val=endSlice-i*gap;
                      img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
                      createTilePanel(img,val);
                 }
             }
         }else{
-            for(int i=0;i<n*m;i++){
-                if(val<endSlice){
-                     val=startSlice+i*gap;
+            for(int i=1;i<n*m+1;i++){
+                if(val>startSlice){
+                     val=endSlice-i*gap;
                      img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
                      img2=overlayVol.drawNiftiSlice(val,plane,0,colorScaleOverlay);
                      Graphics g=img.getGraphics();
@@ -778,20 +778,20 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         BufferedImage img;
         BufferedImage img2;
         int range=endSlice-startSlice;
-        int val=startSlice;
+        int val=endSlice;
         int gap=(int)(range/(double)(n*m));
         if(overlayVol==null){
-            for(int i=0;i<n*m;i++){
-                if(val<endSlice){
-                     val=startSlice+i*gap;
+            for(int i=1;i<n*m+1;i++){
+                if(val>startSlice){
+                     val=endSlice-i*gap;
                      img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
                      createTilePanel(img,val);
                 }
             }
         }else{
-            for(int i=0;i<n*m;i++){
-                if(val<endSlice){
-                     val=startSlice+i*gap;
+            for(int i=1;i<n*m+1;i++){
+                if(val>startSlice){
+                     val=endSlice-i*gap;
                      img=niiVol.drawNiftiSlice(val,plane,0,colorScale);
                      img2=overlayVol.drawNiftiSlice(val,plane,0,colorScaleOverlay);
                      Graphics g=img.getGraphics();

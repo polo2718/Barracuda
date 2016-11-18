@@ -11,6 +11,7 @@ import data.niftilibrary.niftijio.NiftiVolume;
 import domain.imaging.spatialfiltering.Kernel;
 import domain.imaging.spatialfiltering.NiftiNonLinearSpatialFilter;
 import domain.imaging.spatialfiltering.operations.UnpairedtTest;
+import domain.mathUtils.arrayTools.ArrayOperations;
 import domain.mathUtils.numericalMethods.statistics.LimitedStatisticalMoment;
 import java.awt.Cursor;
 import javax.swing.text.html.HTMLDocument;
@@ -119,10 +120,16 @@ public class pspiDTI {
             NiftiVolume resultingVol=new NiftiVolume();
             if(FA_TR){
                 resultingVol.header=ictalFA.header;
+                resultingVol.header.intent_code=22;
+                resultingVol.header.cal_max=(float)alpha;
+                resultingVol.header.cal_min=0;
                 resultingVol.data=result;
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_Pvals.nii.gz");
             }else{
                 resultingVol.header=ictalTR.header;
+                resultingVol.header.intent_code=22;
+                resultingVol.header.cal_max=(float)alpha;
+                resultingVol.header.cal_min=0;
                 resultingVol.data=result;
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_Pvals.nii.gz");
             }
@@ -161,6 +168,8 @@ public class pspiDTI {
                 }
             }
             resultingVol.header=ictalFA.header;
+            resultingVol.header.intent_code=1001;
+            resultingVol.header.intent_name=new StringBuffer("FA decrease");
             resultingVol.data=result;
             append("Writing FA Files...");
             try{
@@ -265,6 +274,8 @@ public class pspiDTI {
                 }
             }
             resultingVol.header=ictalTR.header;
+            resultingVol.header.intent_code=1001;
+            resultingVol.header.intent_name=new StringBuffer("Trace increase");
             resultingVol.data=result;
             append("Writing Trace Files...");
             try{
@@ -305,10 +316,10 @@ public class pspiDTI {
             }catch(Exception e){
                 append("Error writing file\n");
             }
-            
+            double max=ArrayOperations.findMaximum(resultingVol.data.get3DArray(0));
             if(Double.isNaN(thresholds[1])){
                 // 0.05 TR threshold
-                resultingVol.data=cleanSubtract(result,1,TR,0.05);
+                resultingVol.data=cleanSubtract(result,1,TR,0.05*max);
                 append("Writing Trace: 0.05...");
                 try{
                     resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_0.05t_increase.nii.gz");
@@ -317,7 +328,7 @@ public class pspiDTI {
                     append("Error writing file\n");
                 }
                 // 0.1 TR threshold
-                resultingVol.data=cleanSubtract(result,1,TR,0.1);
+                resultingVol.data=cleanSubtract(result,1,TR,0.1*max);
                 append("Writing Trace: 0.10...");
                 try{
                     resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_0.10t_increase.nii.gz");
@@ -326,7 +337,7 @@ public class pspiDTI {
                     append("Error writing file\n");
                 }
                 // 0.15 TR threshold
-                resultingVol.data=cleanSubtract(result,1,TR,0.15);
+                resultingVol.data=cleanSubtract(result,1,TR,0.15*max);
                 append("Writing Trace: 0.15...");
                 try{
                     resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_0.15t_increase.nii.gz");
@@ -335,7 +346,7 @@ public class pspiDTI {
                     append("Error writing file\n");
                 }
                 // 0.20 TR threshold
-                resultingVol.data=cleanSubtract(result,1,TR,0.2);
+                resultingVol.data=cleanSubtract(result,1,TR,0.2*max);
                 append("Writing Trace: 0.20...");
                 try{
                     resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_0.20t_increase.nii.gz");

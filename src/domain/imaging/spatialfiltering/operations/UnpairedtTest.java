@@ -12,7 +12,7 @@ import domain.mathUtils.numericalMethods.statistics.*;
  * @author Diego Garibay-Pulido 2016
  */
 public class UnpairedtTest implements NonLinearFilterOperation{
-    private static StudentDistribution distribution=new StudentDistribution();;
+    private static  StudentDistribution distribution=new StudentDistribution();
     public static final boolean LEFT_TAIL=true;
     public static final boolean RIGHT_TAIL=false;
     private boolean tail;

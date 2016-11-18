@@ -4,7 +4,7 @@
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="viewGroup">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="viewGroup.add(radioView);&#xa;viewGroup.add(neuroView);&#xa;neuroView.setSelected(true);"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="viewGroup.add(neurologicalView);&#xa;viewGroup.add(radiologicalView);&#xa;radiologicalView.setSelected(true);"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.ButtonGroup" name="volumeSelectorGroup">
@@ -253,7 +253,7 @@
             <Property name="text" type="java.lang.String" value="Volume"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="neuroView.setSelected(true);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="radiologicalView.setSelected(true);"/>
           </AuxValues>
           <SubComponents>
             <MenuItem class="javax.swing.JRadioButtonMenuItem" name="volumeSelect">
@@ -329,17 +329,17 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="axialPanel" pref="282" max="32767" attributes="0"/>
-                          <Component id="coronalPanel" pref="282" max="32767" attributes="0"/>
+                          <Component id="axialPanel" pref="284" max="32767" attributes="0"/>
+                          <Component id="coronalPanel" pref="284" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="saggitalPanel" pref="282" max="32767" attributes="0"/>
-                  <Component id="infoPanel" pref="282" max="32767" attributes="0"/>
+                  <Component id="infoPanel" min="-2" max="-2" attributes="0"/>
+                  <Component id="saggitalPanel" pref="284" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -357,13 +357,13 @@
                       <Component id="axialPanel" pref="320" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="valueLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Component id="infoPanel" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                      <EmptySpace min="16" pref="16" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -391,14 +391,14 @@
                   <Component id="coronalLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="coronalLabel4" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
                       <Component id="coronalLabel" alignment="2" max="32767" attributes="0"/>
                       <Component id="coronalLabel2" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
                       <Component id="coronalSlider" alignment="2" pref="256" max="32767" attributes="0"/>
-                      <Component id="coronalLabel4" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="coronalLabel3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -408,15 +408,15 @@
                   <Component id="coronalSlider" min="-2" pref="26" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Component id="coronalLabel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Component id="coronalLabel3" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="coronalLabel" alignment="2" max="32767" attributes="0"/>
+                      <Component id="coronalLabel" alignment="2" pref="256" max="32767" attributes="0"/>
                       <Component id="coronalLabel1" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="coronalLabel4" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+                  <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -533,17 +533,14 @@
                   <Component id="axialLabel1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="axialSlider" alignment="2" max="32767" attributes="0"/>
                       <Component id="axialLabel2" alignment="2" min="-2" pref="17" max="-2" attributes="0"/>
-                      <Group type="102" alignment="2" attributes="0">
-                          <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
-                          <Component id="axialLabel" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="axialLabel" alignment="2" max="32767" attributes="0"/>
                       <Component id="axialLabel4" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
+                      <Component id="axialSlider" alignment="2" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="axialLabel3" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -553,9 +550,9 @@
                   <Component id="axialLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="axialLabel3" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="axialLabel" alignment="2" pref="256" max="32767" attributes="0"/>
                       <Component id="axialLabel1" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="axialLabel" alignment="2" pref="256" max="32767" attributes="0"/>
+                      <Component id="axialLabel3" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="axialLabel4" min="-2" max="-2" attributes="0"/>
@@ -668,26 +665,27 @@
                   <Component id="saggitalLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="saggitalSlider" alignment="2" pref="0" max="32767" attributes="0"/>
+                      <Component id="saggitalSlider" alignment="2" pref="250" max="32767" attributes="0"/>
                       <Component id="saggitalLabel4" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
-                      <Component id="saggitalLabel" alignment="2" max="32767" attributes="0"/>
+                      <Component id="saggitalLabel" alignment="2" pref="250" max="32767" attributes="0"/>
                       <Component id="saggitalLabel5" alignment="2" min="-2" pref="15" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                   <Component id="saggitalLabel3" min="-2" pref="15" max="-2" attributes="0"/>
+                  <EmptySpace min="4" pref="4" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="2" attributes="0">
+              <Group type="102" attributes="0">
                   <Component id="saggitalSlider" min="-2" pref="26" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Component id="saggitalLabel4" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="saggitalLabel" alignment="2" max="32767" attributes="0"/>
                       <Component id="saggitalLabel2" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="saggitalLabel" alignment="2" pref="254" max="32767" attributes="0"/>
                       <Component id="saggitalLabel3" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
@@ -793,116 +791,112 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="xhairButton" min="-2" pref="27" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel3" alignment="1" min="-2" pref="16" max="-2" attributes="0"/>
+                              <Component id="jLabel2" alignment="1" min="-2" pref="16" max="-2" attributes="0"/>
+                              <Component id="jLabel1" alignment="1" min="-2" pref="16" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="volSpinner" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="2" attributes="0">
+                                      <Component id="zSpinner" alignment="2" min="-2" max="-2" attributes="0"/>
+                                      <Component id="ySpinner" alignment="2" min="-2" max="-2" attributes="0"/>
+                                      <Component id="xSpinner" alignment="2" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="yPosLabel" alignment="0" pref="68" max="32767" attributes="0"/>
+                                      <Component id="xPosLabel" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="zPosLabel" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
                       </Group>
+                      <Component id="radiologicalView" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="neurologicalView" alignment="0" min="-2" pref="131" max="-2" attributes="0"/>
+                      <Component id="xhairButton" min="-2" pref="27" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel3" alignment="1" min="-2" pref="16" max="-2" attributes="0"/>
-                                      <Component id="jLabel2" alignment="1" min="-2" pref="16" max="-2" attributes="0"/>
-                                      <Component id="jLabel1" alignment="1" min="-2" pref="16" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="volSpinner" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="2" attributes="0">
-                                              <Component id="zSpinner" alignment="2" min="-2" max="-2" attributes="0"/>
-                                              <Component id="ySpinner" alignment="2" min="-2" max="-2" attributes="0"/>
-                                              <Component id="xSpinner" alignment="2" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="yPosLabel" alignment="0" pref="72" max="32767" attributes="0"/>
-                                              <Component id="zPosLabel" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="xPosLabel" max="32767" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                  </Group>
+                                  <Component id="cbm1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                                  <Component id="colorBarMin" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="neuroView" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="radioView" alignment="0" min="-2" pref="131" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="colorBar12" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="colorBar14" max="32767" attributes="0"/>
-                                      <Component id="colorBar34" alignment="0" max="32767" attributes="0"/>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="cbm1" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                                          <Component id="colorBarMin" min="-2" pref="66" max="-2" attributes="0"/>
-                                          <EmptySpace max="32767" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Component id="colorBar" min="-2" pref="28" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                  <Component id="cbm" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                                  <Component id="colorBarMax" min="-2" pref="63" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="colorBar14" alignment="0" max="32767" attributes="0"/>
+                              <Component id="colorBar12" alignment="0" max="32767" attributes="0"/>
+                              <Component id="colorBar34" alignment="1" max="32767" attributes="0"/>
                           </Group>
                       </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="colorBar" min="-2" pref="28" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+                          <Component id="cbm" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                          <Component id="colorBarMax" min="-2" pref="51" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel1" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
-                              <Component id="xSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="xPosLabel" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel2" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
-                              <Component id="ySpinner" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="yPosLabel" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="zPosLabel" alignment="1" min="-2" pref="24" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel3" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
-                                  <Component id="zSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="volSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="neuroView" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="radioView" min="-2" max="-2" attributes="0"/>
+              <Group type="102" alignment="1" attributes="0">
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel1" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
+                      <Component id="xSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="xPosLabel" alignment="3" min="-2" pref="22" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel2" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                      <Component id="ySpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="yPosLabel" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="zPosLabel" alignment="1" min="-2" pref="24" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel3" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Component id="zSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" attributes="0">
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="volSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="radiologicalView" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="neurologicalView" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="xhairButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
                                   <Component id="colorBarMax" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                                   <Component id="cbm" min="-2" pref="15" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="colorBar34" min="-2" pref="15" max="-2" attributes="0"/>
@@ -910,26 +904,17 @@
                           <Component id="colorBar12" min="-2" pref="15" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                           <Component id="colorBar14" min="-2" pref="15" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                                  <Component id="cbm1" min="-2" pref="15" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="colorBarMin" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                              </Group>
+                          <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="cbm1" min="-2" pref="15" max="-2" attributes="0"/>
+                              <Component id="colorBarMin" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                          <Component id="colorBar" min="-2" pref="186" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                  <Component id="xhairButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                  <Component id="colorBar" min="-2" pref="186" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -1034,24 +1019,25 @@
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JRadioButton" name="neuroView">
+        <Component class="javax.swing.JRadioButton" name="radiologicalView">
           <Properties>
             <Property name="selected" type="boolean" value="true"/>
-            <Property name="text" type="java.lang.String" value="Neurological View"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="neuroViewActionPerformed"/>
-          </Events>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="neuroView.setSelected(true);"/>
-          </AuxValues>
-        </Component>
-        <Component class="javax.swing.JRadioButton" name="radioView">
-          <Properties>
             <Property name="text" type="java.lang.String" value="Radiological View"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radioViewActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radiologicalViewActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="radiologicalView.setSelected(true);"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="neurologicalView">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Neurological View"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="neurologicalViewActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="colorBar">
@@ -1142,6 +1128,8 @@
             <Property name="text" type="java.lang.String" value="Max"/>
           </Properties>
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="colorBarMaxFocusLost"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="colorBarMaxMouseExited"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colorBarMaxActionPerformed"/>
           </Events>
         </Component>
@@ -1150,6 +1138,8 @@
             <Property name="text" type="java.lang.String" value="Min"/>
           </Properties>
           <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="colorBarMinFocusLost"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="colorBarMinMouseExited"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="colorBarMinActionPerformed"/>
           </Events>
         </Component>

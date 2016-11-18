@@ -24,6 +24,8 @@ import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.ImageIcon;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 
 /**
@@ -216,8 +218,8 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         zPosLabel = new javax.swing.JLabel();
         yPosLabel = new javax.swing.JLabel();
         xPosLabel = new javax.swing.JLabel();
-        neuroView = new javax.swing.JRadioButton();
-        radioView = new javax.swing.JRadioButton();
+        radiologicalView = new javax.swing.JRadioButton();
+        neurologicalView = new javax.swing.JRadioButton();
         colorBar = new javax.swing.JLabel();
         cbm = new javax.swing.JLabel();
         cbm1 = new javax.swing.JLabel();
@@ -251,9 +253,9 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         volumeSelect = new javax.swing.JRadioButtonMenuItem();
         overlaySelect = new javax.swing.JRadioButtonMenuItem();
 
-        viewGroup.add(radioView);
-        viewGroup.add(neuroView);
-        neuroView.setSelected(true);
+        viewGroup.add(neurologicalView);
+        viewGroup.add(radiologicalView);
+        radiologicalView.setSelected(true);
 
         volumeSelectorGroup.add(volumeSelect);
         volumeSelectorGroup.add(overlaySelect);
@@ -394,13 +396,13 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 .addComponent(coronalLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
                 .addGroup(coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(coronalLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(coronalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(coronalLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(coronalSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-                    .addComponent(coronalLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(coronalSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
                 .addGap(2, 2, 2)
                 .addComponent(coronalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2))
+                .addGap(4, 4, 4))
         );
         coronalPanelLayout.setVerticalGroup(
             coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -408,14 +410,14 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 .addComponent(coronalSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(coronalLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
+                .addGap(0, 0, 0)
                 .addGroup(coronalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(coronalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(coronalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(coronalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                     .addComponent(coronalLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(2, 2, 2)
                 .addComponent(coronalLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addGap(2, 2, 2))
         );
 
         axialPanel.setBackground(new java.awt.Color(0, 0, 0));
@@ -486,15 +488,13 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 .addComponent(axialLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addGroup(axialPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(axialSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(axialLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(axialPanelLayout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(axialLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(axialLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(axialLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(axialLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(axialSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(2, 2, 2)
                 .addComponent(axialLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2))
+                .addGap(5, 5, 5))
         );
         axialPanelLayout.setVerticalGroup(
             axialPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -502,9 +502,9 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 .addComponent(axialLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
                 .addGroup(axialPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(axialLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(axialLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(axialLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-                    .addComponent(axialLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(axialLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(2, 2, 2)
                 .addComponent(axialLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -584,23 +584,24 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 .addComponent(saggitalLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
                 .addGroup(saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(saggitalSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(saggitalSlider, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                     .addComponent(saggitalLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(saggitalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(saggitalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                     .addComponent(saggitalLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(2, 2, 2)
-                .addComponent(saggitalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(saggitalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4))
         );
         saggitalPanelLayout.setVerticalGroup(
             saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.CENTER, saggitalPanelLayout.createSequentialGroup()
+            .addGroup(saggitalPanelLayout.createSequentialGroup()
                 .addComponent(saggitalSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(saggitalLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
+                .addGap(0, 0, 0)
                 .addGroup(saggitalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(saggitalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(saggitalLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(saggitalLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
                     .addComponent(saggitalLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(2, 2, 2)
                 .addComponent(saggitalLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -657,19 +658,20 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         xPosLabel.setText(" ");
         xPosLabel.setToolTipText("");
 
-        neuroView.setSelected(true);
-        neuroView.setText("Neurological View");
-        neuroView.setSelected(true);
-        neuroView.addActionListener(new java.awt.event.ActionListener() {
+        radiologicalView.setSelected(true);
+        radiologicalView.setText("Radiological View");
+        radiologicalView.setSelected(true);
+        radiologicalView.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                neuroViewActionPerformed(evt);
+                radiologicalViewActionPerformed(evt);
             }
         });
 
-        radioView.setText("Radiological View");
-        radioView.addActionListener(new java.awt.event.ActionListener() {
+        neurologicalView.setText("Neurological View");
+        neurologicalView.setToolTipText("");
+        neurologicalView.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioViewActionPerformed(evt);
+                neurologicalViewActionPerformed(evt);
             }
         });
 
@@ -713,6 +715,16 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         colorBar14.setName(""); // NOI18N
 
         colorBarMax.setText("Max");
+        colorBarMax.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                colorBarMaxFocusLost(evt);
+            }
+        });
+        colorBarMax.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                colorBarMaxMouseExited(evt);
+            }
+        });
         colorBarMax.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 colorBarMaxActionPerformed(evt);
@@ -720,6 +732,16 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         });
 
         colorBarMin.setText("Min");
+        colorBarMin.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                colorBarMinFocusLost(evt);
+            }
+        });
+        colorBarMin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                colorBarMinMouseExited(evt);
+            }
+        });
         colorBarMin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 colorBarMinActionPerformed(evt);
@@ -743,108 +765,100 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(infoPanelLayout.createSequentialGroup()
-                        .addComponent(xhairButton, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(3, 3, 3)
+                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(volSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(infoPanelLayout.createSequentialGroup()
+                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                    .addComponent(zSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(xSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(yPosLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 68, Short.MAX_VALUE)
+                                    .addComponent(xPosLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(zPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addComponent(radiologicalView)
+                    .addComponent(neurologicalView, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(xhairButton, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(4, 4, 4)
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(infoPanelLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
                         .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(infoPanelLayout.createSequentialGroup()
-                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(3, 3, 3)
-                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(volSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(infoPanelLayout.createSequentialGroup()
-                                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                                            .addComponent(zSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(ySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(xSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(yPosLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                                            .addComponent(zPosLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(xPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                            .addComponent(neuroView)
-                            .addComponent(radioView, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(12, 12, 12)
-                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(infoPanelLayout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(colorBar12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(colorBar14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(colorBar34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(infoPanelLayout.createSequentialGroup()
-                                        .addComponent(cbm1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(1, 1, 1)
-                                        .addComponent(colorBarMin, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap())))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, infoPanelLayout.createSequentialGroup()
-                                .addComponent(colorBar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(cbm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(4, 4, 4)
-                                .addComponent(colorBarMax, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())))))
+                                .addComponent(cbm1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(5, 5, 5)
+                                .addComponent(colorBarMin))
+                            .addComponent(colorBar14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(colorBar12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(colorBar34, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(infoPanelLayout.createSequentialGroup()
+                        .addComponent(colorBar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
+                        .addComponent(cbm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(colorBarMax, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         infoPanelLayout.setVerticalGroup(
             infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, infoPanelLayout.createSequentialGroup()
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(xSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(xPosLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(yPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(zPosLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(zSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(volSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(radiologicalView)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(neurologicalView)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(xhairButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(infoPanelLayout.createSequentialGroup()
-                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(infoPanelLayout.createSequentialGroup()
-                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(xSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(xPosLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ySpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(yPosLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(zPosLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(zSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(volSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(neuroView)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(radioView))
-                    .addGroup(infoPanelLayout.createSequentialGroup()
-                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(infoPanelLayout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, infoPanelLayout.createSequentialGroup()
                                 .addComponent(colorBarMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(35, 35, 35))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, infoPanelLayout.createSequentialGroup()
+                            .addGroup(infoPanelLayout.createSequentialGroup()
                                 .addGap(8, 8, 8)
                                 .addComponent(cbm, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGap(32, 32, 32)))
                         .addComponent(colorBar34, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)
                         .addComponent(colorBar12, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)
                         .addComponent(colorBar14, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(infoPanelLayout.createSequentialGroup()
-                                .addGap(32, 32, 32)
-                                .addComponent(cbm1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, infoPanelLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(colorBarMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(2, 2, 2)))))
-                .addGap(26, 26, 26)
-                .addComponent(xhairButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, infoPanelLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(colorBar, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cbm1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(colorBarMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(infoPanelLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(colorBar, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -997,7 +1011,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         jMenuBar1.add(viewMenu);
 
         volumeMenu.setText("Volume");
-        neuroView.setSelected(true);
+        radiologicalView.setSelected(true);
 
         volumeSelect.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.SHIFT_MASK));
         volumeSelect.setSelected(true);
@@ -1035,13 +1049,13 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
-                            .addComponent(coronalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE))))
+                            .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+                            .addComponent(coronalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))))
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(saggitalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
-                    .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 282, Short.MAX_VALUE))
-                .addGap(32, 32, 32))
+                    .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(saggitalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE))
+                .addGap(51, 51, 51))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1055,11 +1069,11 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(valueLabel)
-                        .addContainerGap())
+                        .addComponent(valueLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(28, 28, 28))))
+                        .addGap(16, 16, 16)))
+                .addContainerGap())
         );
 
         pack();
@@ -1094,7 +1108,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 niiVol=null;
                 overlayVol=null;
                 System.gc();
-                neuroView.setSelected(true);
+                radiologicalView.setSelected(true);
                 viewState=true;
                 //Set Orientation Labels
                 coronalLabel1.setText("<html> <font size=4 color=#1aff1a><strong>R</strong><font>");
@@ -1512,86 +1526,14 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_resetColorScaleActionPerformed
     private void colorBarMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorBarMinActionPerformed
-       if(niiVol!=null){
-            String minString=colorBarMin.getText();
-           try{
-                double min=Double.parseDouble(minString);
-                if(min>niiVol.getMax()){
-                    errorLabel.setText("Min > max : not valid");
-                    errorDialog.setLocationRelativeTo(null);
-                    errorDialog.setVisible(true);
-                    if(volumeSelect.isSelected()){
-                        minString=String.format("%.3f",niiVol.getMin());
-                    }else{
-                        minString=String.format("%.3f",overlayVol.getMin());
-                    }
-                    colorBarMax.setText(minString);
-                }
-                else{
-                    if(volumeSelect.isSelected()){
-                        niiVol.setMin(min);
-                    }else{
-                        overlayVol.setMin(min);
-                    }
-                    
-                    drawNifti();
-                }
-
-           }catch(Exception e){
-               errorLabel.setText("Must be a valid number :" +e.getMessage());
-               errorDialog.setLocationRelativeTo(null);
-               errorDialog.setVisible(true);
-               if(volumeSelect.isSelected()){
-                    minString=String.format("%.3f",niiVol.getMin());
-               }else{
-                    minString=String.format("%.3f",overlayVol.getMin());
-               }
-               colorBarMax.setText(minString);
-           }
-       }
+       changeMin();
     }//GEN-LAST:event_colorBarMinActionPerformed
     private void colorBarMaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorBarMaxActionPerformed
-        if(niiVol!=null){
-            String maxString=colorBarMax.getText();
-           try{
-                double max=Double.parseDouble(maxString);
-                if(niiVol.getMin()>max){
-                    errorLabel.setText("Max < Min : not valid");
-                    errorDialog.setLocationRelativeTo(null);
-                    errorDialog.setVisible(true);
-                    if(volumeSelect.isSelected()){
-                        maxString=String.format("%.3f",niiVol.getMax());
-                    }else{
-                        maxString=String.format("%.3f",overlayVol.getMax());
-                    }
-                    colorBarMax.setText(maxString);
-                }
-                else{
-                    if(volumeSelect.isSelected()){
-                        niiVol.setMax(max);
-                    }else{
-                        overlayVol.setMax(max);
-                    }
-                    
-                    drawNifti();
-                }
-
-           }catch(Exception e){
-               errorLabel.setText("Must be a valid number :" +e.getMessage());
-               errorDialog.setLocationRelativeTo(null);
-               errorDialog.setVisible(true);
-               if(volumeSelect.isSelected()){
-                    maxString=String.format("%.3f",niiVol.getMax());
-               }else{
-                    maxString=String.format("%.3f",overlayVol.getMax());
-               }
-               colorBarMax.setText(maxString);
-           }
-       }
+        changeMax();
     }//GEN-LAST:event_colorBarMaxActionPerformed
     /*****Radiological or neurological view******/
-    private void neuroViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_neuroViewActionPerformed
-        boolean bool =neuroView.isSelected();
+    private void radiologicalViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radiologicalViewActionPerformed
+        boolean bool =radiologicalView.isSelected();
         if(bool!=viewState){
         if(niiVol!=null){
             if(niiVol.orient[0]=='L'){
@@ -1614,9 +1556,9 @@ public class BarracudaViewUI extends javax.swing.JFrame {
             viewState=true;
         }
         }
-    }//GEN-LAST:event_neuroViewActionPerformed
-    private void radioViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioViewActionPerformed
-        boolean bool=!radioView.isSelected();
+    }//GEN-LAST:event_radiologicalViewActionPerformed
+    private void neurologicalViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_neurologicalViewActionPerformed
+        boolean bool=!neurologicalView.isSelected();
         if(bool!=viewState){
         if(niiVol!=null){
             if(niiVol.orient[0]=='L'){
@@ -1639,7 +1581,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
             viewState=false;
         }
         }
-    }//GEN-LAST:event_radioViewActionPerformed
+    }//GEN-LAST:event_neurologicalViewActionPerformed
     /*****Other Menu actions*****/
     private void restoreZoomMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restoreZoomMenuActionPerformed
        if(niiVol!=null){
@@ -1697,7 +1639,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                            overlayVol.header.dim[4]==niiVol.header.dim[4] &
                            overlayVol.header.orientation().equals(niiVol.header.orientation())){
                             
-                            if(neuroView.isSelected()){
+                            if(radiologicalView.isSelected()){
                                 // Added code so default view would be neurological
                                 if(overlayVol.orient[0]=='L'){overlayVol.orient[0]='R';}
                                 else if(overlayVol.orient[0]=='R'){overlayVol.orient[0]='L';}
@@ -1867,6 +1809,22 @@ public class BarracudaViewUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_xhairButtonActionPerformed
+
+    private void colorBarMaxFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_colorBarMaxFocusLost
+        changeMax();
+    }//GEN-LAST:event_colorBarMaxFocusLost
+
+    private void colorBarMinFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_colorBarMinFocusLost
+        changeMin();
+    }//GEN-LAST:event_colorBarMinFocusLost
+
+    private void colorBarMaxMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colorBarMaxMouseExited
+        changeMax();
+    }//GEN-LAST:event_colorBarMaxMouseExited
+
+    private void colorBarMinMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colorBarMinMouseExited
+        changeMin();
+    }//GEN-LAST:event_colorBarMinMouseExited
                                     
     /*public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1940,12 +1898,12 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuItem mosaicViewMenu;
-    private javax.swing.JRadioButton neuroView;
+    private javax.swing.JRadioButton neurologicalView;
     private javax.swing.JMenuItem openOverlayMenu;
     private javax.swing.JMenuItem openVolumeMenu;
     private javax.swing.JRadioButtonMenuItem overlaySelect;
     private javax.swing.JRadioButtonMenuItem panMenu;
-    private javax.swing.JRadioButton radioView;
+    private javax.swing.JRadioButton radiologicalView;
     private javax.swing.JCheckBoxMenuItem rainbowScale;
     private javax.swing.JMenuItem resetColorScale;
     private javax.swing.JMenuItem restoreZoomMenu;
@@ -2603,6 +2561,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     }//Sets colorbar image
     private void updateMaxColorbar(){
         double max,min;
+        String numString;
         DrawableNiftiVolume vol;
         if(volumeSelect.isSelected()){
             vol=niiVol;
@@ -2611,16 +2570,37 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         }
         max=vol.getMax();
         min=vol.getMin();
-        String numString = String.format ("%.2f",max);
+        if(max<=0){
+            numString=String.format("_%.2f",(-0.25*(max-min))+max);
+            colorBar34.setText(numString);
+            numString=String.format("_%.2f",(-0.5*(max-min))+max);
+            colorBar12.setText(numString);
+            numString=String.format("_%.2f",(-0.75*(max-min))+max);
+            colorBar14.setText(numString);
+        }else{
+            if(min<0){//Max positive, min negative
+                double interval=max-min;
+                numString=String.format("_%.2f",0.75*interval+min);
+                colorBar34.setText(numString);
+                numString=String.format("_%.2f",0.5*interval+min);
+                colorBar12.setText(numString);
+                numString=String.format("_%.2f",0.25*interval+min);
+                colorBar14.setText(numString);
+            }else{//Max and min >0
+                numString=String.format("_%.2f",(0.75*(max-min))+min);
+                colorBar34.setText(numString);
+                numString=String.format("_%.2f",(0.50*(max-min))+min);
+                colorBar12.setText(numString);
+                numString=String.format("_%.2f",(0.25*(max-min))+min);
+                colorBar14.setText(numString);
+                
+            }
+        }
+        numString = String.format ("%.2f",max);
         colorBarMax.setText(numString);
-        numString=String.format("_%.2f",(3*(max-min)/4));
-        colorBar34.setText(numString);
-        numString=String.format("_%.2f",((max-min)/2));
-        colorBar12.setText(numString);
-        numString=String.format("_%.2f",((max-min)/4));
-        colorBar14.setText(numString);
         numString = String.format ("%.2f",min);
         colorBarMin.setText(numString);
+        
     }//Adjusts colorbar values
     private void resetGrayScale(){
         //Set the colorscale
@@ -2631,6 +2611,96 @@ public class BarracudaViewUI extends javax.swing.JFrame {
              colorScaleOverlay="grayscale";
         }
     }//Resets the colorbar to gray
+    private void changeMax(){
+        if(niiVol!=null){
+            String maxString=colorBarMax.getText();
+            double volMin;
+           try{
+                double max=Double.parseDouble(maxString);
+                if(volumeSelect.isSelected()){
+                    volMin=niiVol.getMin();
+                }else{
+                    volMin=overlayVol.getMin();
+                }
+                if(volMin>max){
+                    errorLabel.setText("Max < Min : not valid");
+                    errorDialog.setLocationRelativeTo(null);
+                    errorDialog.setVisible(true);
+                    if(volumeSelect.isSelected()){
+                        maxString=String.format("%.3f",niiVol.getMax());
+                    }else{
+                        maxString=String.format("%.3f",overlayVol.getMax());
+                    }
+                    colorBarMax.setText(maxString);
+                }
+                else{
+                    if(volumeSelect.isSelected()){
+                        niiVol.setMax(max);
+                    }else{
+                        overlayVol.setMax(max);
+                    }
+                    updateMaxColorbar();
+                    drawNifti();
+                }
+
+           }catch(Exception e){
+               errorLabel.setText("Must be a valid number :" +e.getMessage());
+               errorDialog.setLocationRelativeTo(null);
+               errorDialog.setVisible(true);
+               if(volumeSelect.isSelected()){
+                    maxString=String.format("%.3f",niiVol.getMax());
+               }else{
+                    maxString=String.format("%.3f",overlayVol.getMax());
+               }
+               colorBarMax.setText(maxString);
+           }
+       }
+    }
+    private void changeMin(){
+        if(niiVol!=null){
+            String minString=colorBarMin.getText();
+            double volMax;
+           try{
+                double min=Double.parseDouble(minString);
+                if(volumeSelect.isSelected()){
+                    volMax=niiVol.getMax();
+                }else{
+                    volMax=overlayVol.getMax();
+                }
+                if(min>volMax){
+                    errorLabel.setText("Min > max : not valid");
+                    errorDialog.setLocationRelativeTo(null);
+                    errorDialog.setVisible(true);
+                    if(volumeSelect.isSelected()){
+                        minString=String.format("%.3f",niiVol.getMin());
+                    }else{
+                        minString=String.format("%.3f",overlayVol.getMin());
+                    }
+                    colorBarMin.setText(minString);
+                }
+                else{
+                    if(volumeSelect.isSelected()){
+                        niiVol.setMin(min);
+                    }else{
+                        overlayVol.setMin(min);
+                    }
+                    updateMaxColorbar();
+                    drawNifti();
+                }
+
+           }catch(Exception e){
+               errorLabel.setText("Must be a valid number :" +e.getMessage());
+               errorDialog.setLocationRelativeTo(null);
+               errorDialog.setVisible(true);
+               if(volumeSelect.isSelected()){
+                    minString=String.format("%.3f",niiVol.getMin());
+               }else{
+                    minString=String.format("%.3f",overlayVol.getMin());
+               }
+               colorBarMin.setText(minString);
+           }
+       }
+    }
 
     /**********Zoom Functions***********/    
     private void drawCoronalZoomBox(){
@@ -2886,4 +2956,5 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         DefaultBoundedRangeModel model=new DefaultBoundedRangeModel(50,1,0,100);
         return model;
     }
+    
 }

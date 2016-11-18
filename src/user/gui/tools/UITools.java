@@ -140,7 +140,7 @@ public abstract class UITools {
                     rgb=new Color(255,255,255,255);
                 }
                 else if(val<=0){ //Less than min is not shown
-                    rgb=new Color(0,0,0,0);;
+                    rgb=new Color(0,0,0,0);
                 }else{
                     val=val*mul; //Multiply by dynamic range
                     temp=(int) Math.floor(val/255);
@@ -259,10 +259,10 @@ public abstract class UITools {
                 if(Double.isNaN(val)){ // NaN is zero
                     rgb=new Color(0,0,0,0);
                 }
-                else if((val*mul)>1020){ //More than max display is red
+                else if(((val-min)*mul)>1020){ //More than max display is red
                     rgb=new Color(255,0,0,255);
                 }
-                else if(val<=0){ //Less than min is blue
+                else if((val-min)*mul<=0){ //Less than min is blue
                     rgb=new Color(0,0,255,255);
                 }else{
                     val=(val-min)*mul; //Multiply by dynamic range
@@ -292,14 +292,20 @@ public abstract class UITools {
                 if(Double.isNaN(val)){ // NaN is transparent
                     rgb=new Color(0,0,0,0);
                 }
-                else if((val*mul)>255){ //More than 255 is white
-                     rgb=new Color(255,255,255,255);
-                }
-                else if(val<0){ //Less than min is transparent
+                else if(val<min){ //Less than min is transparent
                     rgb=new Color(0,0,0,0);
                 }
+                else if(val==min){//Min equals black
+                    rgb=new Color(0,0,0,255);
+                }
+                else if(val>=max){ //More than max is white
+                    rgb=new Color(255,255,255,255);
+                }
+                else if(((val-min)*mul)>255){ //More than 255 is white
+                     rgb=new Color(255,255,255,255);
+                }
                 else{
-                    temp=(int)(val*mul);
+                    temp=(int)((val-min)*mul);
                     rgb=new Color(temp,temp,temp,255);
                 }
                 break;
