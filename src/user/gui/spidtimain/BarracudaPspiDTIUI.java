@@ -947,8 +947,14 @@ private double trThreshold=Double.NaN;
 
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
         double[] thresholds={faThreshold,trThreshold};
-        (new Thread(new PspiImagingRunnable(ictalFA,baselineFA,ictalTR,baselineTR,
+        if(correctedOption.isSelected()){
+            (new Thread(new PspiImagingRunnable(ictalFA,baselineFA,ictalTR,baselineTR,
+                   binaryMask,workingDirectory,patientInitials,alpha,consolePane,this,thresholds,true))).start();
+        }
+        else{
+            (new Thread(new PspiImagingRunnable(ictalFA,baselineFA,ictalTR,baselineTR,
                    binaryMask,workingDirectory,patientInitials,alpha,consolePane,this,thresholds))).start();
+        }
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     private void faThreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_faThreshActionPerformed

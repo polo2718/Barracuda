@@ -244,5 +244,20 @@ public abstract class ArrayOperations {
         }
         return count;
     }
-    
+    /**
+     * Returns the total count of actual numeric, non-zero components in an array.
+     * <p>If the a NaN or an Inf or a zero is stored in the component, then that component is not counted
+     * towards the total count.
+     * @param x 1D double array
+     * @return int-number of actual numeric non-zero components in the array
+     */
+    public static int nonZeroCount(double[] x){
+        int count=0;
+        for(double x_i: x){
+            if(x_i!=Double.NaN && Double.isFinite(x_i) && x_i!=0 ){
+                count+=1;
+            }
+        }
+        return count;
+    }
 }

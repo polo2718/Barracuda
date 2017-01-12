@@ -1,5 +1,7 @@
 package data.niftilibrary.niftijio;
 
+import domain.mathUtils.arrayTools.ArrayOperations;
+
 /**
         * <p>Four-dimensional array implementation that avoids using java's multi-dimensional arrays.
         * </p>
@@ -204,7 +206,13 @@ public class FourDimensionalArray {
         return max;              
     }
   
+    public int nonZeroCount(){
+        return ArrayOperations.nonZeroCount(data);
+    }
     
+    public int numericCount(){
+        return ArrayOperations.lengthActualVal(data);
+    }
     public int sizeX() {return nx;}
     public int sizeY() {return ny;}
     public int sizeZ() {return nz;}

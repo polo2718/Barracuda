@@ -21,6 +21,7 @@ public class PspiImagingRunnable implements Runnable{
     private javax.swing.JTextPane console;
     private BarracudaPspiDTIUI a;
     double [] thresholds;
+    boolean correction = false;
     /**
      * Constructor
      * @param ictalFA Post-ictal FA NIFTI volume
@@ -53,13 +54,41 @@ public class PspiImagingRunnable implements Runnable{
         this.thresholds=thresholds;
     }
     
+    public PspiImagingRunnable(DrawableNiftiVolume ictalFA, DrawableNiftiVolume baselineFA,
+                   DrawableNiftiVolume ictalTR, DrawableNiftiVolume baselineTR,
+                   DrawableNiftiVolume binaryMask, String workingDirectory,
+                   String patientInitials,double alpha,javax.swing.JTextPane console,
+                   BarracudaPspiDTIUI a,double thresholds[], boolean correction){
+        this.alpha=alpha;
+        this.patientInitials=patientInitials;
+        this.binaryMask=binaryMask;
+        this.workingDirectory=workingDirectory;
+        this.baselineFA=baselineFA;
+        this.ictalFA=ictalFA;
+        this.baselineTR=baselineTR;
+        this.ictalTR=ictalTR;
+        this.console=console;
+        this.a=a;
+        this.thresholds=thresholds;
+        this.correction = correction;
+    }
+    
     @Override
     public void run() {
         a.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        pspiDTI p= new pspiDTI(ictalFA,baselineFA,
+        pspiDTI p;
+        if(correction){
+            p= new pspiDTI(ictalFA,baselineFA,
+                   ictalTR,baselineTR,
+                   binaryMask, workingDirectory,
+                   patientInitials,alpha,console,thresholds,true);
+        }
+        else{
+            p= new pspiDTI(ictalFA,baselineFA,
                    ictalTR,baselineTR,
                    binaryMask, workingDirectory,
                    patientInitials,alpha,console,thresholds);
+        }
         p.calculate();
         a.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }

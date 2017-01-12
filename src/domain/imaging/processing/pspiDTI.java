@@ -28,13 +28,15 @@ public class pspiDTI {
     private final double alpha;
     private javax.swing.JTextPane console;
     private final double[] thresholds;
+    boolean correction = false;
+    private double trueAlpha;
     
     public static final boolean LEFT_TAIL=true;
     public static final boolean RIGHT_TAIL=false;
     public static final boolean FA=true;
     public static final boolean TR=false;
     /**
-     * Constructor
+     * Constructor, runs with Bonferroni correction
      * @param ictalFA Post-ictal FA NIFTI volume
      * @param baselineFA Baseline FA NIFTI volume
      * @param ictalTR Post-ictal Trace NIFTI volume
@@ -45,6 +47,36 @@ public class pspiDTI {
      * @param alpha Confidence level
      * @param console Output console
      * @param thresholds Array containing the FA and the Trace minimum change thresholds
+     * @param correction Specifies whether a correction must be applied
+     */
+    public pspiDTI(DrawableNiftiVolume ictalFA, DrawableNiftiVolume baselineFA,
+                   DrawableNiftiVolume ictalTR, DrawableNiftiVolume baselineTR,
+                   DrawableNiftiVolume binaryMask, String workingDirectory,
+                   String patientInitials,double alpha,javax.swing.JTextPane console,double [] thresholds,boolean correction){
+        this.alpha=alpha;
+        this.patientInitials=patientInitials;
+        this.binaryMask=binaryMask;
+        this.workingDirectory=workingDirectory;
+        this.baselineFA=baselineFA;
+        this.ictalFA=ictalFA;
+        this.baselineTR=baselineTR;
+        this.ictalTR=ictalTR;
+        this.console=console;
+        this.thresholds=thresholds;
+        this.correction=correction;
+    }
+    /**
+     * Runs pspiDTI without Bonferroni Correction
+     * @param ictalFA
+     * @param baselineFA
+     * @param ictalTR
+     * @param baselineTR
+     * @param binaryMask
+     * @param workingDirectory
+     * @param patientInitials
+     * @param alpha
+     * @param console
+     * @param thresholds 
      */
     public pspiDTI(DrawableNiftiVolume ictalFA, DrawableNiftiVolume baselineFA,
                    DrawableNiftiVolume ictalTR, DrawableNiftiVolume baselineTR,
@@ -108,7 +140,7 @@ public class pspiDTI {
             for(int j=0;j<y;j++){
                 for(int k=0;k<z;k++){
                     temp=pVals.get(i,j,k,0);
-                    if(temp>alpha){//If the p value is greater than alpha
+                    if(temp>trueAlpha){//If the p value is greater than the true alpha
                         result.set(i,j,k,0,Double.NaN);
                     }else{
                         result.set(i,j,k,0,temp);
@@ -171,6 +203,7 @@ public class pspiDTI {
             resultingVol.header.intent_code=1001;
             resultingVol.header.intent_name=new StringBuffer("FA decrease");
             resultingVol.data=result;
+            
             append("Writing FA Files...");
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_decrease.nii.gz");
@@ -277,6 +310,8 @@ public class pspiDTI {
             resultingVol.header.intent_code=1001;
             resultingVol.header.intent_name=new StringBuffer("Trace increase");
             resultingVol.data=result;
+            double max=ArrayOperations.findMaximum(resultingVol.data.get3DArray(0));
+            System.out.println(max);
             append("Writing Trace Files...");
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_increase.nii.gz");
@@ -316,7 +351,7 @@ public class pspiDTI {
             }catch(Exception e){
                 append("Error writing file\n");
             }
-            double max=ArrayOperations.findMaximum(resultingVol.data.get3DArray(0));
+            
             if(Double.isNaN(thresholds[1])){
                 // 0.05 TR threshold
                 resultingVol.data=cleanSubtract(result,1,TR,0.05*max);
@@ -417,6 +452,22 @@ public class pspiDTI {
      * This function calculates the pspiDTI algorithm and prints the output to a console
      */
     public void calculate(){
+        int voxelCount;
+        if(binaryMask!=null){
+            voxelCount=binaryMask.data.nonZeroCount();
+        }else if(ictalFA!=null){
+            voxelCount=ictalFA.data.numericCount();
+        }else{
+            voxelCount=ictalTR.data.numericCount();
+        }
+        append("Voxels: "+voxelCount + "\n");
+        if(correction){
+            trueAlpha=alpha/voxelCount;
+            append("Corrected Alpha = "+ trueAlpha + "\n");
+        }else{
+            trueAlpha=alpha;
+            append("Alpha = "+trueAlpha + "\n");
+        }
         FourDimensionalArray temp1;
         FourDimensionalArray temp2;
         if(ictalFA!=null & baselineFA!=null){

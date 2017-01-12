@@ -2218,12 +2218,12 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         BufferedImage niiImg=niiVol.drawNiftiSlice(saggitalSlider.getValue(), "saggital",(int)volSpinner.getValue(),colorScale);
         int w=niiImg.getWidth();
         int h=niiImg.getHeight();
-        BufferedImage combined = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g=combined.createGraphics();
+        BufferedImage combined2 = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g=combined2.createGraphics();
         Color c=new Color(0,0,0,0);
         g.drawImage(niiImg,0,0,c,null);
         g.drawImage(ovImg,0,0,c,null);
-        saggitalScale=UITools.imageToLabel(combined,saggitalLabel);
+        saggitalScale=UITools.imageToLabel(combined2,saggitalLabel);
     }
     private void saggitalPan(){
         try{
@@ -2367,12 +2367,12 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         BufferedImage niiImg=niiVol.drawNiftiSlice(axialSlider.getValue(), "axial",(int)volSpinner.getValue(),colorScale);
         int w=niiImg.getWidth();
         int h=niiImg.getHeight();
-        BufferedImage combined = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g=combined.createGraphics();
+        BufferedImage combined3 = new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g=combined3.createGraphics();
         Color c=new Color(0,0,0,0);
         g.drawImage(niiImg,0,0,c,null);
         g.drawImage(ovImg,0,0,c,null);
-        axialScale=UITools.imageToLabel(combined,axialLabel);
+        axialScale=UITools.imageToLabel(combined3,axialLabel);
     }
     private void axialPan(){
         try{

@@ -309,7 +309,7 @@ public class DrawableNiftiVolume extends NiftiVolume{
      * @return Vector containing the x, y, and z coordinates
      * @author Diego Garibay, Leopoldo Cendejas
      */
-        public Vector computeXYZ(Matrix rotationMtrx,int xVal,int yVal,int zVal){
+    public Vector computeXYZ(Matrix rotationMtrx,int xVal,int yVal,int zVal){
         double ijk[]= new double[3];
         ijk[0]=(double)xVal;
         ijk[1]=(double)yVal;
