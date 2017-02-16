@@ -54,11 +54,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.ButtonGroup" name="statisticalCorrectionGroup">
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="statisticalCorrectionGroup.add(uncorrectedOption);&#xa;statisticalCorrectionGroup.add(correctedOption);"/>
-      </AuxValues>
-    </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="optionsMenu">
@@ -165,13 +160,12 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="correctedOption" min="-2" max="-2" attributes="0"/>
-                                  <Component id="uncorrectedOption" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="correctedOption" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                              <Component id="giscOption" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="628" max="32767" attributes="0"/>
+                      <EmptySpace pref="444" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -199,10 +193,11 @@
                           <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                      <Component id="uncorrectedOption" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="correctedOption" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="60" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="giscOption" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="correctedOption" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="88" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -299,16 +294,15 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JRadioButton" name="uncorrectedOption">
+            <Component class="javax.swing.JCheckBox" name="giscOption">
               <Properties>
-                <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="Un-corrected "/>
+                <Property name="text" type="java.lang.String" value="Global Intensity Shift Correction"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JRadioButton" name="correctedOption">
+            <Component class="javax.swing.JCheckBox" name="correctedOption">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Corrected"/>
+                <Property name="text" type="java.lang.String" value="Bonferroni Correction"/>
               </Properties>
             </Component>
           </SubComponents>

@@ -175,6 +175,17 @@ public class StatisticalMoment{
             }
         }
     }
+    public void computeMoments(double x[][][]){
+        for (double[][] x1 : x) {
+            for (double[] x2 : x1) {
+                for (int k = 0; k<x[0][0].length; k++) {
+                    if (!Double.isNaN(x2[k])) {
+                        accumulate(x2[k]);
+                    }
+                }
+            }
+        }
+    }
     
     /**
      * <p>Method that gets the arithmetic mean of the data set contained in this object.
@@ -206,6 +217,19 @@ public class StatisticalMoment{
             for (int j = 0; j<x[0].length; j++) {
                 if (!Double.isNaN(x1[j])) {
                     momentsTemp = accumulateMean(x1[j], momentsTemp);
+                }
+            }
+        }
+        return momentsTemp[1];
+    }
+    public static double mean(double x[][][]){
+        double momentsTemp[]={0,0};
+        for (double[][] x1 : x) {
+            for(double[] x2 : x1){
+                for (int k = 0; k<x[0][0].length; k++) {
+                    if (!Double.isNaN(x2[k])) {
+                        momentsTemp=accumulateMean(x2[k],momentsTemp);
+                    }
                 }
             }
         }

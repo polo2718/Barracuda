@@ -63,7 +63,6 @@ private double trThreshold=Double.NaN;
         errorDialog = new javax.swing.JDialog();
         errorTitleLabel = new javax.swing.JLabel();
         errorLabel = new javax.swing.JLabel();
-        statisticalCorrectionGroup = new javax.swing.ButtonGroup();
         tabManager = new javax.swing.JTabbedPane();
         settingsPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
@@ -74,8 +73,8 @@ private double trThreshold=Double.NaN;
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         trThresh = new javax.swing.JComboBox<>();
-        uncorrectedOption = new javax.swing.JRadioButton();
-        correctedOption = new javax.swing.JRadioButton();
+        giscOption = new javax.swing.JCheckBox();
+        correctedOption = new javax.swing.JCheckBox();
         fileTab = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         openIctalFileButton = new javax.swing.JButton();
@@ -142,9 +141,6 @@ private double trThreshold=Double.NaN;
                 .addContainerGap())
         );
 
-        statisticalCorrectionGroup.add(uncorrectedOption);
-        statisticalCorrectionGroup.add(correctedOption);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setIconImage(IconGetter.getProjectIcon("brain128.png"));
 
@@ -207,11 +203,10 @@ private double trThreshold=Double.NaN;
             }
         });
 
-        uncorrectedOption.setSelected(true);
-        uncorrectedOption.setText("Un-corrected ");
-        uncorrectedOption.setToolTipText("");
+        giscOption.setText("Global Intensity Shift Correction");
+        giscOption.setToolTipText("");
 
-        correctedOption.setText("Corrected");
+        correctedOption.setText("Bonferroni Correction");
 
         javax.swing.GroupLayout settingsPanelLayout = new javax.swing.GroupLayout(settingsPanel);
         settingsPanel.setLayout(settingsPanelLayout);
@@ -234,10 +229,10 @@ private double trThreshold=Double.NaN;
                             .addComponent(faThresh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(settingsPanelLayout.createSequentialGroup()
                         .addGap(42, 42, 42)
-                        .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(correctedOption)
-                            .addComponent(uncorrectedOption))))
-                .addContainerGap(628, Short.MAX_VALUE))
+                        .addComponent(correctedOption)
+                        .addGap(14, 14, 14)
+                        .addComponent(giscOption)))
+                .addContainerGap(444, Short.MAX_VALUE))
         );
         settingsPanelLayout.setVerticalGroup(
             settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,10 +254,10 @@ private double trThreshold=Double.NaN;
                     .addComponent(trThresh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
                 .addGap(31, 31, 31)
-                .addComponent(uncorrectedOption)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(correctedOption)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(giscOption)
+                    .addComponent(correctedOption))
+                .addContainerGap(88, Short.MAX_VALUE))
         );
 
         tabManager.addTab("Settings", settingsPanel);
@@ -947,14 +942,9 @@ private double trThreshold=Double.NaN;
 
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
         double[] thresholds={faThreshold,trThreshold};
-        if(correctedOption.isSelected()){
+        
             (new Thread(new PspiImagingRunnable(ictalFA,baselineFA,ictalTR,baselineTR,
-                   binaryMask,workingDirectory,patientInitials,alpha,consolePane,this,thresholds,true))).start();
-        }
-        else{
-            (new Thread(new PspiImagingRunnable(ictalFA,baselineFA,ictalTR,baselineTR,
-                   binaryMask,workingDirectory,patientInitials,alpha,consolePane,this,thresholds))).start();
-        }
+                   binaryMask,workingDirectory,patientInitials,alpha,consolePane,this,thresholds,correctedOption.isSelected(),giscOption.isSelected()))).start();
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     private void faThreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_faThreshActionPerformed
@@ -1028,13 +1018,14 @@ private double trThreshold=Double.NaN;
     private javax.swing.JButton calculateButton;
     private javax.swing.JButton clearConsoleButton;
     private javax.swing.JTextPane consolePane;
-    private javax.swing.JRadioButton correctedOption;
+    private javax.swing.JCheckBox correctedOption;
     private javax.swing.JTextPane directoryTextPane;
     private javax.swing.JDialog errorDialog;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel errorTitleLabel;
     private javax.swing.JComboBox<String> faThresh;
     private javax.swing.JPanel fileTab;
+    private javax.swing.JCheckBox giscOption;
     private javax.swing.JTextPane ictalTextPane;
     private javax.swing.JTextPane ictalTraceTextPane;
     private javax.swing.JLabel jLabel1;
@@ -1066,10 +1057,8 @@ private double trThreshold=Double.NaN;
     private javax.swing.JMenu optionsMenu;
     private javax.swing.JTextField patientInfoText;
     private javax.swing.JPanel settingsPanel;
-    private javax.swing.ButtonGroup statisticalCorrectionGroup;
     private javax.swing.JTabbedPane tabManager;
     private javax.swing.JComboBox<String> trThresh;
-    private javax.swing.JRadioButton uncorrectedOption;
     // End of variables declaration//GEN-END:variables
     
     

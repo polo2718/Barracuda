@@ -260,4 +260,13 @@ public abstract class ArrayOperations {
         }
         return count;
     }
+    public static double[] scalarMult(double[] x,double scalar){
+        double[] result=new double[x.length];
+        for(int i=0;i<x.length;i++){
+            if(x[i]!=Double.NaN && Double.isFinite(x[i])){
+                result[i]=scalar*x[i];
+            }
+        }
+        return result;
+    }
 }

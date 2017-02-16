@@ -2,6 +2,7 @@ package data.niftilibrary.niftijio;
 
 import domain.mathUtils.arrayTools.ArrayOperations;
 
+
 /**
         * <p>Four-dimensional array implementation that avoids using java's multi-dimensional arrays.
         * </p>
@@ -112,7 +113,7 @@ public class FourDimensionalArray {
     public void set3DArray(double [][][] array){
         if((nx == array.length) & ( ny == array[0].length)& (nz == array[0][0].length))
         {   
-            int d=1;
+            int d=0;
                 for (int k = 0; k < nz; k++)
                     for (int j = 0; j < ny; j++)
                         for (int i = 0; i < nx; i++) {
@@ -208,6 +209,10 @@ public class FourDimensionalArray {
   
     public int nonZeroCount(){
         return ArrayOperations.nonZeroCount(data);
+    }
+    
+    public void scalarMult(double scalar){
+        data=ArrayOperations.scalarMult(data, scalar);
     }
     
     public int numericCount(){

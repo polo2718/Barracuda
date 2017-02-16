@@ -13,9 +13,7 @@ import domain.imaging.spatialfiltering.NiftiNonLinearSpatialFilter;
 import domain.imaging.spatialfiltering.operations.UnpairedtTest;
 import domain.mathUtils.arrayTools.ArrayOperations;
 import domain.mathUtils.numericalMethods.statistics.LimitedStatisticalMoment;
-import java.awt.Cursor;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
+
 
 /**
  * Class that performs the pspiDTI algorithm
@@ -26,9 +24,10 @@ public class pspiDTI {
     private final String workingDirectory;
     private final String patientInitials;
     private final double alpha;
-    private javax.swing.JTextPane console;
+    private final javax.swing.JTextPane console;
     private final double[] thresholds;
-    boolean correction = false;
+    private boolean correction = false;
+    private boolean intensityShift = false;
     private double trueAlpha;
     
     public static final boolean LEFT_TAIL=true;
@@ -66,7 +65,39 @@ public class pspiDTI {
         this.correction=correction;
     }
     /**
-     * Runs pspiDTI without Bonferroni Correction
+     * Constructor, Bonferroni correction & Global Intensity Shift
+     * @param ictalFA Post-ictal FA NIFTI volume
+     * @param baselineFA Baseline FA NIFTI volume
+     * @param ictalTR Post-ictal Trace NIFTI volume
+     * @param baselineTR Baseline Trace NIFTI volume
+     * @param binaryMask Binary mask NIFTI volume (optional)
+     * @param workingDirectory Working directory
+     * @param patientInitials Patient initials
+     * @param alpha Confidence level
+     * @param console Output console
+     * @param thresholds Array containing the FA and the Trace minimum change thresholds
+     * @param correction Specifies whether a correction must be applied
+     * @param intensityShift flag that indicates a global intensity Shift
+     */
+    public pspiDTI(DrawableNiftiVolume ictalFA, DrawableNiftiVolume baselineFA,
+                   DrawableNiftiVolume ictalTR, DrawableNiftiVolume baselineTR,
+                   DrawableNiftiVolume binaryMask, String workingDirectory,
+                   String patientInitials,double alpha,javax.swing.JTextPane console,double [] thresholds,boolean correction,boolean intensityShift){
+        this.alpha=alpha;
+        this.patientInitials=patientInitials;
+        this.binaryMask=binaryMask;
+        this.workingDirectory=workingDirectory;
+        this.baselineFA=baselineFA;
+        this.ictalFA=ictalFA;
+        this.baselineTR=baselineTR;
+        this.ictalTR=ictalTR;
+        this.console=console;
+        this.thresholds=thresholds;
+        this.correction=correction;
+        this.intensityShift=intensityShift;
+    }
+    /**
+     * Runs pspiDTI without Bonferroni & intensity Shift
      * @param ictalFA
      * @param baselineFA
      * @param ictalTR
@@ -94,6 +125,7 @@ public class pspiDTI {
         this.thresholds=thresholds;
     }
     
+   
     /**
      * Performs the t_test and returns the p_values
      * @param flag left-tailed or right-tailed
@@ -102,18 +134,18 @@ public class pspiDTI {
      */
     private FourDimensionalArray oneTailedT_Test(boolean flag,boolean FA_TR){
         int[] dims ={0};
-        Kernel w = new Kernel(1,3);
-        FourDimensionalArray result;
-        UnpairedtTest operation = new UnpairedtTest();
-        NiftiNonLinearSpatialFilter spatialFilter = new NiftiNonLinearSpatialFilter(operation);
-        if(FA_TR){
+        Kernel w = new Kernel(1,3); //Creates the kernel
+        FourDimensionalArray result; //Array to hold the results
+        UnpairedtTest operation = new UnpairedtTest(); //Creates a new unpaired t-test
+        NiftiNonLinearSpatialFilter spatialFilter = new NiftiNonLinearSpatialFilter(operation); //Defines the filter operation
+        if(FA_TR){ //For FA values, it performs a left tail t-test
             operation.setTail(UnpairedtTest.LEFT_TAIL);
             if(binaryMask!=null){
                 result= spatialFilter.doubleFilter(ictalFA.data, baselineFA.data, w, binaryMask.data, dims);
             }else{
                 result= spatialFilter.doubleFilter(ictalFA.data, baselineFA.data, w, dims);
             }
-        }else{
+        }else{ //For Trace operations, it performs a right tail t-test
             operation.setTail(UnpairedtTest.RIGHT_TAIL);
             if(binaryMask!=null){
                 result= spatialFilter.doubleFilter(ictalTR.data, baselineTR.data, w, binaryMask.data, dims);
@@ -468,6 +500,11 @@ public class pspiDTI {
             trueAlpha=alpha;
             append("Alpha = "+trueAlpha + "\n");
         }
+        if(intensityShift){
+            append("Performing global intensity shift correction...");
+            GlobalIntensityShift();
+            append("Done!!!\n");
+        }
         FourDimensionalArray temp1;
         FourDimensionalArray temp2;
         if(ictalFA!=null & baselineFA!=null){
@@ -503,5 +540,45 @@ public class pspiDTI {
        str=console.getText()+str;
        console.setText(str);
        console.setCaretPosition(str.length());
+   }
+   
+   private void GlobalIntensityShift(){
+       double[][][] tempIctal;
+       double[][][] tempBaseline;
+       double[][][] tempMask;
+       //Retrieve 3D arrays
+       tempIctal=ictalFA.data.get3DArray(0);
+       tempBaseline=baselineFA.data.get3DArray(0);
+       tempMask=binaryMask.data.get3DArray(0);
+       //Compute mean
+       double ictalMean = computeIntracerebralMean(tempIctal,tempMask);
+       double baselineMean = computeIntracerebralMean(tempBaseline,tempMask);
+       //Compute the scalingFactor
+       double scalingFactor= (ictalMean/baselineMean);
+       ictalFA.data.scalarMult(scalingFactor);
+       
+       //Retrieve 3D arrays
+       tempIctal=ictalTR.data.get3DArray(0);
+       tempBaseline=baselineTR.data.get3DArray(0);
+       //Compute mean
+       ictalMean = computeIntracerebralMean(tempIctal,tempMask);
+       baselineMean = computeIntracerebralMean(tempBaseline,tempMask);
+       //Compute the scalingFactor
+       scalingFactor= (ictalMean/baselineMean);
+       ictalTR.data.scalarMult(scalingFactor);
+       
+   }
+   private double computeIntracerebralMean(double[][][] array, double[][][] mask){
+       LimitedStatisticalMoment moment = new LimitedStatisticalMoment();
+       for(int i=0;i<array.length;i++){
+           for(int j=0;j<array[0].length;j++){
+               for(int k=0;k<array[0][0].length;k++){
+                   if(!Double.isNaN(mask[i][j][k])){
+                       moment.accumulate(array[i][j][k]);
+                   }
+               }
+           }
+       }
+       return moment.mean();
    }
 }
