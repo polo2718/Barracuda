@@ -545,31 +545,39 @@ public class pspiDTI {
        double[][][] tempIctal;
        double[][][] tempBaseline;
        double[][][] tempMask;
-       //Retrieve 3D arrays
-       tempIctal=ictalFA.data.get3DArray(0);
-       tempBaseline=baselineFA.data.get3DArray(0);
-       tempMask=binaryMask.data.get3DArray(0);
-       //Compute mean
-       double ictalMean = computeIntracerebralMean(tempIctal,tempMask);
-       double baselineMean = computeIntracerebralMean(tempBaseline,tempMask);
-       System.out.println("IctalFA: "+ictalMean);
-       System.out.println("BasalFA: "+baselineMean);
-       //Compute the scalingFactor
-       double scalingFactor= (baselineMean/ictalMean);
-       System.out.println("Scaling Factor: "+scalingFactor);
-       ictalFA.data.scalarMult(scalingFactor);
-       tempIctal=ictalFA.data.get3DArray(0);
-       System.out.println("Adjusted ictal Mean: "+computeIntracerebralMean(tempIctal,tempMask));
-       //Retrieve 3D arrays
-       tempIctal=ictalTR.data.get3DArray(0);
-       tempBaseline=baselineTR.data.get3DArray(0);
-       //Compute mean
-       ictalMean = computeIntracerebralMean(tempIctal,tempMask);
-       baselineMean = computeIntracerebralMean(tempBaseline,tempMask);
-       //Compute the scalingFactor
-       scalingFactor= (ictalMean/baselineMean);
-       ictalTR.data.scalarMult(scalingFactor);
-       
+       double ictalMean;
+       double baselineMean;
+       double scalingFactor;
+       if(binaryMask!=null){
+           tempMask=binaryMask.data.get3DArray(0);
+           if(ictalFA!=null && baselineFA!=null){
+                //Retrieve 3D arrays
+                tempIctal=ictalFA.data.get3DArray(0);
+                tempBaseline=baselineFA.data.get3DArray(0);
+                //Compute mean
+                ictalMean = computeIntracerebralMean(tempIctal,tempMask);
+                baselineMean = computeIntracerebralMean(tempBaseline,tempMask);
+                //System.out.println("Ictal FA mean: "+ictalMean);
+                //System.out.println("Basal FA mean: "+baselineMean);
+                //Compute the scalingFactor
+                scalingFactor= (baselineMean/ictalMean);
+                //System.out.println("Scaling Factor: "+scalingFactor);
+                ictalFA.data.scalarMult(scalingFactor);
+                //tempIctal=ictalFA.data.get3DArray(0);
+                //System.out.println("Adjusted ictal FA mean: "+computeIntracerebralMean(tempIctal,tempMask));
+            }
+           if(ictalTR!=null && baselineTR!=null){
+               //Retrieve 3D arrays
+                tempIctal=ictalTR.data.get3DArray(0);
+                tempBaseline=baselineTR.data.get3DArray(0);
+                //Compute mean
+                ictalMean = computeIntracerebralMean(tempIctal,tempMask);
+                baselineMean = computeIntracerebralMean(tempBaseline,tempMask);
+                //Compute the scalingFactor
+                scalingFactor= (ictalMean/baselineMean);
+                ictalTR.data.scalarMult(scalingFactor);
+           }
+       }
    }
    private double computeIntracerebralMean(double[][][] array, double[][][] mask){
        LimitedStatisticalMoment moment = new LimitedStatisticalMoment();
