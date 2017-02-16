@@ -28,6 +28,7 @@ public class DrawableNiftiVolume extends NiftiVolume{
     private double max;
     private double min;
     private int[][] drawRange = new int[3][4];
+    private int alpha;
     
     /**
      * <p>This constructor takes a NiftiVolume object to create the
@@ -51,6 +52,7 @@ public class DrawableNiftiVolume extends NiftiVolume{
         //Get volume minimum if not alread embedded in the header
         if(header.cal_min==0){setMin3D(0);}
         else{setMin(header.cal_min);}
+        alpha =255;
     }
     public void initDrawableNiftiVolume(NiftiVolume nii){
         this.header=nii.header;
@@ -64,6 +66,7 @@ public class DrawableNiftiVolume extends NiftiVolume{
         //Get volume minimum if not alread embedded in the header
         if(header.cal_min==0){setMin3D(0);}
         else{setMin(header.cal_min);}
+        alpha=255;
     }
     
     /**
@@ -79,7 +82,25 @@ public class DrawableNiftiVolume extends NiftiVolume{
      * dimensions </p>
      */ 
     public BufferedImage drawNiftiSlice(int sliceNum, String plane, int dimension,String colormap){
+	return drawNiftiSlice(sliceNum,plane,dimension,colormap,alpha);
+    }
+    
+    /**
+     * <p>This function returns an image containing a slice for a given nifti
+     * volume data. The drawRange determines how much of the image will be
+     * displayed and is used for zoom purposes. </p>
+     * @author Diego Garibay-Pulido 2016
+     * @param sliceNum The slice number
+     * @param plane The plane (coronal, saggital or axial)
+     * @param dimension The dimension
+     * @param colormap The colormap to draw the image.
+     * @param alphax The transparency value
+     * @return <p>b -A gray-scale BufferedImage with the slice adjusted to its 
+     * dimensions </p>
+     */ 
+    public BufferedImage drawNiftiSlice(int sliceNum, String plane, int dimension,String colormap,int alphax){
 	// Initialize variables
+        this.alpha=alphax;
         double temp;
         int z_idx,x_idx,y_idx;
         BufferedImage b;
@@ -107,7 +128,7 @@ public class DrawableNiftiVolume extends NiftiVolume{
                                 else{z_idx=0;}
                                 for(int j=drawRange[0][1];j<drawRange[0][3];j++){
                                     temp = data.get(sliceNum,i,j,dimension);//Gets array value
-                                    rgb=UITools.doubleToRGB(temp, max, min,colormap);//Turns double to ARGB
+                                    rgb=UITools.doubleToRGB(temp, max, min,colormap,alphax);//Turns double to ARGB
                                     if(orient[2]=='I'){
                                         if(orient[1]=='P'){
                                             b.setRGB(y_idx,z_idx,rgb.getRGB());
@@ -147,7 +168,7 @@ public class DrawableNiftiVolume extends NiftiVolume{
                                 }else{z_idx=0;}
                                 for(int j=drawRange[1][1];j<drawRange[1][3];j++){
                                     temp = data.get(i,sliceNum,j,dimension);
-                                    rgb=UITools.doubleToRGB(temp, max, min,colormap);
+                                    rgb=UITools.doubleToRGB(temp, max, min,colormap,alphax);
                                     if(orient[2]=='I'){
                                         if(orient[0]=='L'){
                                             b.setRGB(x_idx,z_idx,rgb.getRGB());
@@ -186,7 +207,7 @@ public class DrawableNiftiVolume extends NiftiVolume{
                                 }else{y_idx=0;}
                                 for(int j=drawRange[2][1];j<drawRange[2][3];j++){
                                     temp =data.get(i,j,sliceNum,dimension);
-                                    rgb=UITools.doubleToRGB(temp, max, min,colormap);
+                                    rgb=UITools.doubleToRGB(temp, max, min,colormap,alphax);
                                     if(orient[1]=='P'){
                                         if(orient[0]=='L'){
                                             b.setRGB(x_idx,y_idx,rgb.getRGB());
@@ -222,6 +243,7 @@ public class DrawableNiftiVolume extends NiftiVolume{
         }
         return b;
     }
+    
     
     /**
      * <p>Executes the interpolation for a buffered image, the output length of each
@@ -383,6 +405,13 @@ public class DrawableNiftiVolume extends NiftiVolume{
         drawRange[2][1]=0;//y0
         drawRange[2][2]=header.dim[1];//x1 nx
         drawRange[2][3]=header.dim[2];//y1 ny
+    }
+    
+    public void setAlpha(int alpha){
+        this.alpha=alpha;
+    }
+    public int getAlpha(){
+        return alpha;
     }
 }
    

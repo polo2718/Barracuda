@@ -124,6 +124,18 @@ public abstract class UITools {
      * @return A Color Object indicating the color corresponding to the value
      */
     public static Color doubleToRGB(double val,double max,double min,String colormap){
+        return doubleToRGB(val,max,min,colormap,255);
+    } 
+    /**
+     * Converts a double value to a corresponding RGB with colormap and transparency value
+     * @param val value to be converted
+     * @param max scale maximum
+     * @param min scale minimum
+     * @param colormap hot,hot_invert,winter,winter_invert,rainbow,grayscale.
+     * @param alpha transparency value
+     * @return The corresponding Color
+     */
+    public static Color doubleToRGB(double val,double max,double min,String colormap,int alpha){
         int temp,mod;
         Color rgb;
         double mul;
@@ -137,7 +149,7 @@ public abstract class UITools {
                 }
                 else if((val*mul)>765){ //More than max display is white
 
-                    rgb=new Color(255,255,255,255);
+                    rgb=new Color(255,255,255,alpha);
                 }
                 else if(val<=0){ //Less than min is not shown
                     rgb=new Color(0,0,0,0);
@@ -147,13 +159,13 @@ public abstract class UITools {
                     mod=(int) val%255;
                     switch(temp){
                         case 0: //Only red
-                            rgb=new Color(mod,0,0,255);
+                            rgb=new Color(mod,0,0,alpha);
                             break;
                         case 1: //Red and green
-                            rgb=new Color(255,mod,0,255);
+                            rgb=new Color(255,mod,0,alpha);
                             break;
                         case 2: //Red green and blue
-                            rgb=new Color(255,255,mod,255);
+                            rgb=new Color(255,255,mod,alpha);
                             break;
                         default:
                             rgb=new Color(0,0,0,0);
@@ -171,20 +183,20 @@ public abstract class UITools {
                     rgb=new Color(0,0,0,0);
                 }
                 else if(val<0){ //Less than min is white
-                    rgb=new Color(255,255,255,255);
+                    rgb=new Color(255,255,255,alpha);
                 }else{
                     val=val*mul; //Multiply by dynamic range
                     temp=(int) Math.floor(val/255);
                     mod=(int) val%255;
                     switch(temp){
                         case 0: //
-                            rgb=new Color(255,255,255-mod,255);
+                            rgb=new Color(255,255,255-mod,alpha);
                             break;
                         case 1: //
-                            rgb=new Color(255,255-mod,0,255);
+                            rgb=new Color(255,255-mod,0,alpha);
                             break;
                         case 2: //
-                            rgb=new Color(255-mod,0,0,255);
+                            rgb=new Color(255-mod,0,0,alpha);
                             break;
                         default:
                             rgb=new Color(0,0,0,0);
@@ -199,7 +211,7 @@ public abstract class UITools {
                     rgb=new Color(0,0,0,0);
                 }
                 else if((val*mul)>765){ //More than max display is white
-                    rgb=new Color(255,255,255,255);
+                    rgb=new Color(255,255,255,alpha);
                 }
                 else if(val<=0){ //Less than min is black
                     rgb=new Color(0,0,0,0);
@@ -209,13 +221,13 @@ public abstract class UITools {
                     mod=(int) val%255;
                     switch(temp){
                         case 0: //Only blue
-                            rgb=new Color(0,0,mod,255);
+                            rgb=new Color(0,0,mod,alpha);
                             break;
                         case 1: //Blue and green
-                            rgb=new Color(0,mod,255,255);
+                            rgb=new Color(0,mod,255,alpha);
                             break;
                         case 2: //Blue Green and red
-                            rgb=new Color(mod,255,255,255);
+                            rgb=new Color(mod,255,255,alpha);
                             break;
                         default:
                             rgb=new Color(0,0,0,0);
@@ -233,20 +245,20 @@ public abstract class UITools {
                     rgb=new Color(0,0,0,0);
                 }
                 else if(val<0){ //Less than min is white
-                    rgb=new Color(255,255,255,255);
+                    rgb=new Color(255,255,255,alpha);
                 }else{
                     val=val*mul; //Multiply by dynamic range
                     temp=(int) Math.floor(val/255);
                     mod=(int) val%255;
                     switch(temp){
                         case 0: //
-                            rgb=new Color(255-mod,255,255,255);
+                            rgb=new Color(255-mod,255,255,alpha);
                             break;
                         case 1: //
-                            rgb=new Color(0,255-mod,255,255);
+                            rgb=new Color(0,255-mod,255,alpha);
                             break;
                         case 2: //
-                            rgb=new Color(0,0,255-mod,255);
+                            rgb=new Color(0,0,255-mod,alpha);
                             break;
                         default:
                             rgb=new Color(0,0,0,0);
@@ -260,26 +272,26 @@ public abstract class UITools {
                     rgb=new Color(0,0,0,0);
                 }
                 else if(((val-min)*mul)>1020){ //More than max display is red
-                    rgb=new Color(255,0,0,255);
+                    rgb=new Color(255,0,0,alpha);
                 }
                 else if((val-min)*mul<=0){ //Less than min is blue
-                    rgb=new Color(0,0,255,255);
+                    rgb=new Color(0,0,255,alpha);
                 }else{
                     val=(val-min)*mul; //Multiply by dynamic range
                     temp=(int) Math.floor(val/255);
                     mod=(int) val%255;
                     switch(temp){
                         case 0: //Blue to Yellow
-                            rgb=new Color(0,mod,255,255);
+                            rgb=new Color(0,mod,255,alpha);
                             break;
                         case 1: //Yellow to Green
-                            rgb=new Color(0,255,255-mod,255);
+                            rgb=new Color(0,255,255-mod,alpha);
                             break;
                         case 2: //Green to orange
-                            rgb=new Color(mod,255,0,255);
+                            rgb=new Color(mod,255,0,alpha);
                             break;
                         case 3:
-                            rgb=new Color(255,255-mod,0,255);
+                            rgb=new Color(255,255-mod,0,alpha);
                             break;
                         default:
                             rgb=new Color(0,0,0,0);
@@ -296,24 +308,20 @@ public abstract class UITools {
                     rgb=new Color(0,0,0,0);
                 }
                 else if(val==min){//Min equals black
-                    rgb=new Color(0,0,0,255);
+                    rgb=new Color(0,0,0,alpha);
                 }
                 else if(val>=max){ //More than max is white
-                    rgb=new Color(255,255,255,255);
+                    rgb=new Color(255,255,255,alpha);
                 }
                 else if(((val-min)*mul)>255){ //More than 255 is white
-                     rgb=new Color(255,255,255,255);
+                     rgb=new Color(255,255,255,alpha);
                 }
                 else{
                     temp=(int)((val-min)*mul);
-                    rgb=new Color(temp,temp,temp,255);
+                    rgb=new Color(temp,temp,temp,alpha);
                 }
                 break;
         }
-        
-        
-        
-        
         return rgb;
     }   
 }

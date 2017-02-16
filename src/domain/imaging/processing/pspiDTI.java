@@ -343,7 +343,6 @@ public class pspiDTI {
             resultingVol.header.intent_name=new StringBuffer("Trace increase");
             resultingVol.data=result;
             double max=ArrayOperations.findMaximum(resultingVol.data.get3DArray(0));
-            System.out.println(max);
             append("Writing Trace Files...");
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_increase.nii.gz");
@@ -553,10 +552,14 @@ public class pspiDTI {
        //Compute mean
        double ictalMean = computeIntracerebralMean(tempIctal,tempMask);
        double baselineMean = computeIntracerebralMean(tempBaseline,tempMask);
+       System.out.println("IctalFA: "+ictalMean);
+       System.out.println("BasalFA: "+baselineMean);
        //Compute the scalingFactor
-       double scalingFactor= (ictalMean/baselineMean);
+       double scalingFactor= (baselineMean/ictalMean);
+       System.out.println("Scaling Factor: "+scalingFactor);
        ictalFA.data.scalarMult(scalingFactor);
-       
+       tempIctal=ictalFA.data.get3DArray(0);
+       System.out.println("Adjusted ictal Mean: "+computeIntracerebralMean(tempIctal,tempMask));
        //Retrieve 3D arrays
        tempIctal=ictalTR.data.get3DArray(0);
        tempBaseline=baselineTR.data.get3DArray(0);
