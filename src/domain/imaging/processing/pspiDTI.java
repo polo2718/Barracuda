@@ -235,7 +235,9 @@ public class pspiDTI {
             resultingVol.header.intent_code=1001;
             resultingVol.header.intent_name=new StringBuffer("FA decrease");
             resultingVol.data=result;
-            
+            double min=ArrayOperations.findMinimum(resultingVol.data.get3DArray(0));
+            resultingVol.header.cal_min=(float)min;
+            resultingVol.header.cal_max=0.0f;
             append("Writing FA Files...");
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_decrease.nii.gz");
@@ -343,6 +345,8 @@ public class pspiDTI {
             resultingVol.header.intent_name=new StringBuffer("Trace increase");
             resultingVol.data=result;
             double max=ArrayOperations.findMaximum(resultingVol.data.get3DArray(0));
+            resultingVol.header.cal_max=(float)max;
+            resultingVol.header.cal_min=0.0f;
             append("Writing Trace Files...");
             try{
                 resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_increase.nii.gz");
