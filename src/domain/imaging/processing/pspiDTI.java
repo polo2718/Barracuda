@@ -213,9 +213,8 @@ public class pspiDTI {
         int z=mask.sizeZ();
         String outputFilename= outputDirectory+"\\"+patientInitials+Double.toString(alpha);
         FourDimensionalArray result= new FourDimensionalArray(x,y,z,1);
-        double temp;
+        double temp,threshold;
         LimitedStatisticalMoment moments = new LimitedStatisticalMoment();
-        double threshold;
         NiftiVolume resultingVol = new NiftiVolume();
         NiftiVolume ictal,baseline;
         String [] str;
