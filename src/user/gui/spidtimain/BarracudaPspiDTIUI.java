@@ -732,7 +732,7 @@ private double trThreshold=Double.NaN;
             workingDirectory = file.getAbsolutePath()+"\\";
             directoryTextPane.setText(workingDirectory);
             fc.setCurrentDirectory(file);
-            String outputFolder= workingDirectory+patientInitials+"_pspiDTI_output";
+            /*String outputFolder= workingDirectory+patientInitials+"_pspiDTI_output";
             File output=new File(outputFolder);
             if(!output.exists()){
                 if(output.mkdir()){
@@ -746,7 +746,7 @@ private double trThreshold=Double.NaN;
                 errorDialog.setLocationRelativeTo(null);
                 errorTitleLabel.setText("<html> <strong><font size=4 color=\"red\">Warning!!!!</font></strong>");
                 errorDialog.setVisible(true);
-            }
+            }*/
         }
         else {
             returnVal=0;

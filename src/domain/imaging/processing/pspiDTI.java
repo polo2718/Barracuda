@@ -22,6 +22,7 @@ import domain.mathUtils.numericalMethods.statistics.LimitedStatisticalMoment;
 public class pspiDTI {
     private final DrawableNiftiVolume ictalFA, baselineFA, ictalTR, baselineTR, binaryMask;
     private final String workingDirectory;
+    private String outputDirectory;
     private final String patientInitials;
     private final double alpha;
     private final javax.swing.JTextPane console;
@@ -63,6 +64,7 @@ public class pspiDTI {
         this.console=console;
         this.thresholds=thresholds;
         this.correction=correction;
+        
     }
     /**
      * Constructor, Bonferroni correction & Global Intensity Shift
@@ -180,24 +182,23 @@ public class pspiDTI {
                 }
             }
         }
-        try{
-            NiftiVolume resultingVol=new NiftiVolume();
-            if(FA_TR){
-                resultingVol.header=ictalFA.header;
-                resultingVol.header.intent_code=22;
-                resultingVol.header.cal_max=(float)alpha;
-                resultingVol.header.cal_min=0;
-                resultingVol.data=result;
-                resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_Pvals.nii.gz");
-            }else{
-                resultingVol.header=ictalTR.header;
-                resultingVol.header.intent_code=22;
-                resultingVol.header.cal_max=(float)alpha;
-                resultingVol.header.cal_min=0;
-                resultingVol.data=result;
-                resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_Pvals.nii.gz");
-            }
-        }catch(Exception e){}
+        NiftiVolume resultingVol=new NiftiVolume();
+        String str,str2;
+        if(FA_TR){
+            resultingVol.header=ictalFA.header;
+            str=outputDirectory+"\\"+patientInitials+Double.toString(alpha)+"a_FA_Pvals.nii.gz";
+            str2="Writing FA p-values...";
+        }else{
+            resultingVol.header=ictalTR.header;
+            str=outputDirectory+"\\"+patientInitials+Double.toString(alpha)+"a_TR_Pvals.nii.gz";
+            str2="Writing TR p-values...";
+        }
+        resultingVol.header.intent_code=22;
+        resultingVol.header.cal_max=(float)alpha;
+        resultingVol.header.cal_min=0;
+        resultingVol.data=result;
+        append(str2);
+        writeVolume(resultingVol,str);
         return result;
     }
     
@@ -210,231 +211,91 @@ public class pspiDTI {
         int x=mask.sizeX();
         int y=mask.sizeY();
         int z=mask.sizeZ();
-        
+        String outputFilename= outputDirectory+"\\"+patientInitials+Double.toString(alpha);
         FourDimensionalArray result= new FourDimensionalArray(x,y,z,1);
         double temp;
         LimitedStatisticalMoment moments = new LimitedStatisticalMoment();
         double threshold;
         NiftiVolume resultingVol = new NiftiVolume();
-        //Calculate subtraction and accumulate values for mean and std calculations
-        if(FA_TR){//FA
-            for(int i=0;i<x;i++){
-                for(int j=0;j<y;j++){
-                    for(int k=0;k<z;k++){
-                        if(Double.isNaN(mask.get(i,j,k,0))){//If mask is NaN
-                            result.set(i,j,k,0,Double.NaN);
-                        }else{
-                            temp=ictalFA.data.get(i,j,k,0)-baselineFA.data.get(i,j,k,0);
-                            moments.accumulate(temp);
-                            result.set(i,j,k,0,temp);
-                        }
+        NiftiVolume ictal,baseline;
+        String [] str;
+        //Defines volumes to subtract
+        if(FA_TR){
+            ictal=ictalFA;
+            baseline=baselineFA;
+            str=new String[]{"FA","decrease"};
+        }else{
+            ictal=ictalTR;
+            baseline=baselineTR;
+            str=new String[]{"TR","increase"};
+        }
+        //Performs subtraction
+        for(int i=0;i<x;i++){
+            for(int j=0;j<y;j++){
+                for(int k=0;k<z;k++){
+                    if(Double.isNaN(mask.get(i,j,k,0))){//If mask is NaN
+                        result.set(i,j,k,0,Double.NaN);
+                    }else{
+                        temp=ictal.data.get(i,j,k,0)-baseline.data.get(i,j,k,0);
+                        moments.accumulate(temp);
+                        result.set(i,j,k,0,temp);
                     }
-                }
-            }
-            resultingVol.header=ictalFA.header;
-            resultingVol.header.intent_code=1001;
-            resultingVol.header.intent_name=new StringBuffer("FA decrease");
-            resultingVol.data=result;
-            double min=ArrayOperations.findMinimum(resultingVol.data.get3DArray(0));
-            resultingVol.header.cal_min=(float)min;
-            resultingVol.header.cal_max=0.0f;
-            append("Writing FA Files...");
-            try{
-                resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_decrease.nii.gz");
-                append("\n");
-            }catch(Exception e){
-                append("Error writing file\n");
-            }
-            //One standard deviation
-            double mean=moments.mean();
-            double std=moments.std();
-            threshold=mean-std;
-            resultingVol.data=cleanSubtract(result,threshold,FA,1);
-            append("Writing FA: 1std...");
-            try{
-                resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_1std_decrease.nii.gz");
-                append("\n");
-            }catch(Exception e){
-                append("Error writing file\n");
-            }
-            //Two standard deviations
-            threshold=mean-2*std;
-            resultingVol.data=cleanSubtract(result,threshold,FA,1);
-            append("Writing FA: 2std...");
-            try{
-                resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_2std_decrease.nii.gz");
-                append("\n");
-            }catch(Exception e){
-                append("Error writing file\n");
-            }
-            //Three standard deviations
-            threshold=mean-3*std;
-            resultingVol.data=cleanSubtract(result,threshold,FA,1);
-            append("Writing FA: 3std...");
-            try{
-                resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_3std_decrease.nii.gz");
-                append("\n");
-            }catch(Exception e){
-                append("Error writing file\n");
-            }
-            
-            if(Double.isNaN(thresholds[0])){
-                // 0.05 FA threshold
-                resultingVol.data=cleanSubtract(result,-1,FA,0.05);
-                append("Writing FA: 0.05...");
-                try{
-                    resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_0.05t_decrease.nii.gz");
-                    append("\n");
-                }catch(Exception e){
-                    append("Error writing file\n");
-                }
-                // 0.1 FA threshold
-                resultingVol.data=cleanSubtract(result,-1,FA,0.1);
-                append("Writing FA: 0.10...");
-                try{
-                    resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_0.10t_decrease.nii.gz");
-                    append("\n");
-                }catch(Exception e){
-                    append("Error writing file\n");
-                }
-                // 0.15 FA threshold
-                resultingVol.data=cleanSubtract(result,-1,FA,0.15);
-                append("Writing FA: 0.15...");
-                try{
-                    resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_0.15t_decrease.nii.gz");
-                    append("\n");
-                }catch(Exception e){
-                    append("Error writing file\n");
-                }
-                // 0.20 FA threshold
-                resultingVol.data=cleanSubtract(result,-1,FA,0.2);
-                append("Writing FA: 0.20...");
-                try{
-                    resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_0.20t_decrease.nii.gz");
-                    append("\n");
-                }catch(Exception e){
-                    append("Error writing file\n");
-                }
-            }else{
-                resultingVol.data=cleanSubtract(result,-1,FA,thresholds[0]);
-                append("Writing FA: "+Double.toString(thresholds[0])+"...");
-                try{
-                    resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_FA_"+Double.toString(thresholds[0])+"t_decrease.nii.gz");
-                    append("\n");
-                }catch(Exception e){
-                    append("Error writing file\n");
-                }
-            }
-            
-        }else{//TR
-            for(int i=0;i<x;i++){
-                for(int j=0;j<y;j++){
-                    for(int k=0;k<z;k++){
-                        if(Double.isNaN(mask.get(i,j,k,0))){//If mask is NaN
-                            result.set(i,j,k,0,Double.NaN);
-                        }else{
-                            temp=ictalTR.data.get(i,j,k,0)-baselineTR.data.get(i,j,k,0);
-                            moments.accumulate(temp);
-                            result.set(i,j,k,0,temp);
-                        }
-                    }
-                }
-            }
-            resultingVol.header=ictalTR.header;
-            resultingVol.header.intent_code=1001;
-            resultingVol.header.intent_name=new StringBuffer("Trace increase");
-            resultingVol.data=result;
-            double max=ArrayOperations.findMaximum(resultingVol.data.get3DArray(0));
-            resultingVol.header.cal_max=(float)max;
-            resultingVol.header.cal_min=0.0f;
-            append("Writing Trace Files...");
-            try{
-                resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_increase.nii.gz");
-                append("\n");
-            }catch(Exception e){
-                append("Error writing file\n");
-            }
-            //One standard deviation
-            double mean=moments.mean();
-            double std=moments.std();
-            threshold=mean+std;
-            resultingVol.data=cleanSubtract(result,threshold,TR,1);
-            append("Writing Trace: 1std...");
-            try{
-                resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_1std_increase.nii.gz");
-                append("\n");
-            }catch(Exception e){
-                append("Error writing file\n");
-            }
-            //Two standard deviations
-            threshold=mean+2*std;
-            resultingVol.data=cleanSubtract(result,threshold,TR,1);
-            append("Writing Trace: 2std...");
-            try{
-                resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_2std_increase.nii.gz");
-                append("\n");
-            }catch(Exception e){
-                append("Error writing file\n");
-            }
-            //Three standard deviations
-            threshold=mean+3*std;
-            resultingVol.data=cleanSubtract(result,threshold,TR,1);
-            append("Writing Trace: 3std...");
-            try{
-                resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_3std_increase.nii.gz");
-                append("\n");
-            }catch(Exception e){
-                append("Error writing file\n");
-            }
-            
-            if(Double.isNaN(thresholds[1])){
-                // 0.05 TR threshold
-                resultingVol.data=cleanSubtract(result,1,TR,0.05*max);
-                append("Writing Trace: 0.05...");
-                try{
-                    resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_0.05t_increase.nii.gz");
-                    append("\n");
-                }catch(Exception e){
-                    append("Error writing file\n");
-                }
-                // 0.1 TR threshold
-                resultingVol.data=cleanSubtract(result,1,TR,0.1*max);
-                append("Writing Trace: 0.10...");
-                try{
-                    resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_0.10t_increase.nii.gz");
-                    append("\n");
-                }catch(Exception e){
-                    append("Error writing file\n");
-                }
-                // 0.15 TR threshold
-                resultingVol.data=cleanSubtract(result,1,TR,0.15*max);
-                append("Writing Trace: 0.15...");
-                try{
-                    resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_0.15t_increase.nii.gz");
-                    append("\n");
-                }catch(Exception e){
-                    append("Error writing file\n");
-                }
-                // 0.20 TR threshold
-                resultingVol.data=cleanSubtract(result,1,TR,0.2*max);
-                append("Writing Trace: 0.20...");
-                try{
-                    resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_0.20t_increase.nii.gz");
-                    append("\n");
-                }catch(Exception e){
-                    append("Error writing file\n");
-                }
-            }else{
-                resultingVol.data=cleanSubtract(result,1,TR,thresholds[1]);
-                append("Writing Trace: "+Double.toString(thresholds[1])+"...");
-                try{
-                    resultingVol.write(workingDirectory+patientInitials+"_pspiDTI_output\\"+patientInitials+Double.toString(alpha)+"a_TR_"+Double.toString(thresholds[1])+"t_increase.nii.gz");
-                    append("\n");
-                }catch(Exception e){
-                    append("Error writing file\n");
                 }
             }
         }
+        resultingVol.header=ictal.header;
+        resultingVol.header.intent_code=1001;
+        resultingVol.header.intent_name=new StringBuffer(str[0]+" "+str[1]);
+        resultingVol.data=result;
+        double max,min;
+        //Defines maximum and minimum
+        if(FA_TR){
+            min=ArrayOperations.findMinimum(resultingVol.data.get3DArray(0));
+            max=0f;
+        }else{
+            max=ArrayOperations.findMaximum(resultingVol.data.get3DArray(0));
+            min=0f;
+        }
+        resultingVol.header.cal_min=(float)min;
+        resultingVol.header.cal_max=(float)max;
+        append("Writing "+str[0]+" Files...");
+        //Write raw increase/decrease volume
+        writeVolume(resultingVol,outputFilename+"a_"+str[0]+"_"+str[1]+".nii.gz");
+        //Standard deviation thresholds
+        double mean=moments.mean();
+        double std=moments.std();
+        for(int i=1;i<4;i++){
+            if(FA_TR)
+                threshold=mean-((double)i*std); //FA looks at decreases, sign change
+            else
+                threshold=mean+((double)i*std); //TR looks at increases, sign change
+            resultingVol.data=cleanSubtract(result,threshold,FA_TR,1);
+            append("Writing "+str[0]+": "+Integer.toString(i)+"std...");
+            writeVolume(resultingVol,outputFilename+"a_"+str[0]+"_"+Integer.toString(i)+"std_"+str[1]+".nii.gz");
+        }
+        if(Double.isNaN(thresholds[0])& FA_TR){//If no FA threshold was specified
+            for(double thr=0.05;thr<0.25;thr=thr+0.05){
+                resultingVol.data=cleanSubtract(result,-1,FA_TR,thr);  
+                append("Writing "+str[0]+": "+String.format("%.2f", thr)+"...");
+                writeVolume(resultingVol,outputFilename+"a_"+str[0]+"_"+String.format("%.2f", thr)+"t_"+str[1]+".nii.gz");
+            }
+        }
+        else if(Double.isNaN(thresholds[1])& !FA_TR){ //If no TR threshold was specified
+            for(double thr=0.05;thr<0.25;thr=thr+0.05){
+                resultingVol.data=cleanSubtract(result,1,FA_TR,thr*max);  
+                append("Writing "+str[0]+": "+String.format("%.2f", thr)+"...");
+                writeVolume(resultingVol,outputFilename+"a_"+str[0]+"_"+String.format("%.2f", thr)+"t_"+str[1]+".nii.gz");
+            }        
+        }
+        else if(!Double.isNaN(thresholds[0]) & FA_TR){ //If a FA threshold was specified
+            resultingVol.data=cleanSubtract(result,-1,FA_TR,thresholds[0]);
+            append("Writing "+str[0]+": "+Double.toString(thresholds[0])+"...");
+            writeVolume(resultingVol,outputFilename+"a_"+str[0]+"_"+Double.toString(thresholds[0])+"t_"+str[1]+".nii.gz");
+        } else if(!Double.isNaN(thresholds[1]) & !FA_TR){ //If a TR threshold was specified
+            resultingVol.data=cleanSubtract(result,1,FA_TR,thresholds[1]*max);
+            append("Writing "+str[0]+": "+Double.toString(thresholds[1])+"...");
+            writeVolume(resultingVol,outputFilename+"a_"+str[0]+"_"+Double.toString(thresholds[1])+"t_"+str[1]+".nii.gz");
+        }  
     }
     
     /**
@@ -452,30 +313,18 @@ public class pspiDTI {
         //Variable to hold the result
         double temp;
         FourDimensionalArray result= new FourDimensionalArray(x,y,z,1);
-        if(FA_TR){
-            for(int i=0;i<x;i++){
-                for(int j=0;j<y;j++){
-                    for(int k=0;k<z;k++){
-                            temp=array.get(i,j,k,0);
-                            if(temp<=threshold|Math.abs(temp)>=change){
-                                result.set(i,j,k,0,temp);
-                            }else{
-                                result.set(i,j,k,0,Double.NaN);
-                            }
+        for(int i=0;i<x;i++){
+            for(int j=0;j<y;j++){
+                for(int k=0;k<z;k++){
+                    temp=array.get(i,j,k,0);
+                    if(FA_TR & (temp<=threshold|Math.abs(temp)>=change)){
+                        result.set(i,j,k,0,temp);
                     }
-                }
-            }
-        }
-        else{
-            for(int i=0;i<x;i++){
-                for(int j=0;j<y;j++){
-                    for(int k=0;k<z;k++){
-                            temp=array.get(i,j,k,0);
-                            if(temp>=threshold|Math.abs(temp)>=change){
-                                result.set(i,j,k,0,temp);
-                            }else{
-                                result.set(i,j,k,0,Double.NaN);
-                            }
+                    else if(!FA_TR & (temp>=threshold|Math.abs(temp)>=change)){
+                        result.set(i,j,k,0,temp);
+                    }
+                    else{
+                        result.set(i,j,k,0,Double.NaN);
                     }
                 }
             }
@@ -487,6 +336,8 @@ public class pspiDTI {
      * This function calculates the pspiDTI algorithm and prints the output to a console
      */
     public void calculate(){
+        //outputDirectory=workingDirectory+patientInitials+"_pspiDTI_output";
+        outputDirectory=workingDirectory;
         int voxelCount;
         if(binaryMask!=null){
             voxelCount=binaryMask.data.nonZeroCount();
@@ -596,4 +447,15 @@ public class pspiDTI {
        }
        return moment.mean();
    }
+   
+   private void writeVolume(NiftiVolume volume,String filename){
+       try{
+            volume.write(filename);
+            append("\n");
+        }catch(Exception e){
+            append("Error writing file\n");
+        }
+   }
+   
+   
 }
