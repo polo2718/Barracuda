@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public class Vector {
     /**
-     * Vector components
+     * Vector components/
      */
     protected double components[];
     
