@@ -33,14 +33,14 @@ import user.gui.tools.*;
 public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
     private DrawableNiftiVolume niiVol;
     private DrawableNiftiVolume overlayVol;
-    private final boolean view;
+    private boolean view;
     private int n;
     private int m;
     private String plane="coronal";
     private boolean resize=false;
-    private final Timer timer;
-    private final String colorScale;
-    private final String colorScaleOverlay;
+    private Timer timer;
+    private String colorScale;
+    private String colorScaleOverlay;
     private int startSlice;
     private int endSlice;
     private int nMax;
@@ -82,8 +82,36 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
         }   
         });
         timer.setRepeats( false );
+        //constructorHelper(niiVol,overlayVol,view,colorScale,colorScaleOverlay);
     }
-
+    
+    public BarracudaViewMosaicFrame(DrawableNiftiVolume niiVol ,DrawableNiftiVolume overlayVol,boolean view,String colorScale,String colorScaleOverlay,File file){
+        fc.setCurrentDirectory(file);
+        initComponents();
+        this.niiVol=niiVol;
+        this.overlayVol=overlayVol;
+        this.view=view;
+        this.n=5;
+        this.m=5;
+        this.colorScale=colorScale;
+        this.colorScaleOverlay=colorScaleOverlay;
+        initMosaic(n,m);
+        initSettings();
+        drawCoronalMosaic();
+        flag=false;
+         //Timer for resizing event
+        int delay = 10;
+        timer = new Timer( delay, new ActionListener(){
+        @Override
+        public void actionPerformed( ActionEvent e ){
+            if(resize){  
+                drawMosaics();
+                resize=false;
+            }
+        }   
+        });
+        timer.setRepeats( false );
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -956,5 +984,31 @@ public class BarracudaViewMosaicFrame extends javax.swing.JFrame {
             } else {
                 returnVal=0;
             }
+    }
+    private void constructorHelper(DrawableNiftiVolume niiVol ,DrawableNiftiVolume overlayVol,boolean view,String colorScale,String colorScaleOverlay){
+        initComponents();
+        this.niiVol=niiVol;
+        this.overlayVol=overlayVol;
+        this.view=view;
+        this.n=5;
+        this.m=5;
+        this.colorScale=colorScale;
+        this.colorScaleOverlay=colorScaleOverlay;
+        initMosaic(n,m);
+        initSettings();
+        drawCoronalMosaic();
+        flag=false;
+         //Timer for resizing event
+        int delay = 10;
+        timer = new Timer( delay, new ActionListener(){
+        @Override
+        public void actionPerformed( ActionEvent e ){
+            if(resize){  
+                drawMosaics();
+                resize=false;
+            }
+        }   
+        });
+        timer.setRepeats( false );
     }
 }

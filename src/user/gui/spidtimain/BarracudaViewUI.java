@@ -1740,10 +1740,10 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     private void mosaicViewMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mosaicViewMenuActionPerformed
         if(niiVol!=null){
             if(overlayVol!=null){
-                mosaicWindow=new BarracudaViewMosaicFrame(niiVol,overlayVol,viewState,colorScale,colorScaleOverlay);
+                mosaicWindow=new BarracudaViewMosaicFrame(niiVol,overlayVol,viewState,colorScale,colorScaleOverlay,fc.getCurrentDirectory());
                         
             }else{
-                mosaicWindow=new BarracudaViewMosaicFrame(niiVol,null,viewState,colorScale, null);
+                mosaicWindow=new BarracudaViewMosaicFrame(niiVol,null,viewState,colorScale, null,fc.getCurrentDirectory());
             }
            mosaicWindow.setVisible(true);
                         mosaicWindow.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -2998,5 +2998,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         DefaultBoundedRangeModel model=new DefaultBoundedRangeModel(50,1,0,100);
         return model;
     }
-    
+    public File getFile(){
+        return fc.getCurrentDirectory();
+    }
 }

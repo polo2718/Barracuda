@@ -6,6 +6,7 @@
 package user.gui.spidtimain;
 
 import java.awt.Cursor;
+import java.io.File;
 import user.gui.tools.IconGetter;
 
 /**
@@ -15,6 +16,7 @@ import user.gui.tools.IconGetter;
  * Diego Garibay-Pulido 2016</p>
  */
 public class BarracudaLoader extends javax.swing.JFrame {
+    private static File file;
 
     /**
      * Creates new form BarracudaLoader
@@ -166,7 +168,10 @@ public class BarracudaLoader extends javax.swing.JFrame {
     private javax.swing.JButton pspiDTIDialogButton;
     // End of variables declaration//GEN-END:variables
     private static void launchViewer(BarracudaLoader a){
-        (new Thread(new ViewerRunnable(a))).start();
+        ViewerRunnable runnable=new ViewerRunnable(a);
+        file=runnable.getFile();
+        Thread thr= new Thread(runnable);
+        thr.start();
     }
     
     

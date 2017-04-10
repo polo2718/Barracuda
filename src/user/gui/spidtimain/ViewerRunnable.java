@@ -6,6 +6,7 @@
 package user.gui.spidtimain;
 
 import java.awt.Cursor;
+import java.io.File;
 
 /**
  * Runnable to launch barracuda viewer in new thread
@@ -15,6 +16,7 @@ public class ViewerRunnable implements Runnable{
     private BarracudaViewUI b;
     private final BarracudaLoader a;
     private final String filename;
+    private File file;
     
     public ViewerRunnable(BarracudaLoader a){
         this.a=a;
@@ -40,6 +42,7 @@ public class ViewerRunnable implements Runnable{
         b.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent evt) {
+                    file = b.getFile();
                     b.dispose();
                     b=null;
                     Thread.currentThread().interrupt(); 
@@ -48,6 +51,8 @@ public class ViewerRunnable implements Runnable{
             });
         a.setVisible(false);
     }
-    
+    public File getFile(){
+        return file;
+    }
     
 }
