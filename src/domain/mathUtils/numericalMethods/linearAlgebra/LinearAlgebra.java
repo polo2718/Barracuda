@@ -11,6 +11,7 @@ package domain.mathUtils.numericalMethods.linearAlgebra;
  * <p>
  * Diego Garibay-Pulido 2016</p>
  */
+@Deprecated
 public abstract class LinearAlgebra {
     @Deprecated
     public static double[] matrixTimesVector(double[][] mat,double[] vec){
