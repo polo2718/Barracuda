@@ -42,7 +42,7 @@ public class ViewerRunnable implements Runnable{
         b.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent evt) {
-                    file = b.getFile();
+                    //file = b.getFile();
                     b.dispose();
                     b=null;
                     Thread.currentThread().interrupt(); 

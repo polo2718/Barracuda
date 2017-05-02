@@ -30,6 +30,7 @@ public class pspiDTI {
     private boolean correction = false;
     private boolean intensityShift = false;
     private double trueAlpha;
+    private int kernelSize=3;
     
     public static final boolean LEFT_TAIL=true;
     public static final boolean RIGHT_TAIL=false;
@@ -136,7 +137,7 @@ public class pspiDTI {
      */
     private FourDimensionalArray oneTailedT_Test(boolean flag,boolean FA_TR){
         int[] dims ={0};
-        Kernel w = new Kernel(1,3); //Creates the kernel
+        Kernel w = new Kernel(1,kernelSize); //Creates the kernel
         FourDimensionalArray result; //Array to hold the results
         UnpairedtTest operation = new UnpairedtTest(); //Creates a new unpaired t-test
         NiftiNonLinearSpatialFilter spatialFilter = new NiftiNonLinearSpatialFilter(operation); //Defines the filter operation
@@ -411,14 +412,9 @@ public class pspiDTI {
                 //Compute mean
                 ictalMean = computeIntracerebralMean(tempIctal,tempMask);
                 baselineMean = computeIntracerebralMean(tempBaseline,tempMask);
-                //System.out.println("Ictal FA mean: "+ictalMean);
-                //System.out.println("Basal FA mean: "+baselineMean);
                 //Compute the scalingFactor
                 scalingFactor= (baselineMean/ictalMean);
-                //System.out.println("Scaling Factor: "+scalingFactor);
                 ictalFA.data.scalarMult(scalingFactor);
-                //tempIctal=ictalFA.data.get3DArray(0);
-                //System.out.println("Adjusted ictal FA mean: "+computeIntracerebralMean(tempIctal,tempMask));
             }
            if(ictalTR!=null && baselineTR!=null){
                //Retrieve 3D arrays
