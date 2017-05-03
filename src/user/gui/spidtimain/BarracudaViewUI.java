@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.File;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.Locale;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JFileChooser;
 import user.gui.tools.*;
@@ -68,6 +69,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         fc.setFileFilter(filter);
         fc.addChoosableFileFilter(filter);
         fc.setAcceptAllFileFilterUsed(false);
+        Locale.setDefault(new Locale("en", "US"));
     }
     /**
      * Creates an object with two volumes, the main viewing volume and the overlay volume
@@ -717,11 +719,6 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         colorBar14.setName(""); // NOI18N
 
         colorBarMax.setText("Max");
-        colorBarMax.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                colorBarMaxFocusLost(evt);
-            }
-        });
         colorBarMax.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 colorBarMaxMouseExited(evt);
@@ -1093,7 +1090,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
+                        .addComponent(axialPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(valueLabel))
                     .addGroup(layout.createSequentialGroup()
@@ -1838,10 +1835,6 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_xhairButtonActionPerformed
 
-    private void colorBarMaxFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_colorBarMaxFocusLost
-        changeMax();
-    }//GEN-LAST:event_colorBarMaxFocusLost
-
     private void colorBarMinFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_colorBarMinFocusLost
         changeMin();
     }//GEN-LAST:event_colorBarMinFocusLost
@@ -2548,15 +2541,15 @@ public class BarracudaViewUI extends javax.swing.JFrame {
             double x=coordinates.getComponent(0);
             double y=coordinates.getComponent(1);
             double z=coordinates.getComponent(2);
-            String numString = String.format ("%.2f ",x);
+            String numString = String.format (Locale.US,"%.3f ",x);
             xPosLabel.setText(numString+units);
-            numString = String.format ("%.2f ",y);
+            numString = String.format (Locale.US,"%.3f ",y);
             yPosLabel.setText(numString+units);
-            numString = String.format ("%.2f ",z);
+            numString = String.format (Locale.US,"%.3f ",z);
             zPosLabel.setText(numString+units);
             
             double num=vol.data.get(XVal, YVal, ZVal, (int)volSpinner.getValue());
-            numString=String.format("%.8f ", num);
+            numString=String.format(Locale.US,"%.8f ", num);
             
             valueLabel.setText(str+numString);
         }
@@ -2613,34 +2606,34 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         max=vol.getMax();
         min=vol.getMin();
         if(max<=0){
-            numString=String.format("_%.2f",(-0.25*(max-min))+max);
+            numString=String.format(Locale.US,"_%.5f",(-0.25*(max-min))+max);
             colorBar34.setText(numString);
-            numString=String.format("_%.2f",(-0.5*(max-min))+max);
+            numString=String.format(Locale.US,"_%.5f",(-0.5*(max-min))+max);
             colorBar12.setText(numString);
-            numString=String.format("_%.2f",(-0.75*(max-min))+max);
+            numString=String.format(Locale.US,"_%.5f",(-0.75*(max-min))+max);
             colorBar14.setText(numString);
         }else{
             if(min<0){//Max positive, min negative
                 double interval=max-min;
-                numString=String.format("_%.2f",0.75*interval+min);
+                numString=String.format(Locale.US,"_%.5f",0.75*interval+min);
                 colorBar34.setText(numString);
-                numString=String.format("_%.2f",0.5*interval+min);
+                numString=String.format(Locale.US,"_%.5f",0.5*interval+min);
                 colorBar12.setText(numString);
-                numString=String.format("_%.2f",0.25*interval+min);
+                numString=String.format(Locale.US,"_%.5f",0.25*interval+min);
                 colorBar14.setText(numString);
             }else{//Max and min >0
-                numString=String.format("_%.2f",(0.75*(max-min))+min);
+                numString=String.format(Locale.US,"_%.5f",(0.75*(max-min))+min);
                 colorBar34.setText(numString);
-                numString=String.format("_%.2f",(0.50*(max-min))+min);
+                numString=String.format(Locale.US,"_%.5f",(0.50*(max-min))+min);
                 colorBar12.setText(numString);
-                numString=String.format("_%.2f",(0.25*(max-min))+min);
+                numString=String.format(Locale.US,"_%.5f",(0.25*(max-min))+min);
                 colorBar14.setText(numString);
                 
             }
         }
-        numString = String.format ("%.2f",max);
+        numString = String.format (Locale.US,"%.5f",max);
         colorBarMax.setText(numString);
-        numString = String.format ("%.2f",min);
+        numString = String.format (Locale.US,"%.5f",min);
         colorBarMin.setText(numString);
         
     }//Adjusts colorbar values
@@ -2658,7 +2651,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
             String maxString=colorBarMax.getText();
             double volMin;
            try{
-                double max=Double.parseDouble(maxString);
+                double max=Double.valueOf(maxString);
                 if(volumeSelect.isSelected()){
                     volMin=niiVol.getMin();
                 }else{
@@ -2669,9 +2662,9 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                     errorDialog.setLocationRelativeTo(null);
                     errorDialog.setVisible(true);
                     if(volumeSelect.isSelected()){
-                        maxString=String.format("%.3f",niiVol.getMax());
+                        maxString=String.format(Locale.US,"%.5f",niiVol.getMax());
                     }else{
-                        maxString=String.format("%.3f",overlayVol.getMax());
+                        maxString=String.format(Locale.US,"%.5f",overlayVol.getMax());
                     }
                     colorBarMax.setText(maxString);
                 }
@@ -2690,9 +2683,9 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                errorDialog.setLocationRelativeTo(null);
                errorDialog.setVisible(true);
                if(volumeSelect.isSelected()){
-                    maxString=String.format("%.3f",niiVol.getMax());
+                    maxString=String.format(Locale.US,"%.5f",niiVol.getMax());
                }else{
-                    maxString=String.format("%.3f",overlayVol.getMax());
+                    maxString=String.format(Locale.US,"%.5f",overlayVol.getMax());
                }
                colorBarMax.setText(maxString);
            }
@@ -2714,9 +2707,9 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                     errorDialog.setLocationRelativeTo(null);
                     errorDialog.setVisible(true);
                     if(volumeSelect.isSelected()){
-                        minString=String.format("%.3f",niiVol.getMin());
+                        minString=String.format(Locale.US,"%.5f",niiVol.getMin());
                     }else{
-                        minString=String.format("%.3f",overlayVol.getMin());
+                        minString=String.format(Locale.US,"%.5f",overlayVol.getMin());
                     }
                     colorBarMin.setText(minString);
                 }
@@ -2735,9 +2728,9 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                errorDialog.setLocationRelativeTo(null);
                errorDialog.setVisible(true);
                if(volumeSelect.isSelected()){
-                    minString=String.format("%.3f",niiVol.getMin());
+                    minString=String.format(Locale.US,"%.5f",niiVol.getMin());
                }else{
-                    minString=String.format("%.3f",overlayVol.getMin());
+                    minString=String.format(Locale.US,"%.5f",overlayVol.getMin());
                }
                colorBarMin.setText(minString);
            }
