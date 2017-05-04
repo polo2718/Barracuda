@@ -4,14 +4,16 @@
  * and open the template in the editor.
  */
 package user.gui.tools;
-
+import java.awt.*;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.image.*;
 import java.awt.image.BufferedImage;
 import java.awt.RenderingHints;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import java.awt.datatransfer.*;
+import java.io.*;
 
 /**
  *<p> This class contains useful functions for use in the java swing UI </p>
@@ -323,5 +325,9 @@ public abstract class UITools {
                 break;
         }
         return rgb;
-    }   
+    }  
+    
+    
+    
+    
 }

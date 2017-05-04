@@ -22,6 +22,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JFileChooser;
 import user.gui.tools.*;
 import javax.swing.DefaultBoundedRangeModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
@@ -187,6 +188,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         errorDialog = new javax.swing.JDialog();
         jLabel5 = new javax.swing.JLabel();
         errorLabel = new javax.swing.JLabel();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         coronalPanel = new javax.swing.JPanel();
         coronalLabel1 = new javax.swing.JLabel();
         coronalLabel = new javax.swing.JLabel();
@@ -256,6 +258,11 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         volumeMenu = new javax.swing.JMenu();
         volumeSelect = new javax.swing.JRadioButtonMenuItem();
         overlaySelect = new javax.swing.JRadioButtonMenuItem();
+        Tools = new javax.swing.JMenu();
+        captureMenu = new javax.swing.JMenu();
+        captureCoronal = new javax.swing.JMenuItem();
+        captureSaggital = new javax.swing.JMenuItem();
+        captureAxial = new javax.swing.JMenuItem();
 
         viewGroup.add(neurologicalView);
         viewGroup.add(radiologicalView);
@@ -306,6 +313,9 @@ public class BarracudaViewUI extends javax.swing.JFrame {
                 .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Barracuda View");
@@ -1057,6 +1067,41 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         volumeMenu.add(overlaySelect);
 
         jMenuBar1.add(volumeMenu);
+
+        Tools.setText("Tools");
+
+        captureMenu.setText("Clipboard");
+
+        captureCoronal.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        captureCoronal.setText("Coronal");
+        captureCoronal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                captureCoronalActionPerformed(evt);
+            }
+        });
+        captureMenu.add(captureCoronal);
+
+        captureSaggital.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        captureSaggital.setText("Saggital");
+        captureSaggital.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                captureSaggitalActionPerformed(evt);
+            }
+        });
+        captureMenu.add(captureSaggital);
+
+        captureAxial.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        captureAxial.setText("Axial");
+        captureAxial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                captureAxialActionPerformed(evt);
+            }
+        });
+        captureMenu.add(captureAxial);
+
+        Tools.add(captureMenu);
+
+        jMenuBar1.add(Tools);
 
         setJMenuBar(jMenuBar1);
 
@@ -1858,6 +1903,18 @@ public class BarracudaViewUI extends javax.swing.JFrame {
            transparencySlider.setValue(255);
        }
     }//GEN-LAST:event_transparencySliderStateChanged
+
+    private void captureCoronalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_captureCoronalActionPerformed
+        copyLabelToClipboard(coronalLabel);
+    }//GEN-LAST:event_captureCoronalActionPerformed
+
+    private void captureSaggitalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_captureSaggitalActionPerformed
+        copyLabelToClipboard(axialLabel);
+    }//GEN-LAST:event_captureSaggitalActionPerformed
+
+    private void captureAxialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_captureAxialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_captureAxialActionPerformed
                                     
     /*public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -1891,6 +1948,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
         });
     }*/
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu Tools;
     private javax.swing.JLabel axialLabel;
     private javax.swing.JLabel axialLabel1;
     private javax.swing.JLabel axialLabel2;
@@ -1898,6 +1956,10 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     private javax.swing.JLabel axialLabel4;
     private javax.swing.JPanel axialPanel;
     private javax.swing.JSlider axialSlider;
+    private javax.swing.JMenuItem captureAxial;
+    private javax.swing.JMenuItem captureCoronal;
+    private javax.swing.JMenu captureMenu;
+    private javax.swing.JMenuItem captureSaggital;
     private javax.swing.JLabel cbm;
     private javax.swing.JLabel cbm1;
     private javax.swing.JLabel colorBar;
@@ -1923,6 +1985,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem hotInvertScale;
     private javax.swing.JCheckBoxMenuItem hotScale;
     private java.awt.Panel infoPanel;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -2993,5 +3056,15 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     }
     public File getFile(){
         return fc.getCurrentDirectory();
+    }
+    
+    private void copyLabelToClipboard(javax.swing.JLabel label){
+        if(niiVol!=null){
+            Icon ico= label.getIcon();
+            BufferedImage bim= new BufferedImage(ico.getIconWidth(),ico.getIconHeight(),BufferedImage.TYPE_INT_ARGB);
+            ico.paintIcon(this, bim.getGraphics(), 0, 0);
+            ImageToClipBoard ci = new ImageToClipBoard();
+            ci.copyToClipboard(bim);
+        }
     }
 }
