@@ -68,7 +68,7 @@ public class pspiDTI {
         
     }
     /**
-     * Constructor, Bonferroni correction & Global Intensity Shift
+     * Constructor, Bonferroni correction and Global Intensity Shift
      * @param ictalFA Post-ictal FA NIFTI volume
      * @param baselineFA Baseline FA NIFTI volume
      * @param ictalTR Post-ictal Trace NIFTI volume
@@ -100,7 +100,7 @@ public class pspiDTI {
         this.intensityShift=intensityShift;
     }
     /**
-     * Runs pspiDTI without Bonferroni & intensity Shift
+     * Runs pspiDTI without Bonferroni and intensity Shift
      * @param ictalFA
      * @param baselineFA
      * @param ictalTR
