@@ -12,30 +12,30 @@ import domain.mathUtils.numericalMethods.functionEvaluation.OneVariableFunction;
  */
 public class DifferentialEqnSolver {
 
-    protected MultiVariableFunction f; // Function f(y,t)
-    protected double[] y; //Array containing the values of the approximate solution (dependent variable)
-    protected double y0; //Initial value
-    protected double [] t; //Array containing the values of the independent variable
+    private MultiVariableFunction f; // Function f(y,t)
+    private double[] y; //Array containing the values of the approximate solution (dependent variable)
+    private double y0; //Initial value
+    private double [] t; //Array containing the values of the independent variable
     private double[] exacty;// Array containing the values of the exact solution
     private OneVariableFunction exactyFunction; //One variable function containing the analytical expression of the exact solution
     private double [] absError; //Array containing the absolute error
     private double [] relError; //Array containing the relative error
-    protected double h; //Step size
-    protected double t0; //Initial time 't0'
+    private double h; //Step size
+    private double t0; //Initial time 't0'
     private double tend;// End time
-    protected int n;// numer of samples
+    private int n;// numer of samples
     
    /**
     * Constructor
     * @param t0 initial time (double)
     * @param tend end time (double)
-    * @param y0 initial value y(t0)
     * @param n number of points in the solution
+    * @param y0 initial value y(t0)
     * @param f MultivariableFunction f(y,t) in dy/dt=f(y,t)
     * @throws IllegalArgumentException if t0{@literal >=}tend
     * @see MultiVariableFunction
     */
-    public DifferentialEqnSolver(double t0,double tend,double y0 ,int n, MultiVariableFunction f) 
+    public DifferentialEqnSolver(double t0, double tend, int n, double y0, MultiVariableFunction f) 
             throws IllegalArgumentException{
         //Check if the interval is correct
         if (isCorrectInterval(t0, tend)){
@@ -57,16 +57,15 @@ public class DifferentialEqnSolver {
     * Constructor (Use when the exact solution is known)
     * @param t0 initial time (double)
     * @param tend end time (double)
-    * @param y0 initial value y(t0)
     * @param n number of points in the solution
+    * @param y0 initial value y(t0)
     * @param f MultivariableFunction f(y,t) in dy/dt=f(y,t)
     * @param exactyFunction One variable function specifying the values for the exact solution 
     * @throws IllegalArgumentException if t0{@literal >=}tend
     * @see MultiVariableFunction
     * @see OneVariableFunction
     */
-    public DifferentialEqnSolver(double t0,double tend, double y0 ,int n,
-            MultiVariableFunction f, OneVariableFunction exactyFunction) 
+    public DifferentialEqnSolver(double t0, double tend, int n, double y0, MultiVariableFunction f, OneVariableFunction exactyFunction) 
             throws IllegalArgumentException{
         //Check if the interval is correct
         if (isCorrectInterval(t0, tend)){
@@ -91,7 +90,7 @@ public class DifferentialEqnSolver {
      * @param h  desired step size
      */
     public void setStepSize(double h){
-        this.n=(int) Math.round(Math.abs((tend-t0)/h));
+        this.n=(int) Math.round(Math.abs((tend-t0)/h))+1;
         setStepSize(); //update value of h
         computeExacty(); //update exact solution vector 
     }
@@ -117,15 +116,28 @@ public class DifferentialEqnSolver {
         setStepSize(); //update h
         computeExacty(); //update solution vector
     }
+    
+    /**
+     * Return the total number of samples n
+     * @return n (total number of samples)
+     */
+    public int get_n(){
+        return n;
+    }
 
     /**
      * Sets the initial time
      * @param t0 initial time
      */
     public void set_t0(double t0){
-        this.t0=t0;
-        computeExacty(); // compute array containing the exact solution
-        setStepSize(); // compute h
+        if (t0<tend){
+            this.t0=t0;
+            computeExacty(); // compute array containing the exact solution
+            setStepSize(); // compute h
+        }
+        else{
+            throw new IllegalArgumentException("The value of t0=" +t0 + " should be less than tend=" +tend);
+        }
     }
     
     /**
@@ -259,6 +271,7 @@ public class DifferentialEqnSolver {
             //Store in solution array
             y[i]=y2;
             t[i]=t2;
+            
             //refresh variables
             t1=t2;
             y1=y2;
@@ -268,9 +281,16 @@ public class DifferentialEqnSolver {
     @Override
     public String toString(){
         String s;
-        s="Differential Eqn solver output\n"
+        s="******Differential Eqn solver output********\n"
                 + "Step size 'h'="+h+"\n"
-                + "t\ty\t"; 
+                + "t\ty\n";
+        for(int i=0; i<n;i++){
+            s+=String.format("%6.5e", t[i]);
+            s+="\t";
+            s+=String.format("%6.5e", y[i]);
+            s+="\n";
+        }
+        s+="********************************************";
         return s;
     }
     
@@ -278,7 +298,7 @@ public class DifferentialEqnSolver {
      * Sets the step Size according to the existing values of the initial, ending times, and number of samples
      */
     private void setStepSize(){
-        this.h=Math.abs((tend-t0)/n);
+        this.h=Math.abs((tend-t0)/(n-1));
     }
         
     /**
@@ -288,7 +308,7 @@ public class DifferentialEqnSolver {
      * @return 
      */
     private boolean isCorrectInterval(double t0, double tend){
-        return t0<tend;
+        return t0>=tend;
     }
     
     /**
