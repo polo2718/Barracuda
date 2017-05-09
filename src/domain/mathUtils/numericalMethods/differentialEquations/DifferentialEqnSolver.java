@@ -13,8 +13,8 @@ import domain.mathUtils.numericalMethods.functionEvaluation.OneVariableFunction;
 public abstract class DifferentialEqnSolver {
 
     private MultiVariableFunction f; // Function f(y,t)
-    private double[] y; //Array containing the values of the approximate solution (dependent variable)
-    private double [] t; //Array containing the values of the independent variable
+    protected double[] y; //Array containing the values of the approximate solution (dependent variable)
+    protected double [] t; //Array containing the values of the independent variable
     private double[] exacty;// Array containing the values of the exact solution
     private OneVariableFunction exactyFunction; //One variable function containing the analytical expression of the exact solution
     private double [] absError; //Array containing the absolute error
@@ -46,7 +46,7 @@ public abstract class DifferentialEqnSolver {
             this.tend=tend;
             this.n=n;
             this.f=f;
-            setStepSize();
+            setStepSize(); // compute h
         }
     }
     
@@ -75,28 +75,16 @@ public abstract class DifferentialEqnSolver {
             this.n=n;
             this.f=f;
             this.exactyFunction=exactyFunction;
-            computeExacty();
-            setStepSize();
+            computeExacty(); // compute array containing the exact solution
+            setStepSize(); // compute h
         }
-    }
-     
-    /**
-     * Sets the step Size according to the existing values of the initial, ending times, and number of samples
-     */
-    private void setStepSize(){
-        this.h=Math.abs((tend-t0)/n);
     }
     
     /**
-     * Computes the exact solution array 'exact y' from the exact solution
+     * Solve the differential equation dy/dt=f(y,t) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha
+     * This function updates the 1D arrays 't' and 'y' which contain the values of the independent variable and dependent variable respectively
      */
-    private void computeExacty(){
-        if (exactyFunction!=null){
-            for(int i=0;i<n;i++){
-                exacty[i]=exactyFunction.value(t[i]);
-            }
-        }
-    }
+    public abstract void solve();
     
     /**
      * Sets the Step size according to the existing values of initial time and ending time. This function updates the number of samples that are needed to obtain the specified step size as close as possible
@@ -104,6 +92,8 @@ public abstract class DifferentialEqnSolver {
      */
     public void setStepSize(double h){
         this.n=(int) Math.round(Math.abs((tend-t0)/h));
+        setStepSize(); //update value of h
+        computeExacty(); //update exact solution vector 
     }
     
  
@@ -124,8 +114,8 @@ public abstract class DifferentialEqnSolver {
         set_t0(t0);
         set_tend(tend);
         this.n=n;
-        //update h
-        this.h=Math.abs((tend-t0)/n);
+        setStepSize(); //update h
+        computeExacty(); //update solution vector
     }
 
     /**
@@ -134,6 +124,8 @@ public abstract class DifferentialEqnSolver {
      */
     public void set_t0(double t0){
         this.t0=t0;
+        computeExacty(); // compute array containing the exact solution
+        setStepSize(); // compute h
     }
     
     /**
@@ -163,17 +155,7 @@ public abstract class DifferentialEqnSolver {
     }
     
     /**
-     * Checks if the supplied values for the time interval are correct. That is, t0 {@literal <=} tend  
-     * @param t0 initial time
-     * @param tend ending time
-     * @return 
-     */
-    private boolean isCorrectInterval(double t0, double tend){
-        return t0<tend;
-    }
-    
-    /**
-     * Returns the approximate solution array
+     * Returns the array containing the approximate solution values
      * @return array containing the approximate solution points (dependent variable)
      */
     public double[] getSolution(){
@@ -201,19 +183,33 @@ public abstract class DifferentialEqnSolver {
         }
         return solution;
     }
+    
     /**
-     * Solve the differential equation dy/dt=f(y,t) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha
-     * This function updates the 1D arrays 't' and 'y' which contain the values of the independent variable and dependent variable respectively
+     *Returns the array containing the exact solution values 
+     * @return 
      */
-    public abstract void solve();
+    public double[] getExactSolution(){
+        return exacty;
+    }
+    
+    public double[][] getExactSolutionPair(){
+        double [][] x= new double [n][2];
+        for(int i=0; i<t.length; i++){
+            x[i][1]=t[i];
+            x[i][2]=y[i];
+        }
+        return x;
+    }
+    
+
     
     /**
      * Returns a 1D array containing the value of the relative error
-     * @return 
+     * @return 1D array containing the value of the relative error
      */
     public double[] getRelError(){
         for(int i=0; i<n; i++){
-            relError[i]=Math.abs((y[i]-exacty[i])/exacty[i]);
+            relError[i]=Math.abs((y[i]-exacty[i])/exacty[i])*100;
         }
         return relError;
     }
@@ -234,4 +230,32 @@ public abstract class DifferentialEqnSolver {
         return s;
     }
     
+    /**
+     * Sets the step Size according to the existing values of the initial, ending times, and number of samples
+     */
+    private void setStepSize(){
+        this.h=Math.abs((tend-t0)/n);
+    }
+        
+    /**
+     * Checks if the supplied values for the time interval are correct. That is, t0 {@literal <=} tend  
+     * @param t0 initial time
+     * @param tend ending time
+     * @return 
+     */
+    private boolean isCorrectInterval(double t0, double tend){
+        return t0<tend;
+    }
+    
+    /**
+     * Computes the exact solution array 'exacty' from the exact solution
+     */
+    private void computeExacty(){
+        exacty= new double[n];
+        if (exactyFunction!=null){
+            for(int i=0;i<n;i++){
+                exacty[i]=exactyFunction.value(t[i]);
+            }
+        }
+    }
 }
