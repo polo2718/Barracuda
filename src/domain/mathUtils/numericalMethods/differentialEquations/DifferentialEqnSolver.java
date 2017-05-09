@@ -5,45 +5,24 @@
  */
 package domain.mathUtils.numericalMethods.differentialEquations;
 import domain.mathUtils.numericalMethods.functionEvaluation.MultiVariableFunction;
+import domain.mathUtils.numericalMethods.functionEvaluation.OneVariableFunction;
 
 /**
  *This class provides a framework to solve initial value problems of the form dy/dt=f(y,t) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha through different numerical methods.
  */
 public abstract class DifferentialEqnSolver {
-    /**
-     * Function f(y,t)
-     */
-    private MultiVariableFunction f;
-    
-    /**
-     * Array containing the values of the approximate solution (dependent variable)
-     */
-    private double[] y;
-    
-    /**
-     * Array containing the values of the independent variable
-     */
-    private double [] t;
-    
-    /**
-     * Step size
-     */
-    private double h;
-    
-    /**
-     * Initial time 't0'
-     */
-    private double t0;
-    
-    /**
-     * End time 'tend'
-     */
-    private double tend;
-    
-    /**
-     * number of samples 
-     */
-    private int n;
+
+    private MultiVariableFunction f; // Function f(y,t)
+    private double[] y; //Array containing the values of the approximate solution (dependent variable)
+    private double [] t; //Array containing the values of the independent variable
+    private double[] exacty;// Array containing the values of the exact solution
+    private OneVariableFunction exactyFunction; //One variable function containing the analytical expression of the exact solution
+    private double [] absError; //Array containing the absolute error
+    private double [] relError; //Array containing the relative error
+    private double h; //Step size
+    private double t0; //Initial time 't0'
+    private double tend;// End time
+    private int n;// numer of samples
     
    /**
     * Constructor
@@ -52,6 +31,7 @@ public abstract class DifferentialEqnSolver {
     * @param n number of points in the solution
     * @param f MultivariableFunction f(y,t) in dy/dt=f(y,t)
     * @throws IllegalArgumentException if t0{@literal >=}tend
+    * @see MultiVariableFunction
     */
     public DifferentialEqnSolver(double t0,double tend, int n, MultiVariableFunction f) 
             throws IllegalArgumentException{
@@ -69,12 +49,53 @@ public abstract class DifferentialEqnSolver {
             setStepSize();
         }
     }
+    
+    /**
+    * Constructor (Use when the exact solution is known)
+    * @param t0 initial time (double)
+    * @param tend end time (double)
+    * @param n number of points in the solution
+    * @param f MultivariableFunction f(y,t) in dy/dt=f(y,t)
+    * @param exactyFunction One variable function specifying the values for the exact solution 
+    * @throws IllegalArgumentException if t0{@literal >=}tend
+    * @see MultiVariableFunction
+    * @see OneVariableFunction
+    */
+    public DifferentialEqnSolver(double t0,double tend, int n, MultiVariableFunction f, OneVariableFunction exactyFunction) 
+            throws IllegalArgumentException{
+        //Check if the interval is correct
+        if (isCorrectInterval(t0, tend)){
+            String s="The value of t0=" +t0 + " should be less than tend=" +tend;
+            throw new IllegalArgumentException(s);
+        }
+        //Set the provided values as object attributes
+        else{
+            this.t0=t0;
+            this.tend=tend;
+            this.n=n;
+            this.f=f;
+            this.exactyFunction=exactyFunction;
+            computeExacty();
+            setStepSize();
+        }
+    }
      
     /**
      * Sets the step Size according to the existing values of the initial, ending times, and number of samples
      */
     private void setStepSize(){
         this.h=Math.abs((tend-t0)/n);
+    }
+    
+    /**
+     * Computes the exact solution array 'exact y' from the exact solution
+     */
+    private void computeExacty(){
+        if (exactyFunction!=null){
+            for(int i=0;i<n;i++){
+                exacty[i]=exactyFunction.value(t[i]);
+            }
+        }
     }
     
     /**
@@ -122,8 +143,6 @@ public abstract class DifferentialEqnSolver {
     public void set_tend(double tend){
         this.tend=tend;
     }
-    
-
     
     /**
      * Sets the function f(y,t)
@@ -187,4 +206,32 @@ public abstract class DifferentialEqnSolver {
      * This function updates the 1D arrays 't' and 'y' which contain the values of the independent variable and dependent variable respectively
      */
     public abstract void solve();
+    
+    /**
+     * Returns a 1D array containing the value of the relative error
+     * @return 
+     */
+    public double[] getRelError(){
+        for(int i=0; i<n; i++){
+            relError[i]=Math.abs((y[i]-exacty[i])/exacty[i]);
+        }
+        return relError;
+    }
+    
+    public double[] getAbsError(){
+        for(int i=0; i<n; i++){
+            absError[i]=Math.abs((y[i]-exacty[i]));
+        }
+        return absError;
+    }
+    
+    @Override
+    public String toString(){
+        String s;
+        s="Differential Eqn solver output\n"
+                + "Step size 'h'="+h+"\n"
+                + "t\ty\t"; 
+        return s;
+    }
+    
 }
