@@ -10,30 +10,32 @@ import domain.mathUtils.numericalMethods.functionEvaluation.OneVariableFunction;
 /**
  *This class provides a framework to solve initial value problems of the form dy/dt=f(y,t) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha through different numerical methods.
  */
-public abstract class DifferentialEqnSolver {
+public class DifferentialEqnSolver {
 
-    private MultiVariableFunction f; // Function f(y,t)
+    protected MultiVariableFunction f; // Function f(y,t)
     protected double[] y; //Array containing the values of the approximate solution (dependent variable)
+    protected double y0; //Initial value
     protected double [] t; //Array containing the values of the independent variable
     private double[] exacty;// Array containing the values of the exact solution
     private OneVariableFunction exactyFunction; //One variable function containing the analytical expression of the exact solution
     private double [] absError; //Array containing the absolute error
     private double [] relError; //Array containing the relative error
-    private double h; //Step size
-    private double t0; //Initial time 't0'
+    protected double h; //Step size
+    protected double t0; //Initial time 't0'
     private double tend;// End time
-    private int n;// numer of samples
+    protected int n;// numer of samples
     
    /**
     * Constructor
     * @param t0 initial time (double)
     * @param tend end time (double)
+    * @param y0 initial value y(t0)
     * @param n number of points in the solution
     * @param f MultivariableFunction f(y,t) in dy/dt=f(y,t)
     * @throws IllegalArgumentException if t0{@literal >=}tend
     * @see MultiVariableFunction
     */
-    public DifferentialEqnSolver(double t0,double tend, int n, MultiVariableFunction f) 
+    public DifferentialEqnSolver(double t0,double tend,double y0 ,int n, MultiVariableFunction f) 
             throws IllegalArgumentException{
         //Check if the interval is correct
         if (isCorrectInterval(t0, tend)){
@@ -46,6 +48,7 @@ public abstract class DifferentialEqnSolver {
             this.tend=tend;
             this.n=n;
             this.f=f;
+            this.y0 = y0;
             setStepSize(); // compute h
         }
     }
@@ -54,6 +57,7 @@ public abstract class DifferentialEqnSolver {
     * Constructor (Use when the exact solution is known)
     * @param t0 initial time (double)
     * @param tend end time (double)
+    * @param y0 initial value y(t0)
     * @param n number of points in the solution
     * @param f MultivariableFunction f(y,t) in dy/dt=f(y,t)
     * @param exactyFunction One variable function specifying the values for the exact solution 
@@ -61,7 +65,8 @@ public abstract class DifferentialEqnSolver {
     * @see MultiVariableFunction
     * @see OneVariableFunction
     */
-    public DifferentialEqnSolver(double t0,double tend, int n, MultiVariableFunction f, OneVariableFunction exactyFunction) 
+    public DifferentialEqnSolver(double t0,double tend, double y0 ,int n,
+            MultiVariableFunction f, OneVariableFunction exactyFunction) 
             throws IllegalArgumentException{
         //Check if the interval is correct
         if (isCorrectInterval(t0, tend)){
@@ -74,17 +79,12 @@ public abstract class DifferentialEqnSolver {
             this.tend=tend;
             this.n=n;
             this.f=f;
+            this.y0=y0;
             this.exactyFunction=exactyFunction;
             computeExacty(); // compute array containing the exact solution
             setStepSize(); // compute h
         }
     }
-    
-    /**
-     * Solve the differential equation dy/dt=f(y,t) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha
-     * This function updates the 1D arrays 't' and 'y' which contain the values of the independent variable and dependent variable respectively
-     */
-    public abstract void solve();
     
     /**
      * Sets the Step size according to the existing values of initial time and ending time. This function updates the number of samples that are needed to obtain the specified step size as close as possible
@@ -192,15 +192,28 @@ public abstract class DifferentialEqnSolver {
         return exacty;
     }
     
+    /**
+     * Returns the values of the independent variable and the exact solution as an ordered pair.
+     * The values of the independent variable are organized in the first column, while the values of the exact solution are organized in the second column
+     * @return 
+     */
     public double[][] getExactSolutionPair(){
         double [][] x= new double [n][2];
-        for(int i=0; i<t.length; i++){
+        for(int i=0; i<n; i++){
             x[i][1]=t[i];
-            x[i][2]=y[i];
+            x[i][2]=exacty[i];
         }
         return x;
     }
     
+    /**
+     * Returns the exact solution function
+     * @return exact solution function
+     * @see OneVariableFunction
+     */
+    public OneVariableFunction getExactSolutionFunction(){
+        return exactyFunction;
+    }
 
     
     /**
@@ -219,6 +232,37 @@ public abstract class DifferentialEqnSolver {
             absError[i]=Math.abs((y[i]-exacty[i]));
         }
         return absError;
+    }
+    
+    /**
+     * Solve the differential equation dy/dt=f(y,t) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha using the Euler's method
+     * This function updates the 1D arrays 't' and 'y' which contain the values of the independent variable and dependent variable respectively
+     */
+    public void solveEuler() {
+        //intialize solution arrays
+        t=new double[n];
+        y=new double[n];
+        double t1=t0, y1=y0, t2, y2;
+        t[0]=t0;
+        y[0]=y0;
+        double[] vars={t1,y1}; // auxiliar array to evaluate function f
+        
+        //Eule's method
+        for(int i=1;i<n;i++){
+            vars[0]=t1;
+            vars[1]=y1;
+         
+            //Perform Euler's approximation
+            t2=t1+h;
+            y2=h*f.value(vars);
+            
+            //Store in solution array
+            y[i]=y2;
+            t[i]=t2;
+            //refresh variables
+            t1=t2;
+            y1=y2;
+        }
     }
     
     @Override
