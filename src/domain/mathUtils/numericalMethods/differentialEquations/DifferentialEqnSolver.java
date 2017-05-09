@@ -7,9 +7,9 @@ package domain.mathUtils.numericalMethods.differentialEquations;
 import domain.mathUtils.numericalMethods.functionEvaluation.MultiVariableFunction;
 
 /**
- *This class provides methods to solve initial value problems of the form dy/dt=f(y,t) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha through numerical methods.
+ *This class provides a framework to solve initial value problems of the form dy/dt=f(y,t) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha through different numerical methods.
  */
-public class DifferentialEqnSolver {
+public abstract class DifferentialEqnSolver {
     /**
      * Function f(y,t)
      */
@@ -43,7 +43,7 @@ public class DifferentialEqnSolver {
     /**
      * number of samples 
      */
-    private long n;
+    private int n;
     
    /**
     * Constructor
@@ -53,17 +53,19 @@ public class DifferentialEqnSolver {
     * @param f MultivariableFunction f(y,t) in dy/dt=f(y,t)
     * @throws IllegalArgumentException if t0{@literal >=}tend
     */
-    public DifferentialEqnSolver(double t0,double tend, long n, double f) 
+    public DifferentialEqnSolver(double t0,double tend, int n, MultiVariableFunction f) 
             throws IllegalArgumentException{
         //Check if the interval is correct
         if (isCorrectInterval(t0, tend)){
             String s="The value of t0=" +t0 + " should be less than tend=" +tend;
             throw new IllegalArgumentException(s);
         }
+        //Set the provided values as object attributes
         else{
             this.t0=t0;
             this.tend=tend;
             this.n=n;
+            this.f=f;
             setStepSize();
         }
     }
@@ -80,7 +82,7 @@ public class DifferentialEqnSolver {
      * @param h  desired step size
      */
     public void setStepSize(double h){
-        this.n=Math.round(Math.abs((tend-t0)/h));
+        this.n=(int) Math.round(Math.abs((tend-t0)/h));
     }
     
  
@@ -97,7 +99,7 @@ public class DifferentialEqnSolver {
      * Sets the number of samples in the solution, and updates the step size 
      * @param n 
      */
-    public void set_n(long n){
+    public void set_n(int n){
         set_t0(t0);
         set_tend(tend);
         this.n=n;
@@ -160,10 +162,29 @@ public class DifferentialEqnSolver {
     }
     
     /**
-     * Returns the vector containing the values of the independent variable
+     * Returns the array containing the values of the independent variable
      * @return array containing the values of the independent variable
      */
-    public double [] getTimeVector(){
+    public double [] getTimeArray(){
         return t;
     }
+    
+    /**
+     * Returns the values of the independent variable and the solution as an ordered pair.
+     * The values of the independent variable are organized in the first column, while the values of the dependent variable are organized in the second column
+     * @return 2d array containing the values of the independent variable and the solution as an ordered pair  
+     */
+    public double [][] getSolutionPair(){
+        double [][] solution= new double [n][2];
+        for(int i=0; i<t.length; i++){
+            solution[i][1]=t[i];
+            solution[i][2]=y[i];
+        }
+        return solution;
+    }
+    /**
+     * Solve the differential equation dy/dt=f(y,t) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha
+     * This function updates the 1D arrays 't' and 'y' which contain the values of the independent variable and dependent variable respectively
+     */
+    public abstract void solve();
 }
