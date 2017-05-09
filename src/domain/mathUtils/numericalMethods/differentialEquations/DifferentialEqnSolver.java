@@ -239,7 +239,7 @@ public class DifferentialEqnSolver {
      * This function updates the 1D arrays 't' and 'y' which contain the values of the independent variable and dependent variable respectively
      */
     public void solveEuler() {
-        //intialize solution arrays
+        //initialize solution arrays
         t=new double[n];
         y=new double[n];
         double t1=t0, y1=y0, t2, y2;
