@@ -29,11 +29,11 @@ public class DifferentialEqnSolverTest {
         //define function f
         f=(double[] variables) -> {
             double value;
-            double y=variables[0];
-            double t=variables[1];
+            double t=variables[0];
+            double y=variables[1];
             return value=y-t*t+1;
         };
-        //define function y
+        //define function exacty
         exactyFunction= (double x) -> {
           double value;
           return value=(x+1)*(x+1)-0.5*Math.exp(x);
@@ -123,84 +123,13 @@ public class DifferentialEqnSolverTest {
     }
 
     /**
-     * Test of set_f method, of class DifferentialEqnSolver.
-     */
-    @Test
-    public void testSet_f() {
-        System.out.println("set_f");
-        MultiVariableFunction f = null;
-        DifferentialEqnSolver instance = null;
-        instance.set_f(f);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getSolution method, of class DifferentialEqnSolver.
-     */
-    @Test
-    public void testGetSolution() {
-        System.out.println("getSolution");
-        DifferentialEqnSolver instance = null;
-        double[] expResult = null;
-        double[] result = instance.getSolution();
-        //assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getTimeArray method, of class DifferentialEqnSolver.
-     */
-    @Test
-    public void testGetTimeArray() {
-        System.out.println("getTimeArray");
-        DifferentialEqnSolver instance = null;
-        double[] expResult = null;
-        double[] result = instance.getTimeArray();
-        //assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getSolutionPair method, of class DifferentialEqnSolver.
-     */
-    @Test
-    public void testGetSolutionPair() {
-        System.out.println("getSolutionPair");
-        DifferentialEqnSolver instance = null;
-        double[][] expResult = null;
-        double[][] result = instance.getSolutionPair();
-        assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getExactSolutionFunction method, of class DifferentialEqnSolver.
-     */
-    @Test
-    public void testGetExactSolutionFunction() {
-        System.out.println("getExactSolutionFunction");
-        DifferentialEqnSolver instance = null;
-        OneVariableFunction expResult = null;
-        OneVariableFunction result = instance.getExactSolutionFunction();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of solveEuler method, of class DifferentialEqnSolver.
      */
     @Test
     public void testSolveEuler() {
-        System.out.println("solveEuler");
-        DifferentialEqnSolver instance = null;
-        instance.solveEuler();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("******solveEuler Test****");
+        eqnSolver.solveEuler();
+        System.out.println(eqnSolver.toString());
     }
     
 }

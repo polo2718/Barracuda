@@ -8,11 +8,11 @@ import domain.mathUtils.numericalMethods.functionEvaluation.MultiVariableFunctio
 import domain.mathUtils.numericalMethods.functionEvaluation.OneVariableFunction;
 
 /**
- *This class provides a framework to solve initial value problems of the form dy/dt=f(y,t) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha through different numerical methods.
+ *This class provides a framework to solve initial value problems of the form dy/dt=f(t,y) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha through different numerical methods.
  */
 public class DifferentialEqnSolver {
 
-    private MultiVariableFunction f; // Function f(y,t)
+    private MultiVariableFunction f; // Function f(t,y)
     private double[] y; //Array containing the values of the approximate solution (dependent variable)
     private double y0; //Initial value
     private double [] t; //Array containing the values of the independent variable
@@ -31,7 +31,7 @@ public class DifferentialEqnSolver {
     * @param tend end time (double)
     * @param n number of points in the solution
     * @param y0 initial value y(t0)
-    * @param f MultivariableFunction f(y,t) in dy/dt=f(y,t)
+    * @param f MultivariableFunction f(t,y) in dy/dt=f(t,y)
     * @throws IllegalArgumentException if t0{@literal >=}tend
     * @see MultiVariableFunction
     */
@@ -59,7 +59,7 @@ public class DifferentialEqnSolver {
     * @param tend end time (double)
     * @param n number of points in the solution
     * @param y0 initial value y(t0)
-    * @param f MultivariableFunction f(y,t) in dy/dt=f(y,t)
+    * @param f MultivariableFunction f(t,y) in dy/dt=f(t,y)
     * @param exactyFunction One variable function specifying the values for the exact solution 
     * @throws IllegalArgumentException if t0{@literal >=}tend
     * @see MultiVariableFunction
@@ -128,8 +128,9 @@ public class DifferentialEqnSolver {
     /**
      * Sets the initial time
      * @param t0 initial time
+     * @throws IllegalArgumentException when the specified t0 is not less than the value of tend
      */
-    public void set_t0(double t0){
+    public void set_t0(double t0) throws IllegalArgumentException{
         if (t0<tend){
             this.t0=t0;
             computeExacty(); // compute array containing the exact solution
@@ -149,7 +150,7 @@ public class DifferentialEqnSolver {
     }
     
     /**
-     * Sets the function f(y,t)
+     * Sets the function f(t,y)
      * @param f MultivariableFunction
      * @see MultiVariableFunction
      */
@@ -158,8 +159,8 @@ public class DifferentialEqnSolver {
     }
     
     /**
-     * Returns the multivariable function f(y,t) in dy/dt=f(y,t)
-     * @return f MultivariableFunction f(y,t) in dy/dt=f(y,t)
+     * Returns the multivariable function f(t,y) in dy/dt=f(t,y)
+     * @return f MultivariableFunction f(t,y) in dy/dt=f(t,y)
      * @see MultiVariableFunction
      */
     public MultiVariableFunction get_f(){
@@ -189,7 +190,7 @@ public class DifferentialEqnSolver {
      */
     public double [][] getSolutionPair(){
         double [][] solution= new double [n][2];
-        for(int i=0; i<t.length; i++){
+        for(int i=0; i<n; i++){
             solution[i][1]=t[i];
             solution[i][2]=y[i];
         }
@@ -247,7 +248,7 @@ public class DifferentialEqnSolver {
     }
     
     /**
-     * Solve the differential equation dy/dt=f(y,t) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha using the Euler's method
+     * Solve the differential equation dy/dt=f(t,y) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha using the Euler's method
      * This function updates the 1D arrays 't' and 'y' which contain the values of the independent variable and dependent variable respectively
      */
     public void solveEuler() {
@@ -259,14 +260,11 @@ public class DifferentialEqnSolver {
         y[0]=y0;
         double[] vars={t1,y1}; // auxiliar array to evaluate function f
         
-        //Eule's method
+        //Euler's method
         for(int i=1;i<n;i++){
-            vars[0]=t1;
-            vars[1]=y1;
-         
             //Perform Euler's approximation
             t2=t1+h;
-            y2=h*f.value(vars);
+            y2=y1+h*f.value(vars);
             
             //Store in solution array
             y[i]=y2;
@@ -275,6 +273,8 @@ public class DifferentialEqnSolver {
             //refresh variables
             t1=t2;
             y1=y2;
+            vars[0]=t1;
+            vars[1]=y1;
         }
     }
     
@@ -283,11 +283,11 @@ public class DifferentialEqnSolver {
         String s;
         s="******Differential Eqn solver output********\n"
                 + "Step size 'h'="+h+"\n"
-                + "t\ty\n";
+                + "t\t\ty_approx\n";
         for(int i=0; i<n;i++){
-            s+=String.format("%6.5e", t[i]);
+            s+=String.format("%11.7E", t[i]);
             s+="\t";
-            s+=String.format("%6.5e", y[i]);
+            s+=String.format("%11.7E", y[i]);
             s+="\n";
         }
         s+="********************************************";
