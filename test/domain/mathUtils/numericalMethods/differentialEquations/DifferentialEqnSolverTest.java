@@ -115,11 +115,11 @@ public class DifferentialEqnSolverTest {
     @Test
     public void testSet_tend() {
         System.out.println("set_tend");
-        double tend = 0.0;
-        DifferentialEqnSolver instance = null;
-        instance.set_tend(tend);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        eqnSolver=new DifferentialEqnSolver(0, 10, 11, 0, f);
+        eqnSolver.set_tend(5);
+        double expResult=5.0/10.0;
+        assertEquals(expResult, eqnSolver.getStepSize(),0.0);//compare step size
+        System.out.println("Test passed!!");
     }
 
     /**
@@ -127,12 +127,19 @@ public class DifferentialEqnSolverTest {
      */
     @Test
     public void testSolveEuler() {
-        System.out.println("******solveEuler Test****");
+        System.out.println("******solveEuler Test 1****");
         //test without exact solution
         eqnSolver.solveEuler();
         System.out.println(eqnSolver.toString());
         //test with exact solution
+        System.out.println("*****solverEuler Test 2****");
         eqnSolver=new DifferentialEqnSolver(0, 2, 11, 0.5, f,exactyFunction);
+        eqnSolver.solveEuler();
+        System.out.println(eqnSolver.toString());
+        
+        //test by setting the step size in constructor
+        System.out.println("*****solverEuler Test 3****");
+        eqnSolver=new DifferentialEqnSolver(0, 2, 0.2, 0.5, f, exactyFunction);
         eqnSolver.solveEuler();
         System.out.println(eqnSolver.toString());
     }

@@ -83,6 +83,70 @@ public class DifferentialEqnSolver {
             setStepSize(); // compute h
         }
     }
+    /**
+    * Constructor
+    * @param t0 initial time (double)
+    * @param tend end time (double)
+    * @param h step size
+    * @param y0 initial value y(t0)
+    * @param f MultivariableFunction f(t,y) in dy/dt=f(t,y)
+    * @throws IllegalArgumentException if t0{@literal >=}tend
+    * @see MultiVariableFunction
+    */
+    public DifferentialEqnSolver(double t0, double tend, double h, double y0, MultiVariableFunction f) 
+            throws IllegalArgumentException{
+        //Check if the interval is correct
+        if (isCorrectInterval(t0, tend)){
+            String s="The value of t0=" +t0 + " should be less than tend=" +tend;
+            throw new IllegalArgumentException(s);
+        }
+        else if(h>Math.abs(tend-t0)){
+            String s="The specified step size h="+h+" should be less or equal than abs(tend-t0)";
+            }
+        //Set the provided values as object attributes
+        else{
+            this.t0=t0;
+            this.tend=tend;
+            this.f=f;
+            this.y0 = y0;
+            this.n=(int) Math.round(Math.abs((tend-t0)/h))+1;
+            setStepSize(); // compute n
+        }
+    }
+    
+    /**
+    * Constructor (Use when the exact solution is known)
+    * @param t0 initial time (double)
+    * @param tend end time (double)
+    * @param h step size
+    * @param y0 initial value y(t0)
+    * @param f MultivariableFunction f(t,y) in dy/dt=f(t,y)
+    * @param exactyFunction One variable function specifying the values for the exact solution 
+    * @throws IllegalArgumentException if t0{@literal >=}tend
+    * @see MultiVariableFunction
+    * @see OneVariableFunction
+    */
+    public DifferentialEqnSolver(double t0, double tend, double h, double y0, MultiVariableFunction f, OneVariableFunction exactyFunction) 
+            throws IllegalArgumentException{
+        //Check if the interval is correct
+        if (isCorrectInterval(t0, tend)){
+            String s="The value of t0=" +t0 + " should be less than tend=" +tend;
+            throw new IllegalArgumentException(s);
+        }
+        else if(h>Math.abs(tend-t0)){
+            String s="The specified step size h="+h+" should be less or equal than abs(tend-t0)";
+            }
+        //Set the provided values as object attributes
+        else{
+            this.t0=t0;
+            this.tend=tend;
+            this.f=f;
+            this.y0=y0;
+            this.exactyFunction=exactyFunction;
+            this.n=(int) Math.round(Math.abs((tend-t0)/h))+1;
+            setStepSize(); // compute n
+        }
+    }
     
     /**
      * Sets the Step size according to the existing values of initial time and ending time. This function updates the number of samples that are needed to obtain the specified step size as close as possible
@@ -92,7 +156,6 @@ public class DifferentialEqnSolver {
         this.n=(int) Math.round(Math.abs((tend-t0)/h))+1;
         setStepSize(); //update value of h
     }
-    
  
     /**
      * Returns the value of the step size
@@ -123,7 +186,7 @@ public class DifferentialEqnSolver {
     }
 
     /**
-     * Sets the initial time
+     * Sets the initial time and modifies the step size 'h' accordingly, maintaining the number of samples 'n'.
      * @param t0 initial time
      * @throws IllegalArgumentException when the specified t0 is not less than the value of tend
      */
@@ -138,8 +201,9 @@ public class DifferentialEqnSolver {
     }
     
     /**
-     * Sets the final time and modifies the value of the step size h accordingly
+     * Sets the final time and modifies the value of the step size h accordingly, maintaining the number of samples 'n'
      * @param tend end time
+     * @throws IllegalArgumentException when the specified tend is not greater or equal than t0
      */
     public void set_tend(double tend) throws IllegalArgumentException{
         if(tend>t0){
