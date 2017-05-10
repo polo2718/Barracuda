@@ -80,7 +80,6 @@ public class DifferentialEqnSolver {
             this.f=f;
             this.y0=y0;
             this.exactyFunction=exactyFunction;
-            computeExacty(); // compute array containing the exact solution
             setStepSize(); // compute h
         }
     }
@@ -92,7 +91,6 @@ public class DifferentialEqnSolver {
     public void setStepSize(double h){
         this.n=(int) Math.round(Math.abs((tend-t0)/h))+1;
         setStepSize(); //update value of h
-        computeExacty(); //update exact solution vector 
     }
     
  
@@ -114,7 +112,6 @@ public class DifferentialEqnSolver {
         set_tend(tend);
         this.n=n;
         setStepSize(); //update h
-        computeExacty(); //update solution vector
     }
     
     /**
@@ -133,7 +130,6 @@ public class DifferentialEqnSolver {
     public void set_t0(double t0) throws IllegalArgumentException{
         if (t0<tend){
             this.t0=t0;
-            computeExacty(); // compute array containing the exact solution
             setStepSize(); // compute h
         }
         else{
@@ -142,11 +138,17 @@ public class DifferentialEqnSolver {
     }
     
     /**
-     * Sets the final time
+     * Sets the final time and modifies the value of the step size h accordingly
      * @param tend end time
      */
-    public void set_tend(double tend){
-        this.tend=tend;
+    public void set_tend(double tend) throws IllegalArgumentException{
+        if(tend>t0){
+            this.tend=tend;
+            setStepSize(); // compute h
+        }
+        else{
+            throw new IllegalArgumentException("The value of tend=" +tend + " should be greater than t0=" +t0);
+        } 
     }
     
     /**
@@ -228,25 +230,20 @@ public class DifferentialEqnSolver {
         return exactyFunction;
     }
 
-    
     /**
      * Returns a 1D array containing the value of the relative error
      * @return 1D array containing the value of the relative error
      */
     public double[] getRelError(){
-        for(int i=0; i<n; i++){
-            relError[i]=Math.abs((y[i]-exacty[i])/exacty[i])*100;
-        }
         return relError;
     }
-    
+    /**
+     * Returns a 1D array containing the value of the absolute error
+     * @return 1D array containing the values of the absolute error
+     */
     public double[] getAbsError(){
-        for(int i=0; i<n; i++){
-            absError[i]=Math.abs((y[i]-exacty[i]));
-        }
         return absError;
     }
-    
     /**
      * Solve the differential equation dy/dt=f(t,y) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha using the Euler's method
      * This function updates the 1D arrays 't' and 'y' which contain the values of the independent variable and dependent variable respectively
@@ -276,21 +273,44 @@ public class DifferentialEqnSolver {
             vars[0]=t1;
             vars[1]=y1;
         }
+        computeExacty();
     }
     
     @Override
     public String toString(){
         String s;
-        s="******Differential Eqn solver output********\n"
+        if(exactyFunction==null){
+            //show results without exact solution
+            s="******Differential Eqn solver output********\n"
                 + "Step size 'h'="+h+"\n"
                 + "t\t\ty_approx\n";
-        for(int i=0; i<n;i++){
-            s+=String.format("%11.7E", t[i]);
-            s+="\t";
-            s+=String.format("%11.7E", y[i]);
-            s+="\n";
+            for(int i=0; i<n;i++){
+                s+=String.format("%11.7E", t[i]);
+                s+="\t";
+                s+=String.format("%11.7E", y[i]);
+                s+="\n";
+            }
+            s+="********************************************";
         }
-        s+="********************************************";
+        //show results with exact solution
+        else{
+            s="******Differential Eqn solver output********\n"
+                + "Step size 'h'="+h+"\n"
+                + "t\t\ty_approx\ty_exact\t\tAbs error\tRel error\n";
+            for(int i=0; i<n;i++){
+                s+=String.format("%11.7E", t[i]);
+                s+="\t";
+                s+=String.format("%11.7E", y[i]);
+                s+="\t";
+                s+=String.format("%11.7E", exacty[i]);
+                s+="\t";
+                s+=String.format("%11.7E", absError[i]);
+                s+="\t";
+                s+=String.format("%6.3f%%", relError[i]);
+                s+="\n";
+            }
+            s+="********************************************";
+        }
         return s;
     }
     
@@ -312,13 +332,17 @@ public class DifferentialEqnSolver {
     }
     
     /**
-     * Computes the exact solution array 'exacty' from the exact solution
+     * Computes the exact solution array 'exacty' from the exact solution. It also computes the absolute and relative errors
      */
     private void computeExacty(){
-        exacty= new double[n];
         if (exactyFunction!=null){
+            exacty= new double[n];
+            absError= new double[n];
+            relError= new double[n];
             for(int i=0;i<n;i++){
                 exacty[i]=exactyFunction.value(t[i]);
+                relError[i]=Math.abs((y[i]-exacty[i])/exacty[i])*100;
+                absError[i]=Math.abs((y[i]-exacty[i]));
             }
         }
     }

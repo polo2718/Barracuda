@@ -128,6 +128,11 @@ public class DifferentialEqnSolverTest {
     @Test
     public void testSolveEuler() {
         System.out.println("******solveEuler Test****");
+        //test without exact solution
+        eqnSolver.solveEuler();
+        System.out.println(eqnSolver.toString());
+        //test with exact solution
+        eqnSolver=new DifferentialEqnSolver(0, 2, 11, 0.5, f,exactyFunction);
         eqnSolver.solveEuler();
         System.out.println(eqnSolver.toString());
     }
