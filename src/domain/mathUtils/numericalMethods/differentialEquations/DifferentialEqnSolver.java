@@ -340,6 +340,92 @@ public class DifferentialEqnSolver {
         computeExacty();
     }
     
+    /**
+     * Solve the differential equation dy/dt=f(t,y) for t0 {@literal <=}t{@literal <=tend} and y(t0)=alpha using the RK4 (Runge Kutta fourth order) method
+     * This function updates the 1D arrays 't' and 'y' which contain the values of the independent variable and dependent variable respectively
+     */
+    public void solveRK4(){
+        //initialize solution arrays
+        t= new double[n];
+        y=new double[n];
+        double t1=t0, y1=y0, k1, k2, k3 ,k4;
+        double [] x;// auxiliar array to temporaly store evaluation points
+        t[0]=t0; //store initial values in the solution
+        y[0]=y0;
+        
+        for(int i=1; i<n;i++){
+            //compute RK step
+            x=RK4step(t1, y1);
+            //store calculated points
+            t[i]=x[0];
+            y[i]=x[1];
+            //update auxiliar variables
+            t1=t[i];
+            y1=y[i];
+        }
+       computeExacty();
+    }
+    
+    /**
+     * Performs the computation of a RK4 step
+     * @param t1 current time
+     * @param y1 current solution point
+     * @return 1d array containing the values of the next time step 't2' and next solution evaluation 'y2'
+     */
+    private double[] RK4step(double t1, double y1){
+        double[] vars={t1,y1};
+        double [] x= new double[2];
+        double k1, k2, k3, k4; //RK constants 
+        k1=f.value(vars);
+        vars[0]=t1+0.5*h;
+        vars[1]=y1+0.5*h*k1;
+        k2=f.value(vars);
+        vars[1]=y1+0.5*h*k2;
+        k3=f.value(vars);
+        vars[0]=t1+h;
+        vars[1]=y1+h*k3;
+        k4=f.value(vars);
+        
+        x[0]=vars[0];
+        x[1]=y1+h*(k1+2*k2+2*k3+k4)/6.0;
+        return x;
+    }
+    /**
+     * Solve the differential equation dy/dt=f(t,y) for t0 {@literal <=}t{@literal <=tend} and y(t0)=alpha using a predictor-corrector (Adams Bashfort Moulton method) <p>
+     * The predictor uses a 3 step Adams-Bashfort explicit approximation O(h^3). <p>
+     * The corrector uses a 3 step Adams-Moulton implicit approximation O(h^4). <p>
+     * This function updates the 1D arrays 't' and 'y' which contain the values of the independent variable and dependent variable respectively
+     */
+    public void solveABM(){
+        double[] x;
+        double t1,y1;
+        double p[]; //auxiliar array to store 'predicted' approximations
+        t1=t0; y1=y0;
+        //compute the first 4 points using the Runge Kutta method 
+        for(int i=0;i<n||i<4;i++){
+            //compute RK step
+            x=RK4step(t1, y1);
+            //store calculated points
+            t[i]=x[0];
+            y[i]=x[1];
+            //update auxiliar variables
+            t1=t[i];
+            y1=y[i];
+        }
+        //Perform predictor-corrector method
+        if(n>4){
+            
+        }
+        computeExacty();
+    }
+    
+    private double[] AB3step(double[] t, double[] y){
+        double p1,p2,p3,p4; //variable to store predictor approximations
+        double[] vars= {t[0],y[0]};
+        //Compute Adams Bashfort Predictor approximations
+       
+    }
+    
     @Override
     public String toString(){
         String s;

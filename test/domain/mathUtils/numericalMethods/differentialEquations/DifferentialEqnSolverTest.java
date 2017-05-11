@@ -143,5 +143,18 @@ public class DifferentialEqnSolverTest {
         eqnSolver.solveEuler();
         System.out.println(eqnSolver.toString());
     }
-    
+    /**
+     * Test of solveRK4 method, of class DifferentialEqnSolver.
+     */
+    @Test
+    public void testRK4(){
+        System.out.println("*********solve RK4 Test 1***********");
+        //test without exact solution
+        eqnSolver.solveRK4();
+        System.out.println(eqnSolver.toString());
+        System.out.println("*********solve RK4 Test 2***********");
+        eqnSolver= new DifferentialEqnSolver(0, 2, 0.2, 0.5, f, exactyFunction);
+        eqnSolver.solveRK4();
+        System.out.println(eqnSolver.toString());
+    }
 }
