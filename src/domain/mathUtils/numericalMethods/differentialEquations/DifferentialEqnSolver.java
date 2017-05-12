@@ -25,7 +25,7 @@ public class DifferentialEqnSolver {
     private double tend;// End time
     private int n;// numer of samples
     
-    private AMStepSolution ams; // auxiliary instance to perform an Adams-Bashfort-Moulton Step
+    private AMStepContainer ams; // auxiliary instance to perform an Adams-Bashfort-Moulton Step
     
    /**
     * Constructor
@@ -407,7 +407,7 @@ public class DifferentialEqnSolver {
         t1=t0; y1=y0;
         t[0]=t0; y[0]=y0;
         //compute the first 4 points using the Runge Kutta method 
-        for(int i=1;i<n||i<4;i++){
+        for(int i=1;i<n && i<4;i++){
             //compute RK step
             x=RK4step(t1, y1);
             //store calculated points
@@ -420,7 +420,7 @@ public class DifferentialEqnSolver {
         //Perform predictor-corrector method
         if(n>4){
             //prepare first ABM iteration
-            ams=new AMStepSolution();
+            ams=new AMStepContainer(); // create instance of container class
             ams.y4=y[3];
             ams.t4=t[3];
             for(int i=0;i<4;i++){
@@ -429,6 +429,7 @@ public class DifferentialEqnSolver {
             }
             //perform ABM method
             for(int i=4; i<n; i++){
+                //perform predictor-corrector step
                 ams=AB3step(ams);
                 //store calculated points
                 y[i]=ams.y4;
@@ -443,7 +444,7 @@ public class DifferentialEqnSolver {
      * @param y last 4 approximations for the solution
      * @return 
      */
-    private AMStepSolution AB3step(AMStepSolution ams){
+    private AMStepContainer AB3step(AMStepContainer ams){
         double p4;
         double[] p=ams.p;
         double[] ystep=ams.y;
@@ -484,7 +485,7 @@ public class DifferentialEqnSolver {
     /**
      * Auxiliary class to perform Adams Moulton step
      */
-    private class AMStepSolution{
+    private class AMStepContainer{
         public double y4, t4;
         public double[] y= new double [4];
         public double[] t= new double [4];

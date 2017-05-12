@@ -171,5 +171,20 @@ public class DifferentialEqnSolverTest {
         eqnSolver= new DifferentialEqnSolver(0, 2, 0.2, 0.5, f, exactyFunction);
         eqnSolver.solveABM();
         System.out.println(eqnSolver.toString());
+        //If result is correct then the raltive error should be less tha 0.003% for this particular equation
+        double[] solution=eqnSolver.getRelError();
+        double lasterror=solution[solution.length-1];
+        boolean result=lasterror<=0.003;
+        assertEquals(true, result);
+        
+        //Test the method when only 3 points in the solution are requested
+        System.out.println("*********solve ABM Test 3***********");
+        eqnSolver= new DifferentialEqnSolver(0, 2, 3, 0.5, f, exactyFunction);
+        eqnSolver.solveABM();
+        System.out.println(eqnSolver.toString());
+        solution=eqnSolver.getRelError();
+        lasterror=solution[solution.length-1];
+        result=lasterror<=2;
+        assertEquals(true, result);
     }
 }
