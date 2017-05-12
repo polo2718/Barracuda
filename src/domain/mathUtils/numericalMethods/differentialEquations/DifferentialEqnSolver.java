@@ -25,6 +25,8 @@ public class DifferentialEqnSolver {
     private double tend;// End time
     private int n;// numer of samples
     
+    private AMStepSolution ams; // auxiliary instance to perform an Adams-Bashfort-Moulton Step
+    
    /**
     * Constructor
     * @param t0 initial time (double)
@@ -400,9 +402,12 @@ public class DifferentialEqnSolver {
         double[] x;
         double t1,y1;
         double p[]; //auxiliar array to store 'predicted' approximations
+        t=new double[n];
+        y=new double[n];
         t1=t0; y1=y0;
+        t[0]=t0; y[0]=y0;
         //compute the first 4 points using the Runge Kutta method 
-        for(int i=0;i<n||i<4;i++){
+        for(int i=1;i<n||i<4;i++){
             //compute RK step
             x=RK4step(t1, y1);
             //store calculated points
@@ -414,16 +419,76 @@ public class DifferentialEqnSolver {
         }
         //Perform predictor-corrector method
         if(n>4){
-            
+            //prepare first ABM iteration
+            ams=new AMStepSolution();
+            ams.y4=y[3];
+            ams.t4=t[3];
+            for(int i=0;i<4;i++){
+                ams.t[i]=t[i];
+                ams.y[i]=y[i];
+            }
+            //perform ABM method
+            for(int i=4; i<n; i++){
+                ams=AB3step(ams);
+                //store calculated points
+                y[i]=ams.y4;
+                t[i]=ams.t4;
+            }
         }
         computeExacty();
     }
-    
-    private double[] AB3step(double[] t, double[] y){
-        double p1,p2,p3,p4; //variable to store predictor approximations
-        double[] vars= {t[0],y[0]};
-        //Compute Adams Bashfort Predictor approximations
-       
+    /**
+     * Performs an Adams Bashfort Moulton Predictor corrector Step
+     * @param t last 4 time points
+     * @param y last 4 approximations for the solution
+     * @return 
+     */
+    private AMStepSolution AB3step(AMStepSolution ams){
+        double p4;
+        double[] p=ams.p;
+        double[] ystep=ams.y;
+        double[] tstep=ams.t;
+        double vars[]= new double[2];
+        
+        //test if the first AMB iteration (when the approximation vector p is null
+        if(ams.p==null){
+            p=new double[4];
+            //compute values of approximation vector
+            for(int i=0;i<4;i++){
+                vars[0]=tstep[i];
+                vars[1]=ystep[i];
+                p[i]=f.value(vars);
+            }
+        }
+        //predict the next y (Adams Bashfort)
+        ams.y4=ystep[3]+h/24.0*(55*p[3]-59*p[2]+37*p[1]-9*p[0]);
+        //correct next y (Adams Moulton)
+        ams.t4+=h;
+        vars[0]=ams.t4;
+        vars[1]=ams.y4;
+        
+        p4=f.value(vars);
+        ams.y4=ystep[3]+h/24.0*(9*p4+19*p[3]-5*p[2]+p[1]);
+        
+        //update p, y, t
+        for(int i=0; i<3; i++){
+            p[i]=p[i+1];
+            ystep[i]=ystep[i+1];
+        }
+        p[3]=p4;
+        ystep[3]=ams.y4;
+        ams.p=p;
+        ams.y=ystep;
+        return ams;
+    }
+    /**
+     * Auxiliary class to perform Adams Moulton step
+     */
+    private class AMStepSolution{
+        public double y4, t4;
+        public double[] y= new double [4];
+        public double[] t= new double [4];
+        public double[] p= null;
     }
     
     @Override

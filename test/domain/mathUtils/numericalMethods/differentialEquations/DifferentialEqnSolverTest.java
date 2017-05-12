@@ -157,4 +157,19 @@ public class DifferentialEqnSolverTest {
         eqnSolver.solveRK4();
         System.out.println(eqnSolver.toString());
     }
+    
+    /**
+     * Test of solveABM method, of class DifferentialEqnSolver.
+     */
+    @Test
+    public void testABM(){
+        System.out.println("*********solve ABM Test 1***********");
+        //test without exact solution
+        eqnSolver.solveABM();
+        System.out.println(eqnSolver.toString());
+        System.out.println("*********solve ABM Test 2***********");
+        eqnSolver= new DifferentialEqnSolver(0, 2, 0.2, 0.5, f, exactyFunction);
+        eqnSolver.solveABM();
+        System.out.println(eqnSolver.toString());
+    }
 }
