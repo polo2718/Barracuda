@@ -424,6 +424,7 @@ public class DifferentialEqnSolver {
             ams.y4=y[3];
             ams.t4=t[3];
             for(int i=0;i<4;i++){
+                ams.t[i]=t[i];
                 ams.y[i]=y[i];
             }
             //perform ABM method
@@ -440,13 +441,13 @@ public class DifferentialEqnSolver {
     /**
      * Performs an Adams Bashfort Moulton Predictor corrector Step
      * @param ams instance of AMStepContainer class
-     * @return AMSStepContainer with updated values
+     * @return AMSStepContainer with updated
      */
     private AMStepContainer AB3step(AMStepContainer ams){
         double p4;
         double[] p=ams.p;
         double[] ystep=ams.y;
-        double[] tstep=new double[4];
+        double[] tstep=ams.t;
         double vars[]= new double[2];
         
         //test if the first AMB iteration (when the approximation vector p is null
@@ -487,6 +488,7 @@ public class DifferentialEqnSolver {
     private class AMStepContainer{
         public double y4, t4;
         public double[] y= new double [4];
+        public double[] t= new double [4];
         public double[] p= null;
     }
     
