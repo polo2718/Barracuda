@@ -8,22 +8,22 @@ import domain.mathUtils.numericalMethods.functionEvaluation.MultiVariableFunctio
 import domain.mathUtils.numericalMethods.functionEvaluation.OneVariableFunction;
 
 /**
- *This class provides a framework to solve initial value problems of the form dy/dt=f(t,y) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha through different numerical methods.
+ *This class provides methods to solve initial value problems of the form dy/dt=f(t,y) for t0{@literal <=}t{@literal <=tend} and y(t0)=alpha through different numerical methods.
  */
 public class DifferentialEqnSolver {
 
     private MultiVariableFunction f; // Function f(t,y)
     private double[] y; //Array containing the values of the approximate solution (dependent variable)
     private double y0; //Initial value
-    private double [] t; //Array containing the values of the independent variable
+    protected double [] t; //Array containing the values of the independent variable
     private double[] exacty;// Array containing the values of the exact solution
     private OneVariableFunction exactyFunction; //One variable function containing the analytical expression of the exact solution
     private double [] absError; //Array containing the absolute error
     private double [] relError; //Array containing the relative error
     private double h; //Step size
-    private double t0; //Initial time 't0'
-    private double tend;// End time
-    private int n;// numer of samples
+    protected double t0; //Initial time 't0'
+    protected double tend;// End time
+    protected int n;// numer of samples
     
     private AMStepContainer ams; // auxiliary instance to perform an Adams-Bashfort-Moulton Step
     
@@ -374,7 +374,7 @@ public class DifferentialEqnSolver {
      * @param y1 current solution point
      * @return 1d array containing the values of the next time step 't2' and next solution evaluation 'y2'
      */
-    private double[] RK4step(double t1, double y1){
+    protected double[] RK4step(double t1, double y1){
         double[] vars={t1,y1};
         double [] x= new double[2];
         double k1, k2, k3, k4; //RK constants 
@@ -443,7 +443,7 @@ public class DifferentialEqnSolver {
      * @param ams instance of AMStepContainer class
      * @return AMSStepContainer with updated
      */
-    private AMStepContainer AB3step(AMStepContainer ams){
+    protected AMStepContainer AB3step(AMStepContainer ams){
         double p4;
         double[] p=ams.p;
         double[] ystep=ams.y;
@@ -485,7 +485,7 @@ public class DifferentialEqnSolver {
      * Auxiliary class to perform Adams Moulton step
      * This class contains the next step values y4, and t4
      */
-    private class AMStepContainer{
+    protected class AMStepContainer{
         public double y4, t4;
         public double[] y= new double [4];
         public double[] t= new double [4];
