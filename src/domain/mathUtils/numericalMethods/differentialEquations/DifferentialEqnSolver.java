@@ -374,7 +374,7 @@ public class DifferentialEqnSolver {
      * @param y1 current solution point
      * @return 1d array containing the values of the next time step 't2' and next solution evaluation 'y2'
      */
-    protected double[] RK4step(double t1, double y1){
+    private double[] RK4step(double t1, double y1){
         double[] vars={t1,y1};
         double [] x= new double[2];
         double k1, k2, k3, k4; //RK constants 
@@ -443,7 +443,7 @@ public class DifferentialEqnSolver {
      * @param ams instance of AMStepContainer class
      * @return AMSStepContainer with updated
      */
-    protected AMStepContainer AB3step(AMStepContainer ams){
+    private AMStepContainer AB3step(AMStepContainer ams){
         double p4;
         double[] p=ams.p;
         double[] ystep=ams.y;
