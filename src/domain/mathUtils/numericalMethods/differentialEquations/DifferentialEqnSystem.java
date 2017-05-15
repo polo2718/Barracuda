@@ -76,4 +76,18 @@ public class DifferentialEqnSystem extends DifferentialEqnSolver {
     public void set_f(MultiVariableFunction[] f){
         this.f=f;
     }
+    /**
+     * Returns an array containing all the specified forcing functions
+     * @return 1d array containing the forcing functions
+     */
+    public MultiVariableFunction[] get_fk(){
+        return f;
+    }
+    
+    @Override
+    public MultiVariableFunction get_f(){
+        throw new UnsupportedOperationException("Use 'get_fk' method when solving systems of Diff eqns");
+    }
+    
+   
 }
