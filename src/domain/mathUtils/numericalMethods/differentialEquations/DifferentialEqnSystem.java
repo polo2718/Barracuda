@@ -19,7 +19,7 @@ import domain.mathUtils.numericalMethods.functionEvaluation.OneVariableFunction;
 public class DifferentialEqnSystem extends DifferentialEqnSolver {
     
     private MultiVariableFunction[] f;
-    private double[][] y; //Array containing the values of the approximate solutions
+    private double[][] u; //Array containing the values of the approximate solutions
     private double[] u0; //Initial values
     
     /**
@@ -96,7 +96,7 @@ public class DifferentialEqnSystem extends DifferentialEqnSolver {
      * @return 2D array containing the approximate values for the solution.
      */
     public double[][] getSolutionArray(){
-        return y;
+        return u;
     }
    
     @Override
@@ -123,7 +123,7 @@ public class DifferentialEqnSystem extends DifferentialEqnSolver {
                 }
                 else{
                     //fill solution
-                    solution[i][j]=y[i][j-1];
+                    solution[i][j]=u[i][j-1];
                 }
             }
         }
@@ -165,6 +165,64 @@ public class DifferentialEqnSystem extends DifferentialEqnSolver {
      */
     @Override
     public void solveRK4(){
+        int numVar=f.length; //number of dependent variables
+        u=new double [n][numVar]; //initialize solution array
+        t= new double[n]; // initialize time array
+        int nVars=numVar+1; //auxiliar variable to store the number of independent variables of the forcing function 
+        double[] vars=new double[nVars]; //auxiliar array for computing the function
+        double[] k1=new double[numVar]; //coefficients for Runge Kutta Operation
+        double[] k2=new double[numVar];
+        double[] k3=new double[numVar];
+        double[] k4=new double[numVar];
+   
+        //Populate solution and time arrays with the initial values
+        t[0]=t0;
+        System.arraycopy(u0, 0, u[0], 0, numVar);// place the initial values at the beginning of solution array
+        
+        //Perform RK4 solution
+        for(int i=1; i<n;i++){
+            //compute k1
+            for(int j=0;j<numVar;j++){
+                //fill auxiliar array vars to compute the function
+                vars[1]=t[i-1];
+                for(int k=1; k<nVars;k++){
+                    vars[k]=u[i-1][k];
+                }
+                k1[j]=f[j].value(vars);
+            }
+            //compute k2
+            for(int j=0;j<numVar;j++){
+                //fill auxiliar array vars to compute the function
+                vars[1]=t[i-1]+0.5*h;
+                for(int k=1; k<nVars;k++){
+                    vars[k]=u[i-1][k]+0.5*k1[k];
+                }
+                k2[j]=f[j].value(vars);
+            }
+            //compute k3
+            for(int j=0;j<numVar;j++){
+                //fill auxiliar array vars to compute the function
+                //vars[1]=t[i-1]+0.5*h;
+                for(int k=1; k<nVars;k++){
+                    vars[k]=u[i-1][k]+0.5*k2[k];
+                }
+                k3[j]=f[j].value(vars);
+            }
+            //compute k4
+            for(int j=0;j<numVar;j++){
+                //fill auxiliar array vars to compute the function
+                vars[1]=t[i-1]+h;
+                for(int k=1; k<nVars;k++){
+                    vars[k]=u[i-1][k]+k3[k];
+                }
+                k4[j]=f[j].value(vars);
+            }
+            //Compute next value
+            t[i]=vars[1];
+            for(int j=0;j<numVar;j++){
+                u[i][j]=u[i-1][j]+h/6.0*(k1[j]+2*k2[j]+2*k3[j]+k4[j]);
+            }
+        }
     }
     
     @Override
