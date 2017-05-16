@@ -20,7 +20,7 @@ public class DifferentialEqnSolver {
     private OneVariableFunction exactyFunction; //One variable function containing the analytical expression of the exact solution
     private double [] absError; //Array containing the absolute error
     private double [] relError; //Array containing the relative error
-    private double h; //Step size
+    protected double h; //Step size
     protected double t0; //Initial time 't0'
     protected double tend;// End time
     protected int n;// numer of samples
