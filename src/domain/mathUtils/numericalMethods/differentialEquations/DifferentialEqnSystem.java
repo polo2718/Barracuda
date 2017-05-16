@@ -6,7 +6,6 @@
 package domain.mathUtils.numericalMethods.differentialEquations;
 
 import domain.mathUtils.numericalMethods.functionEvaluation.MultiVariableFunction;
-import domain.mathUtils.numericalMethods.functionEvaluation.OneVariableFunction;
 
 /**
  *This class provides methods to solve systems of differential equations of the form du_k/dt=f_k(t,u1,u2,...,u_k) for k=1,2,3,..., m 
@@ -164,6 +163,7 @@ public class DifferentialEqnSystem extends DifferentialEqnSolver {
      * the number of dependent variables. Using a 4th order Runge Kutta Method<p> 
      */
     @Override
+    @SuppressWarnings("ManualArrayToCollectionCopy")
     public void solveRK4(){
         int numVar=f.length; //number of dependent variables
         u=new double [n][numVar]; //initialize solution array
