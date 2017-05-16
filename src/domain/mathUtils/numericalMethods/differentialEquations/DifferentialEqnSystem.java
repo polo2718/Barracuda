@@ -161,7 +161,7 @@ public class DifferentialEqnSystem extends DifferentialEqnSolver {
     /**
      * This methods computes the solution to the system of differential equations of the form du_k/dt=f_k(t,u1,u2,...,u_k) for k=1,2,3,..., m 
      * from for t0{@literal <=}t{@literal <=tend} and with the initial conditions u_1(t0)=alpha_1, u2(t0)=alpha_2,...,u_m(t0)=alpha_m, where m is 
-     * the number of dependent variables.<p> 
+     * the number of dependent variables. Using a 4th order Runge Kutta Method<p> 
      */
     @Override
     public void solveRK4(){
