@@ -224,10 +224,93 @@ public class DifferentialEqnSystem extends DifferentialEqnSolver {
             }
         }
     }
-    
+    /**
+     * This methods computes the solution to the system of differential equations of the form du_k/dt=f_k(t,u1,u2,...,u_k) for k=1,2,3,..., m 
+     * from for t0{@literal <=}t{@literal <=tend} and with the initial conditions u_1(t0)=alpha_1, u2(t0)=alpha_2,...,u_m(t0)=alpha_m, where m is 
+     * the number of dependent variables using a predictor-corrector (Adams Bashfort Moulton method) <p>
+     * The predictor uses a 3 step Adams-Bashfort explicit approximation O(h^3). <p>
+     * The corrector uses a 3 step Adams-Moulton implicit approximation O(h^4). <p>
+     * This function updates the 1D array 't' and the 2d array 'u' which contain the values of the independent variable and dependent variables respectively
+     */
     @Override
     public void solveABM(){
-        throw new UnsupportedOperationException("Not implemented yet");
+        int numVar=f.length; //number of dependent variables
+        u=new double [n][numVar]; //initialize solution array
+        t= new double[n]; // initialize time array
+        int nVars=numVar+1; //auxiliar variable to store the number of independent variables of the forcing function 
+        double[] vars=new double[nVars]; //auxiliar array for computing the function
+        double[] k1=new double[4]; //coefficients for Runge Kutta Operation
+        double[] k2=new double[4];
+        double[] k3=new double[4];
+        double[] k4=new double[4];
+        double[][] p=new double[4][numVar]; 
+        
+        //Populate solution and time arrays with the initial values
+        t[0]=t0;
+        System.arraycopy(u0, 0, u[0], 0, numVar);// place the initial values at the beginning of solution array
+        
+        //Compute the first 4 points using the Runge Kutta method
+        for(int i=1;i<n && i<4; i++){
+            //Compute the Runge kutta step
+             //compute k1
+            for(int j=0;j<numVar;j++){
+                //fill auxiliar array vars to compute the function
+                vars[0]=t[i-1];
+                for(int k=1; k<nVars;k++){
+                    vars[k]=u[i-1][k-1];
+                }
+                k1[j]=f[j].value(vars);
+            }
+            //compute k2
+            for(int j=0;j<numVar;j++){
+                //fill auxiliar array vars to compute the function
+                vars[0]=t[i-1]+0.5*h;
+                for(int k=1; k<nVars;k++){
+                    vars[k]=u[i-1][k-1]+0.5*h*k1[k-1];
+                }
+                k2[j]=f[j].value(vars);
+            }
+            //compute k3
+            for(int j=0;j<numVar;j++){
+                //fill auxiliar array vars to compute the function
+                //vars[0]=t[i-1]+0.5*h;
+                for(int k=1; k<nVars;k++){
+                    vars[k]=u[i-1][k-1]+0.5*h*k2[k-1];
+                }
+                k3[j]=f[j].value(vars);
+            }
+            //compute k4
+            for(int j=0;j<numVar;j++){
+                //fill auxiliar array vars to compute the function
+                vars[0]=t[i-1]+h;
+                for(int k=1; k<nVars;k++){
+                    vars[k]=u[i-1][k-1]+h*k3[k-1];
+                }
+                k4[j]=f[j].value(vars);
+            }
+            //Compute next value
+            t[i]=vars[0];
+            for(int j=0;j<numVar;j++){
+                u[i][j]=u[i-1][j]+h/6.0*(k1[j]+2*k2[j]+2*k3[j]+k4[j]);
+            }
+        }
+        
+        //Perform predictor-corrector method
+        if(n>4){
+            //prepare first ABM iteration
+            for(int j=0; j<numVar;j++){// compute the columns of the p array
+                for(int i=0; i<4;i++){
+                    vars[0]=t[i];
+                    for(int k=1; k<nVars;k++){
+                        vars[k]=u[i][k-1];
+                    }
+                    p[i][j]=f[j].value(vars);
+                }
+            }
+            //ciclo
+            //predict the next u (Adams Bashfort);
+            //correct the next u (Adams Moulton);
+        }
     }
     
     @Override

@@ -485,7 +485,7 @@ public class DifferentialEqnSolver {
      * Auxiliary class to perform Adams Moulton step
      * This class contains the next step values y4, and t4
      */
-    protected class AMStepContainer{
+    private class AMStepContainer{
         public double y4, t4;
         public double[] y= new double [4];
         public double[] t= new double [4];
