@@ -112,10 +112,10 @@ public class DifferentialEqnSystem extends DifferentialEqnSolver {
      */
     @Override
     public double [][] getSolutionPair(){
-        int f_length=f.length;
-        double [][] solution=new double[n][f_length];
+        int nVars=f.length+1;
+        double [][] solution=new double[n][nVars];
         for(int i=0;i<n;i++){
-            for(int j=0; j<f_length; j++){
+            for(int j=0; j<nVars; j++){
                 if(j==0){
                     //fill time vector
                     solution[i][j]=t[i];
@@ -184,41 +184,41 @@ public class DifferentialEqnSystem extends DifferentialEqnSolver {
             //compute k1
             for(int j=0;j<numVar;j++){
                 //fill auxiliar array vars to compute the function
-                vars[1]=t[i-1];
+                vars[0]=t[i-1];
                 for(int k=1; k<nVars;k++){
-                    vars[k]=u[i-1][k];
+                    vars[k]=u[i-1][k-1];
                 }
                 k1[j]=f[j].value(vars);
             }
             //compute k2
             for(int j=0;j<numVar;j++){
                 //fill auxiliar array vars to compute the function
-                vars[1]=t[i-1]+0.5*h;
+                vars[0]=t[i-1]+0.5*h;
                 for(int k=1; k<nVars;k++){
-                    vars[k]=u[i-1][k]+0.5*k1[k];
+                    vars[k]=u[i-1][k-1]+0.5*h*k1[k-1];
                 }
                 k2[j]=f[j].value(vars);
             }
             //compute k3
             for(int j=0;j<numVar;j++){
                 //fill auxiliar array vars to compute the function
-                //vars[1]=t[i-1]+0.5*h;
+                //vars[0]=t[i-1]+0.5*h;
                 for(int k=1; k<nVars;k++){
-                    vars[k]=u[i-1][k]+0.5*k2[k];
+                    vars[k]=u[i-1][k-1]+0.5*h*k2[k-1];
                 }
                 k3[j]=f[j].value(vars);
             }
             //compute k4
             for(int j=0;j<numVar;j++){
                 //fill auxiliar array vars to compute the function
-                vars[1]=t[i-1]+h;
+                vars[0]=t[i-1]+h;
                 for(int k=1; k<nVars;k++){
-                    vars[k]=u[i-1][k]+k3[k];
+                    vars[k]=u[i-1][k-1]+h*k3[k-1];
                 }
                 k4[j]=f[j].value(vars);
             }
             //Compute next value
-            t[i]=vars[1];
+            t[i]=vars[0];
             for(int j=0;j<numVar;j++){
                 u[i][j]=u[i-1][j]+h/6.0*(k1[j]+2*k2[j]+2*k3[j]+k4[j]);
             }
@@ -237,9 +237,9 @@ public class DifferentialEqnSystem extends DifferentialEqnSolver {
        String s;
        s="******Differential Eqn solver output********\n"
                 + "Step size 'h'="+h+"\n"
-                + "t\t";
+                + "t\t\t";
        for(int i=0;i<nsol;i++){
-        s+="u_"+i+1+"\t";
+        s+="u_"+Integer.toString(i+1)+"\t\t";
        }
        s+="\n";
        for(int i=0;i<n;i++){ //rows
