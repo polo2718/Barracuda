@@ -243,7 +243,8 @@ public class DifferentialEqnSystem extends DifferentialEqnSolver {
         double[] k2=new double[4];
         double[] k3=new double[4];
         double[] k4=new double[4];
-        double[][] p=new double[4][numVar]; 
+        double[][] p=new double[4][numVar]; //array to store the coefficients of ABM operation
+        double[] p4=new double[numVar]; //array to store the current coefficient
         
         //Populate solution and time arrays with the initial values
         t[0]=t0;
@@ -307,9 +308,30 @@ public class DifferentialEqnSystem extends DifferentialEqnSolver {
                     p[i][j]=f[j].value(vars);
                 }
             }
-            //ciclo
-            //predict the next u (Adams Bashfort);
-            //correct the next u (Adams Moulton);
+            //predictor corrector iterations
+            for(int i=4;i<n;i++){
+                t[i]=t[i-1]+h;
+                vars[0]=t[i];
+                //predict the next u (Adams Bashfort);
+                for(int j=0; j<numVar; j++){
+                    u[i][j]=u[i-1][j]+h/24.0*(55*p[3][j]-59*p[2][j]+37*p[1][j]-9*p[0][j]);
+                }
+                //correct the next u (Adams Moulton)
+                for(int j=0;j<numVar;j++){
+                    //correct the next u (Adams Moulton);
+                    for(int k=1; k<nVars; k++){
+                        vars[k]=u[i][k-1];
+                    }
+                    p4[j]=f[j].value(vars);
+                    u[i][j]=u[i-1][j]+h/24.0*(9*p4[j]+19*p[3][j]-5*p[2][j]+p[1][j]);
+                    
+                    //Update array p for next iteration
+                    for(int k=0; k<3;k++){
+                        p[k][j]=p[k+1][j];
+                    }
+                    p[3][j]=p4[j];
+                }
+            }
         }
     }
     
