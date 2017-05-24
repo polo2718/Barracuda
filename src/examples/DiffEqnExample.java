@@ -1,10 +1,10 @@
 package examples;
 import domain.mathUtils.numericalMethods.differentialEquations.DifferentialEqnSolver;
 import domain.mathUtils.numericalMethods.functionEvaluation.*;
-//This class provides an example to solve initial value problems (IVP) using several approximation methods (Euler, RK4, Adams-Bashfort-Moulton)
+//Example to solve initial value problems (IVP) using Euler, RK4 and Adams-Bashfort-Moulton methods
 public class DiffEqnExample {
     public static void main(String[] args) {
-        //Start by setting up the IVP
+        //Set up the IVP
         DifferentialEqnSolver eqnSolver; //Differential equation solver
         double h=0.2; //step size (duration) 
         double t0=0; //initial time
@@ -12,7 +12,6 @@ public class DiffEqnExample {
         double y0=0.5; //initial condition
         //Define forcing function
         MultiVariableFunction f;
-        //define forcing function f
         f=(double[] variables) -> {
             double value;
             double t=variables[0];
