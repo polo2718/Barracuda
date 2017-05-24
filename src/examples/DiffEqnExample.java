@@ -13,16 +13,14 @@ public class DiffEqnExample {
         //Define forcing function
         MultiVariableFunction f;
         f=(double[] variables) -> {
-            double value;
             double t=variables[0];
             double y=variables[1];
-            return value=y-t*t+1;
+            return y-t*t+1;
         };
         //Define exact solution (if known)
         OneVariableFunction exactyFunction;
         exactyFunction= (double x) -> {
-          double value;
-          return value=(x+1)*(x+1)-0.5*Math.exp(x);
+          return (x+1)*(x+1)-0.5*Math.exp(x);
         };
         //initialize a differential equation solver
         eqnSolver=new DifferentialEqnSolver(t0, tN, h, y0, f, exactyFunction);
