@@ -1913,7 +1913,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     }//GEN-LAST:event_captureSaggitalActionPerformed
 
     private void captureAxialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_captureAxialActionPerformed
-        // TODO add your handling code here:
+        copyLabelToClipboard(axialLabel);
     }//GEN-LAST:event_captureAxialActionPerformed
                                     
     /*public static void main(String args[]) {
