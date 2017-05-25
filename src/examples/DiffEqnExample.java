@@ -4,8 +4,6 @@ import domain.mathUtils.numericalMethods.functionEvaluation.*;
 //Example to solve initial value problems (IVP) using Euler, RK4 and Adams-Bashfort-Moulton methods
 public class DiffEqnExample {
     public static void main(String[] args) {
-        //Set up the IVP
-        DifferentialEqnSolver eqnSolver; //Differential equation solver
         double h=0.2; //step size (duration) 
         double t0=0; //initial time
         double tN=2; //final time
@@ -23,6 +21,7 @@ public class DiffEqnExample {
           return (x+1)*(x+1)-0.5*Math.exp(x);
         };
         //initialize a differential equation solver
+        DifferentialEqnSolver eqnSolver;
         eqnSolver=new DifferentialEqnSolver(t0, tN, h, y0, f, exactyFunction);
         //eqnSolver=new DifferentialEqnSolver(t0, tN, h, y0, f);//if exact solution is not known use this line instead
         eqnSolver.solveEuler();//Solve by Euler's method
