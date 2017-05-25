@@ -1909,7 +1909,7 @@ public class BarracudaViewUI extends javax.swing.JFrame {
     }//GEN-LAST:event_captureCoronalActionPerformed
 
     private void captureSaggitalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_captureSaggitalActionPerformed
-        copyLabelToClipboard(axialLabel);
+        copyLabelToClipboard(saggitalLabel);
     }//GEN-LAST:event_captureSaggitalActionPerformed
 
     private void captureAxialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_captureAxialActionPerformed
