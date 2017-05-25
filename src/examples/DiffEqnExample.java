@@ -17,8 +17,8 @@ public class DiffEqnExample {
         };
         //Define exact solution (if known)
         OneVariableFunction exactyFunction;
-        exactyFunction= (double x) -> {
-          return (x+1)*(x+1)-0.5*Math.exp(x);
+        exactyFunction= (double t) -> {
+          return (t+1)*(t+1)-0.5*Math.exp(t);
         };
         //initialize a differential equation solver
         DifferentialEqnSolver eqnSolver;
