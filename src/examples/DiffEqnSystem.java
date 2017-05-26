@@ -4,6 +4,7 @@ import domain.mathUtils.numericalMethods.functionEvaluation.MultiVariableFunctio
 //Example for solving systems of differential equations
 public class DiffEqnSystem {
     public static void main(String[] args) {
+        //Set the IVP
         double h=0.1;   //step size
         double t0=0;    //initial time
         double tN=0.60; //final time
