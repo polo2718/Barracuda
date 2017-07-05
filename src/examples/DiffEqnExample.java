@@ -4,10 +4,11 @@ import domain.mathUtils.numericalMethods.functionEvaluation.*;
 //Example to solve initial value problems (IVP) using Euler, RK4 and Adams-Bashfort-Moulton methods
 public class DiffEqnExample {
     public static void main(String[] args) {
-        double h=0.2; //step size (duration) 
-        double t0=0; //initial time
-        double tN=2; //final time
-        double y0=0.5; //initial condition
+        //IVP parameters
+        double h=0.2;   //step size (duration) 
+        double t0=0;    //initial time
+        double tN=2;    //final time
+        double y0=0.5;  //initial condition
         //Define forcing function
         MultiVariableFunction f;
         f=(double[] variables) -> {
