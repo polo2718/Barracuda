@@ -30,7 +30,7 @@ public class pspiDTI {
     private boolean correction = false;
     private boolean intensityShift = false;
     private double trueAlpha;
-    private int kernelSize=3;
+    private int kernelSize=5;
     
     public static final boolean LEFT_TAIL=true;
     public static final boolean RIGHT_TAIL=false;
@@ -414,6 +414,7 @@ public class pspiDTI {
                 baselineMean = computeIntracerebralMean(tempBaseline,tempMask);
                 //Compute the scalingFactor
                 scalingFactor= (baselineMean/ictalMean);
+                append("Scaling factor: "+scalingFactor+"\n");
                 ictalFA.data.scalarMult(scalingFactor);
             }
            if(ictalTR!=null && baselineTR!=null){
