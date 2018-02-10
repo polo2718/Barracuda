@@ -1,4 +1,4 @@
-package examples;
+package domain.mathUtils.examples;
 import domain.mathUtils.numericalMethods.differentialEquations.*;
 import domain.mathUtils.numericalMethods.functionEvaluation.*;
 //Example to solve initial value problems (IVP) using Euler, RK4 and Adams-Bashfort-Moulton methods

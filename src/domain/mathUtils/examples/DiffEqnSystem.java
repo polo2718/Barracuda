@@ -1,4 +1,4 @@
-package examples;
+package domain.mathUtils.examples;
 import domain.mathUtils.numericalMethods.differentialEquations.DifferentialEqnSystem;
 import domain.mathUtils.numericalMethods.functionEvaluation.MultiVariableFunction;
 //Example for solving systems of differential equations
