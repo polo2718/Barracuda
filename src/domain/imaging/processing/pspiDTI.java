@@ -233,7 +233,7 @@ public class pspiDTI {
         for(int i=0;i<x;i++){
             for(int j=0;j<y;j++){
                 for(int k=0;k<z;k++){
-                    if(Double.isNaN(mask.get(i,j,k,0))){//If mask is NaN
+                    if(Double.isNaN(mask.get(i,j,k,0))){//If mask is NaN or zero
                         result.set(i,j,k,0,Double.NaN);
                     }else{
                         temp=ictal.data.get(i,j,k,0)-baseline.data.get(i,j,k,0);
@@ -414,7 +414,7 @@ public class pspiDTI {
                 baselineMean = computeIntracerebralMean(tempBaseline,tempMask);
                 //Compute the scalingFactor
                 scalingFactor= (baselineMean/ictalMean);
-                append("Scaling factor: "+scalingFactor+"\n");
+                append("Scaling factor FA: "+scalingFactor+"\n");
                 ictalFA.data.scalarMult(scalingFactor);
             }
            if(ictalTR!=null && baselineTR!=null){
@@ -425,7 +425,8 @@ public class pspiDTI {
                 ictalMean = computeIntracerebralMean(tempIctal,tempMask);
                 baselineMean = computeIntracerebralMean(tempBaseline,tempMask);
                 //Compute the scalingFactor
-                scalingFactor= (ictalMean/baselineMean);
+                scalingFactor= (baselineMean/ictalMean);
+                append("Scaling factor TR: "+scalingFactor+"\n");
                 ictalTR.data.scalarMult(scalingFactor);
            }
        }
