@@ -729,7 +729,7 @@ private double trThreshold=Double.NaN;
         int returnVal= fc.showDialog(this,"Select Working Directory...");
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
-            workingDirectory = file.getAbsolutePath()+"\\";
+            workingDirectory = file.getAbsolutePath();
             directoryTextPane.setText(workingDirectory);
             fc.setCurrentDirectory(file);
             /*String outputFolder= workingDirectory+patientInitials+"_pspiDTI_output";
