@@ -187,11 +187,11 @@ public class pspiDTI {
         String str,str2;
         if(FA_TR){
             resultingVol.header=ictalFA.header;
-            str=outputDirectory+"\\"+patientInitials+Double.toString(alpha)+"a_FA_Pvals.nii.gz";
+            str=outputDirectory+patientInitials+Double.toString(alpha)+"a_FA_Pvals.nii.gz";
             str2="Writing FA p-values...";
         }else{
             resultingVol.header=ictalTR.header;
-            str=outputDirectory+"\\"+patientInitials+Double.toString(alpha)+"a_TR_Pvals.nii.gz";
+            str=outputDirectory+patientInitials+Double.toString(alpha)+"a_TR_Pvals.nii.gz";
             str2="Writing TR p-values...";
         }
         resultingVol.header.intent_code=22;
@@ -212,7 +212,7 @@ public class pspiDTI {
         int x=mask.sizeX();
         int y=mask.sizeY();
         int z=mask.sizeZ();
-        String outputFilename= outputDirectory+"\\"+patientInitials+Double.toString(alpha);
+        String outputFilename= outputDirectory+patientInitials+Double.toString(alpha);
         FourDimensionalArray result= new FourDimensionalArray(x,y,z,1);
         double temp,threshold;
         LimitedStatisticalMoment moments = new LimitedStatisticalMoment();
@@ -338,6 +338,12 @@ public class pspiDTI {
     public void calculate(){
         //outputDirectory=workingDirectory+patientInitials+"_pspiDTI_output";
         outputDirectory=workingDirectory;
+        String os = System.getProperty("os.name").toLowerCase();
+        if(os.contains("win")){
+                outputDirectory +="\\";
+        }else if(os.contains("nix") || os.contains("nux")|| os.contains("aix")){
+                outputDirectory += "/";
+        }
         int voxelCount;
         if(binaryMask!=null){
             voxelCount=binaryMask.data.nonZeroCount();
