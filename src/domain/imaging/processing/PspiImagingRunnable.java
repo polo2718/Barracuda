@@ -6,6 +6,7 @@
 package domain.imaging.processing;
 
 import data.niftilibrary.niftijio.DrawableNiftiVolume;
+import data.niftilibrary.niftijio.NiftiVolume;
 import java.awt.Cursor;
 import user.gui.spidtimain.BarracudaPspiDTIUI;
 
@@ -83,10 +84,23 @@ public class PspiImagingRunnable implements Runnable{
         this.patientInitials=patientInitials;
         this.binaryMask=binaryMask;
         this.workingDirectory=workingDirectory;
-        this.baselineFA=baselineFA;
-        this.ictalFA=ictalFA;
-        this.baselineTR=baselineTR;
-        this.ictalTR=ictalTR;
+        
+        NiftiVolume temp = new NiftiVolume(baselineFA.data.get4DArray());
+        temp.header=baselineFA.header;
+        this.baselineFA= new DrawableNiftiVolume(temp);
+        
+        temp = new NiftiVolume(ictalFA.data.get4DArray());
+        temp.header=ictalFA.header;
+        this.ictalFA= new DrawableNiftiVolume(temp);
+
+        temp = new NiftiVolume(baselineTR.data.get4DArray());
+        temp.header=baselineTR.header;
+        this.baselineTR = new DrawableNiftiVolume(temp);
+        
+        temp = new NiftiVolume(ictalTR.data.get4DArray());
+        temp.header=ictalTR.header;
+        this.ictalTR = new DrawableNiftiVolume(temp);
+        
         this.console=console;
         this.a=a;
         this.thresholds=thresholds;
@@ -98,11 +112,13 @@ public class PspiImagingRunnable implements Runnable{
     public void run() {
         a.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         pspiDTI p;
+        
         p= new pspiDTI(ictalFA,baselineFA,
                     ictalTR,baselineTR,
                     binaryMask, workingDirectory,
                     patientInitials,alpha,console,thresholds,correction,intensityShift);
         p.calculate();
+        p=null;
         a.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 }
